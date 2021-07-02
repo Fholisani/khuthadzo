@@ -1,0 +1,129 @@
+
+
+
+  <app-layout>
+    <ng-container>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                  <br>
+                  <app-upload-data [numberOfPosts]="numberOfPosts" 
+                    [isPostAvailable]="isPostAvailable"
+                    [isCreatePost]="isCreatePost" 
+                
+                    [isImageUpload]="isImageUpload"
+                    [isImgAvailable]="isImgAvailable"
+                    [isCreateImg]="isCreateImg">
+                </app-upload-data>
+               
+                <br>
+                <br>
+                </div>
+                 
+
+                    <form [formGroup]="form" (ngSubmit)="onSavePost()">
+
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                              <div class="form-group">
+                                <label for="title">Name</label>
+                                <input
+                                  type="text"
+                                  id="title"
+                                  placeholder="Title"
+                                  formControlName="title"
+                                  class="form-control">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea
+                                  type="text"
+                                  id="description"
+                                  class="form-control"
+                                  placeholder="Description"
+                                  formControlName="description"
+                                  rows="6"></textarea>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div class="form-group">
+                                <label for="description">Portfolio Type</label>
+                                <select  class="form-select"  formControlName="portfolioType">
+                                    <option value="" selected>Choose your portfolio</option>
+                                    <option *ngFor="let portfolio of portfolioTypes" [ngValue]="portfolio" (change)="changePortfolio($event)">{{portfolio}}
+                                    </option>
+                                 </select>
+                              </div>
+                            </div>
+                          </div>
+                        
+                    
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div class="form-group">
+                                <label for="fileInput">Image</label>
+                      
+
+                                  <input type="file"
+                                  id="fileInput"
+                                  #takeInput
+                                  class="form-control"
+                                  (change)="onSelect($event)"
+                                  multiple accept="image/*" 
+                                  formArrayName="images" 
+                                 />
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                   
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div class="form-group">
+                                
+                                
+                                <div class="container">
+                                    <div class="row imagetiles" >
+                                      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6" *ngFor='let imagePreview of imagePreviews; let i = index'>                     
+                                          <img [src]="imagePreview" [alt]="form.value.title" class="img-responsive" style="max-height: 70px;"> <br/>
+                                          <a (click)="removeImage(i)" class="btn btn-xs btn-danger">Remove</a>
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                <!-- <div class="preview-image" *ngIf="imagePreviews !== '' && imagePreviews && form.get('images').valid">
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                     
+                      
+
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <button
+                            type="submit"
+                            class="btn btn-success"
+                            [disabled]="!form.valid">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+
+                </div>
+                
+            </div>
+
+    </ng-container>
+  </app-layout>
+  

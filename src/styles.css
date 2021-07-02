@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+.carousel-item{
+    padding: 1px;
+}
+
+
+footer a.text-light:hover { color: #fed136!important; text-decoration: none; }
+footer .cizgi { border-right: 1px solid #535e67; }
+@media (max-width: 992px) { footer .cizgi { border-right: none; } }
+
+.ngx-gallery-thumbnail.ngx-gallery-active{
+    border: 2px double #c0ca33 !important;
+}
+p{
+    font-family: 'Lora,Times New Roman,serif';
+}
+
+.lg-toolbar .lg-close:after {
+    content: '\e070';
+}
+
+.lg-toolbar .lg-download:after {
+    content: '\e0f2';
+}
+
+.lg-icon.lg-zoom-in:after {
+    content: '\e311';
+}

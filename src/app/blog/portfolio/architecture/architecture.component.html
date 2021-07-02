@@ -1,0 +1,19 @@
+<app-layout>
+  <ng-container>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                <button (click)="addImage()">Add image</button>
+                <br>
+                <lightgallery [settings]="settings" [onInit]="onInit">
+                  <a *ngFor="let item of items"  [attr.data-lg-size]="item.size" class="gallery-item" [attr.href]="item.src">
+                      <img class="img-responsive" src="{{ item.thumb }}" />
+                  </a>
+                  <br>
+                </lightgallery>
+              </div>
+              
+          </div>
+      </div>
+  </ng-container>
+</app-layout>

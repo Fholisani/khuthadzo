@@ -1,0 +1,26 @@
+<div *ngIf="!isImageUpload" class="float-end">
+  <button  [disabled]="isCreatePost" type="button" class="btn btn-secondary mr-1"  (click)="onFetchData()">Fetch Post</button>
+
+  <button [disabled]="!isPostAvailable" type="button" class="btn btn-primary position-relative" (click)="onSaveData()">
+      Save Post
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{numberOfPosts}}
+        <span class="visually-hidden">unsaved post messages</span>
+      </span>
+    </button>
+  
+</div>
+<div *ngIf="isImageUpload" class="float-end">
+  <button  [disabled]="isCreateImg" type="button" class="btn btn-secondary mr-1"  (click)="onFetchDataImg()">Fetch Image</button>
+
+  <button [disabled]="!isImgAvailable" type="button" class="btn btn-primary position-relative" (click)="onSaveDataImg()">
+      Save Image
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{numberOfPosts}}
+        <span class="visually-hidden">unsaved post messages</span>
+      </span>
+    </button>
+  
+</div>
+
+

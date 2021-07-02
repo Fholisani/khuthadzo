@@ -1,0 +1,13 @@
+<br>
+<ngb-carousel>
+    <ng-template ngbSlide *ngFor="let image of landingData">
+        <div class="picsum-img-wrapper">
+            <img [src]="image.src" alt="Random first slide" class="mh-100" style="width: 100%; height: 50vh">
+        </div>
+        <div class="carousel-caption">
+            <h3>{{ image.title }}</h3>
+            <p>{{ image.shortDescription }}</p>
+        </div>
+    </ng-template>
+
+</ngb-carousel>

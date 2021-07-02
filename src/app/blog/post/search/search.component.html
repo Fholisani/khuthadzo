@@ -1,0 +1,6 @@
+<form class="d-flex" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+  formControlName="search">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
+  [disabled]="!searchForm.valid">Search</button>
+</form>

@@ -1,0 +1,87 @@
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <form class="mb-5" id="newPostForm" [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
+                <h2 class="text-white mb-4">Post Content</h2>
+                <div class="float-end">
+                    <app-upload-data [numberOfPosts]="numberOfPosts" 
+                    [isPostAvailable]="isPostAvailable"
+                    [isCreatePost]="isCreatePost" 
+                
+                    [isImageUpload]="isImageUpload"
+                    [isImgAvailable]="isImageUpload"
+                    [isCreateImg]="isCreateImg">
+                </app-upload-data>
+                <br>
+                <br>
+                </div>
+                <div class="form-group">
+                    <input class="form-control py-4" id="headingInput" data-cy="headingInput" type="text" 
+                    placeholder="Post heading" formControlName="heading" />
+                    <!-- <div class="invalid-feedback" *ngIf='headingControl.hasError("required")'>Heading required</div>
+                    <div class="invalid-feedback" *ngIf='headingControl.hasError("heading")'>Heading is not valid</div> -->
+                </div>
+                <div class="form-group">
+                    <input class="form-control py-4" id="subHeadingInput" data-cy="subHeadingInput" type="text" 
+                    placeholder="Post subheading" formControlName="subHeading"  />
+                    <!-- <div class="invalid-feedback" *ngIf='subHeadingControl.hasError("required")'>Subheading required</div>
+                    <div class="invalid-feedback" *ngIf='subHeadingControl.hasError("subHeading")'>Subheading is not valid</div> -->
+                </div>
+                <div class="form-group">
+
+                    <label class="form-label">Add Post Background</label>
+                    <img *ngFor='let url of urlsBackground'  [src]="url" height="200"> <br/>
+
+                    <input type='file' 
+                    #takeInput
+                    class="form-control" (change)="onSelectFileBackground($event)" formArrayName="backgroundImage">
+                    <!-- <input class="form-control py-4" id="backgroundImageInput" data-cy="backgroundImageInput" type="text" 
+                    placeholder="Post background image (enter a URL)" formControlName="backgroundImage"  />
+                    <div class="form-text text-white-50">Use an image URL (ex. https://source.unsplash.com/WLUHO9A_xik/1600x900)</div> -->
+                    <!-- <div class="invalid-feedback" *ngIf='backgroundImageControl.hasError("required")'>Background image required</div>
+                    <div class="invalid-feedback" *ngIf='backgroundImageControl.hasError("backgroundImage")'>Background image is not valid</div> -->
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control py-3" id="bodyInput" autosize data-cy="bodyInput" placeholder="Post body text (markdown supported)"
+                     formControlName="body"></textarea>
+                    <div class="form-text text-white-50"><fa-icon class="mr-1" [icon]='["fab", "markdown"]'></fa-icon>Markdown supported</div>
+                    <!-- <div class="invalid-feedback" *ngIf='bodyControl.hasError("required")'>Body content required</div>
+                    <div class="invalid-feedback" *ngIf='bodyControl.hasError("body")'>Body content is not valid</div> -->
+                </div>
+            
+                <div class="form-group">
+                    
+                    <br>
+                    <label class="form-label">Add Images</label>
+                    <input type="file"
+                           #takeMultipleInput
+                           class="form-control"
+                           (change)="onSelectFile($event)"
+                           multiple accept="image/*" 
+                           formArrayName="imageurls"/>
+                  </div>
+                  <br>
+                  <div class="container">
+                  <div class="row imagetiles" >
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6" *ngFor='let url of imageurlsLocal; let i = index'>
+                        <img class="img-responsive" style="max-height: 70px;" [src]="url.base64String">
+                        <a (click)="removeImage(i)" class="btn btn-xs btn-danger">Remove</a>
+                      </div>
+                  </div>
+                </div>
+                  
+            
+                  
+                <div class="form-group d-flex align-items-center justify-content-between">
+                    <button class="btn btn-primary" *ngIf="!editMode" data-cy="createButton" type="submit"
+                    [disabled]="!newPostForm.valid">Create Post</button>
+                    <button class="btn btn-success" *ngIf="editMode" data-cy="updateButton" type="submit"
+                    [disabled]="newPostForm.invalid">Update Post</button>
+                    <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
