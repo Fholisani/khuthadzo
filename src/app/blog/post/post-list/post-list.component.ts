@@ -53,6 +53,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.subscription = this.blogService.postsAdded
       .subscribe(
         (posts: Post[]) => {
+          console.log('Delete post did not get fired');
           this.dataEmit();
         }
       );

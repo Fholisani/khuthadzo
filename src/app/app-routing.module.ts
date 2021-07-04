@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './auth/auth.guard';
 import { AboutComponent } from './blog/about/about.component';
 import { ContactComponent } from './blog/contact/contact.component';
 import { HomeComponent } from './blog/home/home.component';
@@ -20,16 +22,17 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, },
   { path: 'about', component: AboutComponent,},
   { path: 'contact', component: ContactComponent,},
-  { path: 'post', component: PostComponent, children: [
+  { path: 'post', component: PostComponent,  children: [
     { path: '', component: PostStartComponent,  },
-    { path: 'new', component: PostNewComponent, },
+    { path: 'new', component: PostNewComponent, canActivate: [AuthGuard],},
     { path: ':id', component: PostDetailComponent, },
-    { path: ':id/edit', component: PostNewComponent, },
+    { path: ':id/edit', component: PostNewComponent, canActivate: [AuthGuard],},
   ] },
   { path: 'search', component: SearchResultsComponent },
   { path: 'architecture', component: ArchitectureComponent },
   { path: 'hand-drawings', component: HandDrawingComponent },
   { path: 'upload', component: ImageComponent },
+  { path: 'auth', component: AuthComponent }
 ];
 
 @NgModule({

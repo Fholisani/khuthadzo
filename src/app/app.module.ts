@@ -29,7 +29,7 @@ import { SearchResultsComponent } from './blog/post/search/search-results/search
 import { NgxGalleryModule } from 'ngx-gallery-9';
 import { MarkdownModule } from 'ngx-markdown';
 import 'hammerjs';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LightgalleryModule } from 'lightgallery/angular/10';
 import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing.component';
 import { ArchitectureComponent } from './blog/portfolio/architecture/architecture.component';
@@ -38,6 +38,10 @@ import { ImageComponent } from './blog/portfolio/image/image.component';
 
 import { DropzoneDirective } from './shared/dropzone.directive';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { BlogService } from './service/blog-service.service';
+import { UploadService } from './service/upload.service';
 
 
 
@@ -67,6 +71,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     ImageComponent,
     DropzoneDirective,
     LoadingSpinnerComponent,
+    AuthComponent,
   
 
  
@@ -88,7 +93,19 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     MarkdownModule.forRoot({ loader: HttpClient }),
 
   ],
-  providers: [],
+  providers: [
+    BlogService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    UploadService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

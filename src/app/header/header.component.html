@@ -23,14 +23,20 @@
             <li><a routerLink="/architecture"  class="dropdown-item">Architecture</a></li>
             <li><a routerLink="/hand-drawings" class="dropdown-item">Hand Drawings</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a routerLink="/upload" class="dropdown-item">Upload</a></li>
+            <li *ngIf="isAuthenticated"><a routerLink="/upload" class="dropdown-item" >Upload</a></li>
           </ul>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li> -->
-        <li class="nav-item"  routerLinkActive="active">
+        <li class="nav-item"  routerLinkActive="active" *ngIf="isAuthenticated">
           <a  routerLink="/post/new" class="nav-link">New Post</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active"  *ngIf="!isAuthenticated">
+          <a routerLink="/auth" class="nav-link">Authenticate</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <a class="nav-link" style="cursor: pointer;" (click)="onLogout()">Logout</a>
         </li>
       </ul>
       <app-search></app-search>

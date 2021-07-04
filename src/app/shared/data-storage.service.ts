@@ -7,6 +7,7 @@ import { UploadService } from '../service/upload.service';
 import { Image } from '../model/image.model';
 import { Observable } from 'rxjs';
 import { throwError } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class DataStorageService {
   url = 'https://ng-course-recipe-book-b8129-default-rtdb.firebaseio.com';
 
   constructor(private http: HttpClient, private blogService: BlogService,
-    private uploadService: UploadService) { }
+    private uploadService: UploadService,
+    private authService: AuthService) { }
 
 
   storePosts() : Observable<undefined | Error>{
