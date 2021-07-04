@@ -1,4 +1,9 @@
 .gallery-item {
-    margin: 5px;
-  }
-  
+  width: 200px;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+  padding: 5px;
+}

@@ -1,5 +1,7 @@
+import { OnDestroy } from '@angular/core';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { UploadService } from 'src/app/service/upload.service';
 import { mimeType } from './mime-type.validator';
 
@@ -8,7 +10,7 @@ import { mimeType } from './mime-type.validator';
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.css']
 })
-export class ImageComponent implements OnInit {
+export class ImageComponent implements OnInit, OnDestroy {
 
   public formData = new FormData();
   public selectedFile: File = null;
@@ -25,6 +27,10 @@ export class ImageComponent implements OnInit {
   isImgAvailable: boolean;
 
   isCreateImg=true;
+  subscription: Subscription;
+  isLoading = false;
+  errorMessage: string=null;
+  successMessage: string=null;
 
 
   portfolioTypes: any = ['Architecture', 'Hand-Drawing', 'Corousel']
@@ -32,6 +38,26 @@ export class ImageComponent implements OnInit {
   constructor(private uploadService: UploadService) { }
 
   ngOnInit(): void {
+    this.subscription = this.uploadService.isLoadingChanged
+    .subscribe(
+      (isLoading: boolean) => {
+       this.isLoading = isLoading;
+      }
+    );
+
+    this.subscription = this.uploadService.errorMessageChanged
+    .subscribe(
+      (errorMessage: string) => {
+        this.errorMessage = errorMessage;
+      }
+    );
+
+    this.subscription = this.uploadService.successMessageChanged
+    .subscribe(
+      (successMessage: string) => {
+        this.successMessage = successMessage;
+      }
+    );
     this.initForm();
   }
 
@@ -84,6 +110,7 @@ export class ImageComponent implements OnInit {
 
 
   onSelect(event) {
+
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -124,6 +151,35 @@ export class ImageComponent implements OnInit {
     this.imagePreviews = [];
     this.InputVarSingle.nativeElement.value = "";
     this.initForm();
+  }
+
+  isHovering: boolean;
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+
+  onDrop(files: FileList) {
+    for (let i = 0; i < files.length; i++) {
+    
+      const file = files.item(i);
+      (<FormArray>this.form.get('images')).push(new FormGroup({
+        image: new FormControl(file, {
+          validators: [Validators.required],
+          asyncValidators: [mimeType]
+        })
+      }));
+
+      var reader = new FileReader();
+      reader.onload = (eventItem: any) => {
+        this.imagePreviews.push(eventItem.target.result);
+        this.form.get('images').updateValueAndValidity();
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

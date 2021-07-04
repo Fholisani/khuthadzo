@@ -10,8 +10,28 @@ export class UploadService {
   imagesAdded = new Subject<Image[]>();
   private images: Image[] = [];
   private imagesAdd: Image[] = [];
-
+  isLoading=false;
+  isLoadingChanged=new Subject<boolean>();
+  errorMessage=null;
+  errorMessageChanged=new Subject<string>();
+  successMessage: string=null;
+  successMessageChanged=new Subject<string>();
   constructor() { }
+
+  setErrorMessage(errorMessage: string) {
+    this.errorMessage = errorMessage;
+    this.errorMessageChanged.next(this.errorMessage);
+  }
+
+  setSuccessMessage(successMessage: string) {
+    this.successMessage = successMessage;
+    this.successMessageChanged.next(this.successMessage);
+  }
+  
+  setLoadingIndicator(isLoading: boolean){
+    this.isLoading = isLoading;
+    this.isLoadingChanged.next(this.isLoading);
+  }
   setImages(images: Image[]){
     this.images = images;
     this.imagesChanged.next(this.images.slice());
@@ -35,7 +55,7 @@ export class UploadService {
     this.imagesAdded.next(this.imagesAdd.slice());
   }
   createImage(payload: Image) {
-    payload.id =Math.random();
+    payload.id =Math.floor(Math.random() * 100) + 1;
     this.imagesAdd.push(payload);
     this.imagesAdded.next(this.imagesAdd.slice());
 

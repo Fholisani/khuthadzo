@@ -16,7 +16,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   isPostAvailable = false;
   isCreatePost = false;
   subscription: Subscription;
-  
+  isLoading = false;
+  errorMessage: string=null;
+  successMessage: string=null;
+
 
   constructor(private blogService: BlogService) { }
 
@@ -53,6 +56,26 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.dataEmit();
         }
       );
+
+    this.subscription = this.blogService.isLoadingChanged
+      .subscribe(
+        (isLoading: boolean) => {
+          this.isLoading = isLoading;
+        }
+      );
+      this.subscription = this.blogService.errorMessageChanged
+      .subscribe(
+        (errorMessage: string) => {
+          this.errorMessage = errorMessage;
+        }
+      );
+  
+      this.subscription = this.blogService.successMessageChanged
+      .subscribe(
+        (successMessage: string) => {
+          this.successMessage = successMessage;
+        }
+      );
     this.posts = this.blogService.getPosts();
     this.newPostsAvailable();
     this.dataEmit();
@@ -65,12 +88,14 @@ export class PostListComponent implements OnInit, OnDestroy {
       localPostCards.push(postCard);
     });
     this.postCards = localPostCards;
+    this.errorMessage=null;
+    this.successMessage=null;
 
   }
 
   dataEmit() {
     const posts = this.blogService.getPostsAdded();
-   
+
     if (posts.length > 0) {
       this.numberOfPosts = posts.length;
       this.isPostAvailable = true;

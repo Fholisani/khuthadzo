@@ -7,7 +7,15 @@
     </app-upload-data>
     <br>
     <br>
-
+    <div class="alert alert-success" *ngIf="successMessage">
+        <p>{{successMessage}}</p>
+      </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+        <p>{{errorMessage}}</p>
+      </div>
+    <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
     <div class="accordion-item">
         <h2 style="text-align: center;" class="accordion-header" id="headingOne">
            
@@ -16,7 +24,7 @@
           </h2>
           
           <br>
-          <div class="row">
+          <div class="row" *ngIf="!isLoading">
        <div *ngFor="let postCard of postCards;let i = index"
      [ngClass]="{'col-xs-4 col-sm-4 col-md-4 col-lg-4': 3}">
   <!--Card-->

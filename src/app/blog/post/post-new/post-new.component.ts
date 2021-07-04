@@ -1,7 +1,9 @@
+import { OnDestroy } from '@angular/core';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 
@@ -10,7 +12,7 @@ import { BlogService } from 'src/app/service/blog-service.service';
   templateUrl: './post-new.component.html',
   styleUrls: ['./post-new.component.css']
 })
-export class PostNewComponent implements OnInit {
+export class PostNewComponent implements OnInit, OnDestroy {
 
   post?: Post;
   newPostForm: FormGroup;
@@ -39,6 +41,10 @@ export class PostNewComponent implements OnInit {
 
   @ViewChild('takeMultipleInput', { static: false })
   InputVarMultiple: ElementRef;
+  subscription: Subscription;
+  isLoading = false;
+  errorMessage: string=null;
+  successMessage: string=null;
 
 
 
@@ -52,6 +58,33 @@ export class PostNewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subscription = this.blogService.isLoadingChanged
+    .subscribe(
+      (isLoading: boolean) => {
+        this.isLoading = isLoading;
+      }
+    );
+
+    this.subscription = this.blogService.postsAdded
+    .subscribe(
+      (posts: Post[]) => {
+        this.dataEmit();
+      }
+    );
+    
+    this.subscription = this.blogService.errorMessageChanged
+    .subscribe(
+      (errorMessage: string) => {
+        this.errorMessage = errorMessage;
+      }
+    );
+
+    this.subscription = this.blogService.successMessageChanged
+    .subscribe(
+      (successMessage: string) => {
+        this.successMessage = successMessage;
+      }
+    );
 
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
@@ -181,6 +214,8 @@ export class PostNewComponent implements OnInit {
 
     this.InputVarSingle.nativeElement.value = "";
     this.InputVarMultiple.nativeElement.value = "";
+    this.errorMessage=null;
+    this.successMessage=null;
  
     this.initForm();
   }
@@ -189,7 +224,7 @@ export class PostNewComponent implements OnInit {
 
 
   onCancel() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['/search'], { relativeTo: this.route });
   }
 
   removeImage(i) {
@@ -248,5 +283,8 @@ export class PostNewComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
 }

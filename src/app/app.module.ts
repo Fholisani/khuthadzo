@@ -36,6 +36,8 @@ import { ArchitectureComponent } from './blog/portfolio/architecture/architectur
 import { UploadDataComponent } from './blog/post/post-detail/upload-data/upload-data.component';
 import { ImageComponent } from './blog/portfolio/image/image.component';
 
+import { DropzoneDirective } from './shared/dropzone.directive';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 
 
@@ -63,6 +65,9 @@ import { ImageComponent } from './blog/portfolio/image/image.component';
     ArchitectureComponent,
     UploadDataComponent,
     ImageComponent,
+    DropzoneDirective,
+    LoadingSpinnerComponent,
+  
 
  
 
@@ -81,6 +86,7 @@ import { ImageComponent } from './blog/portfolio/image/image.component';
     LightgalleryModule,
     MDBBootstrapModule.forRoot(),
     MarkdownModule.forRoot({ loader: HttpClient }),
+
   ],
   providers: [],
   bootstrap: [AppComponent]

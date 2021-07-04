@@ -7,12 +7,32 @@ import { Post } from '../model/post.model';
 })
 export class BlogService {
 
+
+
   postsChanged = new Subject<Post[]>();
   postsAdded = new Subject<Post[]>();
   private posts: Post[] = [];
   private postsAdd: Post[] = [];
+  isLoading=false;
+  isLoadingChanged=new Subject<boolean>();
+  errorMessage:string=null;
+  errorMessageChanged=new Subject<string>();
+  successMessage: string=null;
+  successMessageChanged=new Subject<string>();
 
+  setErrorMessage(errorMessage: string) {
+    this.errorMessage = errorMessage;
+    this.errorMessageChanged.next(this.errorMessage);
+  }
+  setSuccessMessage(successMessage: string) {
+    this.successMessage = successMessage;
+    this.successMessageChanged.next(this.successMessage);
+  }
 
+  setLoadingIndicator(isLoading: boolean){
+    this.isLoading = isLoading;
+    this.isLoadingChanged.next(this.isLoading);
+  }
   setPosts(posts: Post[]){
     this.posts = posts;
     this.postsChanged.next(this.posts.slice());
@@ -73,7 +93,7 @@ export class BlogService {
   }
   createPost(payload: Post) {
 
-    payload.id =Math.random();
+    payload.id =Math.floor(Math.random() * 100) + 1;
     payload.postCardImage ="https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg";
     payload.galleryImages = [
       {

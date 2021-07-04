@@ -1,13 +1,39 @@
 <app-layout>
   <ng-container>
       <div class="container">
+
           <div class="row">
-              <div class="col-md-12">
-                <button (click)="addImage()">Add image</button>
-                <br>
+            <br>
+            <br>
+                <app-upload-data [numberOfPosts]="numberOfPosts" 
+                  [isPostAvailable]="isPostAvailable"
+                  [isCreatePost]="isCreatePost" 
+              
+                  [isImageUpload]="isImageUpload"
+                  [isImgAvailable]="isImgAvailable"
+                  [isCreateImg]="isCreateImg">
+              </app-upload-data>
+
+              <br>
+              <br>
+              <div class="alert alert-success" *ngIf="successMessage">
+                <p>{{successMessage}}</p>
+              </div>
+              <div class="alert alert-danger" *ngIf="errorMessage">
+                <p>{{errorMessage}}</p>
+              </div>
+            <div *ngIf="isLoading">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+              <div class="col-md-12" *ngIf="!isLoading">
+                
+              <br>
+                <!-- <button (click)="addImage()">Add image</button>
+                <br> -->
                 <lightgallery [settings]="settings" [onInit]="onInit">
-                  <a *ngFor="let item of items"  [attr.data-lg-size]="item.size" class="gallery-item" [attr.href]="item.src">
+                  <a *ngFor="let item of items; let i = index"  [attr.data-lg-size]="item.size" class="gallery-item" [attr.href]="item.src">
                       <img class="img-responsive" src="{{ item.thumb }}" />
+                      <button type="button" class="btn btn-danger" (click)="removeImage(i)">Remove</button>
                   </a>
                   <br>
                 </lightgallery>
