@@ -33,7 +33,7 @@
                 <lightgallery [settings]="settings" [onInit]="onInit">
                   <a *ngFor="let item of items; let i = index"  [attr.data-lg-size]="item.size" class="gallery-item" [attr.href]="item.src">
                       <img class="img-responsive" src="{{ item.thumb }}" />
-                      <button type="button" class="btn btn-danger" (click)="removeImage(i)">Remove</button>
+                      <button *ngIf="isAuthenticated" type="button" class="btn btn-danger" (click)="removeImage(i)">Remove</button>
                   </a>
                   <br>
                 </lightgallery>

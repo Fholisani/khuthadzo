@@ -42,6 +42,7 @@
               "node_modules/lightgallery/css/lg-thumbnail.css",
               "node_modules/lightgallery/css/lg-zoom.css",
               "node_modules/justifiedGallery/dist/css/justifiedGallery.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css"
       
             ],
@@ -53,7 +54,8 @@
               "node_modules/marked/lib/marked.js",
               "node_modules/emoji-toolkit/lib/js/joypixels.min.js",
               "node_modules/lightgallery/lightgallery.umd.js",
-              "node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.js"
+              "node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.js",
+              "node_modules/lightgallery/lightgallery.umd.js"
               
             ]
           },

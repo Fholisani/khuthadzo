@@ -66,6 +66,8 @@ export class DataStorageService {
         }),
         tap(posts => {
           console.log("Fetching post...");
+          this.blogService.setPosts(posts);
+          this.blogService.setLoadingIndicator(false);
           
         }),
         catchError(this.handleError)
@@ -140,6 +142,7 @@ export class DataStorageService {
     console.log("Error - " + errorRes);
       if(!errorRes.error || !errorRes.error.error){
         errorMessage = errorRes.message;
+        
         return throwError(errorMessage);
       }
      

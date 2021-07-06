@@ -11,6 +11,7 @@ import { Image } from 'src/app/model/image.model';
 import { UploadService } from 'src/app/service/upload.service';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';
+import { AuthService } from 'src/app/auth/auth.service';
 declare var $: any;
 
 
@@ -41,7 +42,12 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
-  constructor(private uploadService: UploadService) { }
+  private userSub: Subscription;
+  isAuthenticated = false;
+
+
+
+  constructor(private uploadService: UploadService, private authService: AuthService) { }
 
 
 
@@ -136,6 +142,12 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
         this.successMessage = successMessage;
       }
     );
+
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      console.log(!user);
+      console.log(!!user);
+    });
 
     this.images = this.uploadService.getImages();
     this.newImagesAvailable();

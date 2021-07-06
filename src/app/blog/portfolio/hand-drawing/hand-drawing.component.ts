@@ -12,6 +12,7 @@ import { UploadService } from 'src/app/service/upload.service';
 import { Subscription } from 'rxjs';
 import { Post } from 'src/app/model/post.model';
 import { OnDestroy } from '@angular/core';
+import { AuthService } from 'src/app/auth/auth.service';
 declare var $: any;
 
 @Component({
@@ -40,11 +41,12 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
+  private userSub: Subscription;
+  isAuthenticated = false;
 
 
 
-  constructor(private uploadService: UploadService) { }
- 
+  constructor(private uploadService: UploadService, private authService: AuthService) { }
 
   ngOnInit(): void {
 
@@ -137,6 +139,11 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      console.log(!user);
+      console.log(!!user);
+    });
     this.images = this.uploadService.getImages();
     this.newImagesAvailable();
     this.dataEmit();

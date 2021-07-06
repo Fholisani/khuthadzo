@@ -1,4 +1,5 @@
-<div *ngIf="!isImageUpload" class="float-end">
+
+<div *ngIf="!isImageUpload && isAuthenticated" class="float-end">
   <button  [disabled]="isCreatePost" type="button" class="btn btn-secondary mr-1"  (click)="onFetchData()">Fetch Post</button>
 
   <button [disabled]="!isPostAvailable" type="button" class="btn btn-primary position-relative" (click)="onSaveData()">
@@ -10,7 +11,7 @@
     </button>
   
 </div>
-<div *ngIf="isImageUpload" class="float-end">
+<div *ngIf="isImageUpload && isAuthenticated" class="float-end">
   <button  [disabled]="isCreateImg" type="button" class="btn btn-secondary mr-1"  (click)="onFetchDataImg()">Fetch Image</button>
 
   <button [disabled]="!isImgAvailable" type="button" class="btn btn-primary position-relative" (click)="onSaveDataImg()">

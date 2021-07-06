@@ -8,9 +8,11 @@ import { HomeComponent } from './blog/home/home.component';
 import { ArchitectureComponent } from './blog/portfolio/architecture/architecture.component';
 import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing.component';
 import { ImageComponent } from './blog/portfolio/image/image.component';
+import { PortfolioResolverService } from './blog/portfolio/portfolio-resolver.service';
 import { PostDetailComponent } from './blog/post/post-detail/post-detail.component';
 import { PostEditComponent } from './blog/post/post-edit/post-edit.component';
 import { PostNewComponent } from './blog/post/post-new/post-new.component';
+import { PostResolverService } from './blog/post/post-resolver.service';
 import { PostStartComponent } from './blog/post/post-start/post-start.component';
 import { PostComponent } from './blog/post/post.component';
 import { SearchResultsComponent } from './blog/post/search/search-results/search-results.component';
@@ -19,18 +21,18 @@ import { SearchResultsComponent } from './blog/post/search/search-results/search
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, },
+  { path: 'home', component: HomeComponent,resolve:[PostResolverService] },
   { path: 'about', component: AboutComponent,},
   { path: 'contact', component: ContactComponent,},
   { path: 'post', component: PostComponent,  children: [
     { path: '', component: PostStartComponent,  },
     { path: 'new', component: PostNewComponent, canActivate: [AuthGuard],},
-    { path: ':id', component: PostDetailComponent, },
-    { path: ':id/edit', component: PostNewComponent, canActivate: [AuthGuard],},
+    { path: ':id', component: PostDetailComponent, resolve:[PostResolverService]},
+    { path: ':id/edit', component: PostNewComponent, canActivate: [AuthGuard],resolve:[PostResolverService]},
   ] },
   { path: 'search', component: SearchResultsComponent },
-  { path: 'architecture', component: ArchitectureComponent },
-  { path: 'hand-drawings', component: HandDrawingComponent },
+  { path: 'architecture', component: ArchitectureComponent, resolve:[PortfolioResolverService] },
+  { path: 'hand-drawings', component: HandDrawingComponent, resolve:[PortfolioResolverService]  },
   { path: 'upload', component: ImageComponent },
   { path: 'auth', component: AuthComponent }
 ];

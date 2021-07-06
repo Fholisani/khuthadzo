@@ -41,6 +41,7 @@ export class AuthComponent implements OnInit {
       authObs = this.authService.login(email, password);
     } else {
       alert('Signup funtionality unavailable');
+      this.isLoading = false;
      // authObs = this.authService.signup(email, password);
     }
 

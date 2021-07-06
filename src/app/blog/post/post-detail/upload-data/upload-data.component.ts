@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
@@ -18,13 +20,19 @@ export class UploadDataComponent implements OnInit {
   @Input() isImageUpload: boolean;
   @Input() isImgAvailable: boolean;
   @Input() isCreateImg: boolean;
+  isAuthenticated = false;
+  private userSub: Subscription;
 
   constructor(private dataStorageService: DataStorageService,
      private route: ActivatedRoute,private router: Router,  private blogService: BlogService,
-     private uploadService: UploadService) { }
+     private uploadService: UploadService,  private authService: AuthService) { }
 
   ngOnInit(): void {
-  
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      // console.log(!user);
+      // console.log(!!user);
+    });
    
   }
   onSaveData() {

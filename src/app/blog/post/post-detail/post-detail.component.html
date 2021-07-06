@@ -7,9 +7,9 @@
         <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
       </div>
       <div class="col-sm-4">
-        <div
+        <div *ngIf="isAuthenticated"
         class="btn-group dropdown"
-        appDropdown>
+        appDropdown >
         <button
           type="button"
           class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery-9';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 import { GalleryImages, Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 
@@ -10,14 +12,16 @@ import { BlogService } from 'src/app/service/blog-service.service';
   templateUrl: './post-detail.component.html',
   styleUrls: ['./post-detail.component.css']
 })
-export class PostDetailComponent implements OnInit {
+export class PostDetailComponent implements OnInit,OnDestroy {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   post: Post;
   id: number;
+  private userSub: Subscription;
+  isAuthenticated = false;
 
   constructor(private blogService: BlogService, private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,  private authService: AuthService) { }
 
   ngOnInit(): void {
 
@@ -30,6 +34,11 @@ export class PostDetailComponent implements OnInit {
       }
     );
 
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user;
+      // console.log(!user);
+      // console.log(!!user);
+    });
     this.galleryOptions = [
       {
     
@@ -86,6 +95,9 @@ export class PostDetailComponent implements OnInit {
   onDeleteRecipe() {
     this.blogService.deletePost(this.id);
     this.router.navigate(['/home']);
+  }
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
   }
 
 }
