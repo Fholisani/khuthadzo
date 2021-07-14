@@ -4,6 +4,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UploadService } from 'src/app/service/upload.service';
 import { mimeType } from './mime-type.validator';
+import { Image } from 'src/app/model/image.model';
 
 @Component({
   selector: 'app-image',
@@ -11,7 +12,7 @@ import { mimeType } from './mime-type.validator';
   styleUrls: ['./image.component.css']
 })
 export class ImageComponent implements OnInit, OnDestroy {
-
+  title = 'Angular 10 Upload File - Firebase Storage';
   public formData = new FormData();
   public selectedFile: File = null;
   public imageSrc: string;
@@ -31,6 +32,7 @@ export class ImageComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
+  submitted = false;
 
 
   portfolioTypes: any = ['Architecture', 'Hand-Drawing', 'Corousel']
@@ -58,6 +60,12 @@ export class ImageComponent implements OnInit, OnDestroy {
         this.successMessage = successMessage;
       }
     );
+    this.subscription = this.uploadService.imagesAdded
+    .subscribe(
+      (images: Image[]) => {
+        this.dataEmit();
+      }
+    );
     this.initForm();
   }
 
@@ -74,6 +82,7 @@ export class ImageComponent implements OnInit, OnDestroy {
   }
 
   onSavePost() {
+    this.submitted = true;
     if (!this.form.valid) {
       return;
     }
@@ -95,7 +104,7 @@ export class ImageComponent implements OnInit, OnDestroy {
     let imgTitle = '';
     let imgDescription = '';
     let imgPortfolioType = '';
-    let imgImages = new FormArray([]);
+    let imgImages = new FormArray([], [Validators.required]);
 
     this.form = new FormGroup({
       id: new FormControl(imgId),
@@ -147,6 +156,7 @@ export class ImageComponent implements OnInit, OnDestroy {
   }
 
   reset() {
+    this.submitted = false;
     this.form.reset();
     this.imagePreviews = [];
     this.InputVarSingle.nativeElement.value = "";
@@ -178,6 +188,9 @@ export class ImageComponent implements OnInit, OnDestroy {
       reader.readAsDataURL(file);
     }
   }
+   // convenience getter for easy access to form fields
+   get f() { return this.form.controls; }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

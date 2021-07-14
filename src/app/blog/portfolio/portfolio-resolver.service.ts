@@ -25,8 +25,8 @@ export class PortfolioResolverService implements Resolve<Image[]> {
   }
 
   onFetchDataImg() {
-    this.dataStorageService.fetchImages().subscribe(images=>{
-     
+    this.dataStorageService.fetchImages().subscribe((images: Image[])=>{
+      console.log('HTTP IMG' + images)
       this.uploadService.setImages(images);
       this.uploadService.setLoadingIndicator(false);
     },errorMessage =>{

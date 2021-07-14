@@ -12,38 +12,67 @@
                     </div>
                     <div class="row gx-5 justify-content-center">
                         <div class="col-lg-8 col-xl-6">
-                            <!-- * * * * * * * * * * * * * * *-->
-                            <!-- * * SB Forms Contact Form * *-->
-                            <!-- * * * * * * * * * * * * * * *-->
-                            <!-- This form is pre-integrated with SB Forms.-->
-                            <!-- To make this form functional, sign up at-->
-                            <!-- https://startbootstrap.com/solution/contact-forms-->
-                            <!-- to get an API token!-->
-                            <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                            <div class="form-group">
+                                <div class="alert alert-success" *ngIf="successMessage">
+                                    <p>{{successMessage}}</p>
+                                  </div>
+                                <div class="alert alert-danger" *ngIf="errorMessage">
+                                    <p>{{errorMessage}}</p>
+                                  </div>
+                                <div *ngIf="isLoading">
+                                    <app-loading-spinner></app-loading-spinner>
+                                  </div>
+                            </div>
+                            
+                            <form id="contactForm" data-sb-form-api-token="API_TOKEN" 
+                            [formGroup]="contactUsForm" (ngSubmit)="onSubmit()">
+                               
                                 <!-- Name input-->
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                                    <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required"
+                                    formControlName="name"
+                                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+                                    required
+                                    
+                                    />
                                     <label for="name">Full name</label>
-                                    <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
                                 <!-- Email address input-->
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                                    <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email"
+                                    
+                                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                                    formControlName="email"
+                                    required
+                                    email  
+                                    />
                                     <label for="email">Email address</label>
-                                    <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                    <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                                 
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback" data-sb-feedback="name:required">A valid email is required.</div>
+                   
+                                   
                                 </div>
                                 <!-- Phone number input-->
                                 <div class="form-floating mb-3">
-                                    <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
+                                    <input class="form-control" id="phone" 
+                                    type="tel" placeholder="0724567890" data-sb-validations="required"
+                                    (keypress)="keyPress($event)" required
+                                    formControlName="phoneNumber"
+                                    [ngClass]="{ 'is-invalid': submitted && f.phoneNumber.errors }" />
                                     <label for="phone">Phone number</label>
-                                    <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                                    <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
+                                        <div *ngIf="f.phoneNumber.errors.required">Phone number is required</div>
+                                        <div *ngIf="f.phoneNumber.errors.pattern || f.phoneNumber.errors.maxlength || f.phoneNumber.errors.minlength">Phone number must be at least 10 numbers</div>
+                                    </div>
                                 </div>
                                 <!-- Message input-->
                                 <div class="form-floating mb-3">
-                                    <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
+                                    <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"
+                                    formControlName="message"
+                                    [ngClass]="{ 'is-invalid': submitted && f.message.errors }"></textarea>
                                     <label for="message">Message</label>
-                                    <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                    <div *ngIf="submitted && f.message.errors" class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                                 </div>
                                 <!-- Submit success message-->
                                 <!---->
@@ -62,8 +91,10 @@
                                 <!-- This is what your users will see when there is-->
                                 <!-- an error submitting the form-->
                                 <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                
                                 <!-- Submit Button-->
-                                <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                                <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit"
+                                    >Submit</button></div>
                             </form>
                         </div>
                     </div>
@@ -73,22 +104,22 @@
                     <div class="col">
                         <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-chat-dots"></i></div>
                         <div class="h5 mb-2">Chat with us</div>
-                        <p class="text-muted mb-0">Chat live with one of our support specialists.</p>
+                        <p class="text-muted mb-0">Chat live with one of our support specialists. WhatsApp (+27) 892-9403 </p>
                     </div>
                     <div class="col">
                         <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-people"></i></div>
                         <div class="h5">Ask the community</div>
-                        <p class="text-muted mb-0">Explore our community forums and communicate with other users.</p>
+                        <p class="text-muted mb-0">Explore our social media pages for more recent information, Check below for links.</p>
                     </div>
                     <div class="col">
                         <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-question-circle"></i></div>
                         <div class="h5">Support center</div>
-                        <p class="text-muted mb-0">Browse FAQ's and support articles to find solutions.</p>
-                    </div>
+                        <p class="text-muted mb-0">Browse our Blog post or FAQ's and support articles to find solutions.</p>
+                    </div> 
                     <div class="col">
                         <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-telephone"></i></div>
                         <div class="h5">Call us</div>
-                        <p class="text-muted mb-0">Call us during normal business hours at (555) 892-9403.</p>
+                        <p class="text-muted mb-0">Call us during normal business hours at (+27) 892-9403.</p>
                     </div>
                 </div>
             </div>

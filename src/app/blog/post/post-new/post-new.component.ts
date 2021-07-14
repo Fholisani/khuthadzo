@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
+import { mimeType } from '../../portfolio/image/mime-type.validator';
 
 @Component({
   selector: 'app-post-new',
@@ -26,9 +27,10 @@ export class PostNewComponent implements OnInit, OnDestroy {
   numberOfPosts: number;
   isPostAvailable = false;
   isCreatePost = true;
-  isImageUpload=false;
+  isImageUpload = false;
   isImgAvailable: boolean;
-  isCreateImg=false;
+  isCreateImg = false;
+  submitted = false;
 
   // ViewChild is used to access the input element.
 
@@ -43,8 +45,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
   InputVarMultiple: ElementRef;
   subscription: Subscription;
   isLoading = false;
-  errorMessage: string=null;
-  successMessage: string=null;
+  errorMessage: string = null;
+  successMessage: string = null;
 
 
 
@@ -59,32 +61,32 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.blogService.isLoadingChanged
-    .subscribe(
-      (isLoading: boolean) => {
-        this.isLoading = isLoading;
-      }
-    );
+      .subscribe(
+        (isLoading: boolean) => {
+          this.isLoading = isLoading;
+        }
+      );
 
     this.subscription = this.blogService.postsAdded
-    .subscribe(
-      (posts: Post[]) => {
-        this.dataEmit();
-      }
-    );
-    
+      .subscribe(
+        (posts: Post[]) => {
+          this.dataEmit();
+        }
+      );
+
     this.subscription = this.blogService.errorMessageChanged
-    .subscribe(
-      (errorMessage: string) => {
-        this.errorMessage = errorMessage;
-      }
-    );
+      .subscribe(
+        (errorMessage: string) => {
+          this.errorMessage = errorMessage;
+        }
+      );
 
     this.subscription = this.blogService.successMessageChanged
-    .subscribe(
-      (successMessage: string) => {
-        this.successMessage = successMessage;
-      }
-    );
+      .subscribe(
+        (successMessage: string) => {
+          this.successMessage = successMessage;
+        }
+      );
 
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
@@ -109,12 +111,12 @@ export class PostNewComponent implements OnInit, OnDestroy {
   private initForm() {
     let postId = 0;
     let postSlug = '';
-    let postBackgroundImage = new FormArray([]);
+    let postBackgroundImage = new FormArray([], [Validators.required]);
     let postHeading = '';
     let postSubHeading = '';
     let postMeta = '';
     let postBody = '';
-    let postImageurls = new FormArray([]);
+    let postImageurls = new FormArray([], [Validators.required]);
 
 
     if (this.editMode) {
@@ -165,7 +167,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
   dataEmit() {
     const posts = this.blogService.getPostsAdded();
-   
+
     if (posts.length > 0) {
       this.numberOfPosts = posts.length;
       this.isPostAvailable = true;
@@ -174,8 +176,10 @@ export class PostNewComponent implements OnInit, OnDestroy {
       this.isPostAvailable = false;
     }
   }
-  
+
   onSubmit() {
+    this.submitted = true;
+    console.log('Push image file');
     if (this.newPostForm.status === 'VALID') {
       if (this.editMode) {
         this.blogService.updatePost(this.id, this.newPostForm.value);
@@ -187,36 +191,26 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
       this.dataEmit()
       //this.onCancel();
+      this.reset();
 
 
     }
-
-
-
-    // tslint:disable-next-line: forin
-    // for (const key in this.newPostForm.controls) {
-    //   const control = this.newPostForm.controls[key];
-    //   control.markAllAsTouched();
-   
-    // }
-
-    this.reset();
 
   }
 
 
 
   reset() {
-
+    this.submitted = false;
     this.newPostForm.reset();
     this.imageurlsLocal = [];
     this.urlsBackground = [];
 
     this.InputVarSingle.nativeElement.value = "";
     this.InputVarMultiple.nativeElement.value = "";
-    this.errorMessage=null;
-    this.successMessage=null;
- 
+    this.errorMessage = null;
+    this.successMessage = null;
+
     this.initForm();
   }
 
@@ -241,47 +235,98 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
 
   onSelectFileBackground(event) {
+    // if (event.target.files && event.target.files[0]) {
+    //   var filesAmount = event.target.files.length;
+    //   for (let i = 0; i < filesAmount; i++) {
+    //     var reader = new FileReader();
+
+    //     reader.onload = (event: any) => {
+    //       if (this.urlsBackground.length > 0) {
+    //         this.removeImageBackground(0);
+    //       }
+    //       this.urlsBackground.push(event.target.result);
+    //       (<FormArray>this.newPostForm.get('backgroundImage')).push(new FormGroup({
+    //         name: new FormControl("image" + (+1), Validators.required),
+    //         url: new FormControl(event.target.result,
+    //           Validators.required)
+    //       }));
+    //     }
+
+    //     reader.readAsDataURL(event.target.files[i]);
+    //   }
+    // }
+
+
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
 
-        reader.onload = (event: any) => {
+        const file = (event.target as HTMLInputElement).files[i];
+        (<FormArray>this.newPostForm.get('backgroundImage')).push(new FormGroup({
+          name: new FormControl("image" + (+1), Validators.required),
+          url: new FormControl(file, {
+            validators: [Validators.required],
+            asyncValidators: [mimeType]
+          })
+        }));
+        var reader = new FileReader();
+        reader.onload = (eventItem: any) => {
           if (this.urlsBackground.length > 0) {
             this.removeImageBackground(0);
           }
-          this.urlsBackground.push(event.target.result);
-          (<FormArray>this.newPostForm.get('backgroundImage')).push(new FormGroup({
-            name: new FormControl("image" + (+1), Validators.required),
-            url: new FormControl(event.target.result,
-              Validators.required)
-          }));
+          this.urlsBackground.push(eventItem.target.result);
+          this.newPostForm.get('backgroundImage').updateValueAndValidity();
         }
-
         reader.readAsDataURL(event.target.files[i]);
       }
     }
   }
 
   onSelectFile(event) {
+    // if (event.target.files && event.target.files[0]) {
+    //   var filesAmount = event.target.files.length;
+    //   for (let i = 0; i < filesAmount; i++) {
+    //     var reader = new FileReader();
+    //     reader.onload = (event: any) => {
+    //       this.imageurlsLocal.push({ base64String: event.target.result, });
+    //       (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
+    //         name: new FormControl("image" + (+1), Validators.required),
+    //         url: new FormControl(event.target.result,
+    //           Validators.required)
+    //       }));
+
+    //     }
+    //     reader.readAsDataURL(event.target.files[i]);
+    //   }
+
+    // }
+
+
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        reader.onload = (event: any) => {
-          this.imageurlsLocal.push({ base64String: event.target.result, });
-          (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
-            name: new FormControl("image" + (+1), Validators.required),
-            url: new FormControl(event.target.result,
-              Validators.required)
-          }));
 
+        const file = (event.target as HTMLInputElement).files[i];
+        (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
+          name: new FormControl("image" + (+1), Validators.required),
+          url: new FormControl(file, {
+            validators: [Validators.required],
+            asyncValidators: [mimeType]
+          })
+        }));
+        var reader = new FileReader();
+        reader.onload = (eventItem: any) => {
+          this.imageurlsLocal.push(eventItem.target.result);
+          this.newPostForm.get('imageurls').updateValueAndValidity();
         }
         reader.readAsDataURL(event.target.files[i]);
       }
-
     }
+
+
   }
+  // convenience getter for easy access to form fields
+  get f() { return this.newPostForm.controls; }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

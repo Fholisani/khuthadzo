@@ -54,8 +54,9 @@ export class UploadService {
     this.imagesAdd = [];
     this.imagesAdded.next(this.imagesAdd.slice());
   }
-  createImage(payload: Image) {
+   createImage(payload: Image) {
     payload.id =Math.floor(Math.random() * 100) + 1;
+    payload.imageUrls =[];
     this.imagesAdd.push(payload);
     this.imagesAdded.next(this.imagesAdd.slice());
 

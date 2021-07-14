@@ -67,6 +67,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.subscription = this.blogService.errorMessageChanged
       .subscribe(
         (errorMessage: string) => {
+          console.log('fire search error')
           this.errorMessage = errorMessage;
         }
       );

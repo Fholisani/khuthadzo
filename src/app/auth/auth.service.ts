@@ -46,14 +46,15 @@ export class AuthService {
       );
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string, token : string) {
     return this.http
       .post<AuthResponseData>(
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCaXfDGxOC_EyK-PI8bFh5_-UGQAOXTkoc',
         {
           email: email,
           password: password,
-          returnSecureToken: true
+          returnSecureToken: true,
+          recaptchaToken: token,
         }
       )
       .pipe(

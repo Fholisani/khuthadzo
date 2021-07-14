@@ -1,6 +1,26 @@
-<form class="d-flex" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+<form class="d-flex" [formGroup]="searchForm" (ngSubmit)="onSubmit(mymodal)">
   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
   formControlName="search">
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
   [disabled]="!searchForm.valid">Search</button>
 </form>
+
+
+   
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Search Results</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+  </div>
+</ng-template>

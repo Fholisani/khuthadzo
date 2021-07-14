@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Image } from 'src/app/model/image.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
@@ -70,10 +71,10 @@ export class UploadDataComponent implements OnInit {
   }
 
   onSaveDataImg() {
-    this.dataStorageService.storeImage() 
+    this.dataStorageService.saveImages() 
     .subscribe(
       response => {
-        console.log(response);
+        console.log(response + "Testing 1 0 1");
         this.uploadService.cleanImages()
         this.uploadService.setLoadingIndicator(false);
         this.uploadService.setSuccessMessage("Uploaded successfully");
@@ -91,8 +92,8 @@ export class UploadDataComponent implements OnInit {
   }
 
   onFetchDataImg() {
-    this.dataStorageService.fetchImages().subscribe(images=>{
-     
+    this.dataStorageService.fetchImages().subscribe((images: Image[])=>{
+      console.log('HTTP IMG' + images)
       this.uploadService.setImages(images);
       this.uploadService.setLoadingIndicator(false);
     },errorMessage =>{

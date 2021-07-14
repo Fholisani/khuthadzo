@@ -155,9 +155,15 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
   newImagesAvailable(){
     var localItems = [];
     this.images.forEach(element => {
+      // const item = new GalleryItem(element.id.toString(), '11400-933',
+      // element.imageUrl,
+      // 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80', 
+      //  `<div class="lightGallery-captions">
+      // <h4>Photo by <a href="https://unsplash.com/@jxnsartstudio">Garrett Jackson</a></h4>
+      // <p>Published on May 8, 2020</p></div>`);
       const item = new GalleryItem(element.id.toString(), '11400-933',
       element.imageUrl,
-      'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80', 
+      element.imageUrls[0].url, 
        `<div class="lightGallery-captions">
       <h4>Photo by <a href="https://unsplash.com/@jxnsartstudio">Garrett Jackson</a></h4>
       <p>Published on May 8, 2020</p></div>`);

@@ -42,8 +42,13 @@ import { AuthComponent } from './auth/auth.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { BlogService } from './service/blog-service.service';
 import { UploadService } from './service/upload.service';
-
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
+import { UploadFormComponent } from './blog/components/upload-form/upload-form.component';
+import { UploadListComponent } from './blog/components/upload-list/upload-list.component';
+import { UploadDetailsComponent } from './blog/components/upload-details/upload-details.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +77,9 @@ import { UploadService } from './service/upload.service';
     DropzoneDirective,
     LoadingSpinnerComponent,
     AuthComponent,
+    UploadFormComponent,
+    UploadListComponent,
+    UploadDetailsComponent,
   
 
  
@@ -91,6 +99,10 @@ import { UploadService } from './service/upload.service';
     LightgalleryModule,
     MDBBootstrapModule.forRoot(),
     MarkdownModule.forRoot({ loader: HttpClient }),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireStorageModule
+  
 
   ],
   providers: [
@@ -105,7 +117,8 @@ import { UploadService } from './service/upload.service';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
       multi: true
-    }],
+    },
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
