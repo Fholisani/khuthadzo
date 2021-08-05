@@ -1,7 +1,5 @@
 export class Image {
-    map(arg0: (so: any) => any) {
-      throw new Error('Method not implemented.');
-    }
+
     public id: number;
     public title: string;
     public description: string;
@@ -31,8 +29,10 @@ export class ImageUrl {
   
     public name: string;
     public url: string;
-    constructor(name: string, url: string){
+    public description: string;
+    constructor(name: string, url: string, description: string){
         this.name = name;
         this.url = url;
+        this.description= description;
     }
 }

@@ -7,10 +7,10 @@ import { ContactComponent } from './blog/contact/contact.component';
 import { HomeComponent } from './blog/home/home.component';
 import { ArchitectureComponent } from './blog/portfolio/architecture/architecture.component';
 import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing.component';
-import { ImageComponent } from './blog/portfolio/image/image.component';
+import { HanddrawingResolverService } from './blog/portfolio/handdrawing-resolver.service';
+import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
 import { PortfolioResolverService } from './blog/portfolio/portfolio-resolver.service';
 import { PostDetailComponent } from './blog/post/post-detail/post-detail.component';
-import { PostEditComponent } from './blog/post/post-edit/post-edit.component';
 import { PostNewComponent } from './blog/post/post-new/post-new.component';
 import { PostResolverService } from './blog/post/post-resolver.service';
 import { PostStartComponent } from './blog/post/post-start/post-start.component';
@@ -27,13 +27,14 @@ const routes: Routes = [
   { path: 'post', component: PostComponent,  children: [
     { path: '', component: PostStartComponent,  },
     { path: 'new', component: PostNewComponent, canActivate: [AuthGuard],},
+    //{ path: 'new/image', component: PostImageComponent, canActivate: [AuthGuard],},
     { path: ':id', component: PostDetailComponent, resolve:[PostResolverService]},
     { path: ':id/edit', component: PostNewComponent, canActivate: [AuthGuard],resolve:[PostResolverService]},
   ] },
   { path: 'search', component: SearchResultsComponent },
   { path: 'architecture', component: ArchitectureComponent, resolve:[PortfolioResolverService] },
-  { path: 'hand-drawings', component: HandDrawingComponent, resolve:[PortfolioResolverService]  },
-  { path: 'upload', component: ImageComponent },
+  { path: 'hand-drawings', component: HandDrawingComponent, resolve:[HanddrawingResolverService]  },
+  { path: 'upload', component: ImageUploadImplComponent,  canActivate: [AuthGuard] },
   { path: 'auth', component: AuthComponent }
 ];
 

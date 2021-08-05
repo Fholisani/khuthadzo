@@ -1,18 +1,19 @@
-import { OnDestroy } from '@angular/core';
+import { EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UploadService } from 'src/app/service/upload.service';
-import { mimeType } from './mime-type.validator';
-import { Image } from 'src/app/model/image.model';
+import { Image, ImageUrl } from 'src/app/model/image.model';
+import { mimeType } from '../image/mime-type.validator';
 
 @Component({
-  selector: 'app-image',
-  templateUrl: './image.component.html',
-  styleUrls: ['./image.component.css']
+  selector: 'app-image-upload',
+  templateUrl: './image-upload.component.html',
+  styleUrls: ['./image-upload.component.css']
 })
-export class ImageComponent implements OnInit, OnDestroy {
-  title = 'Angular 10 Upload File - Firebase Storage';
+export class ImageUploadComponent implements OnInit, OnDestroy {
+
+  title = 'Angular 10 Upload File';
   public formData = new FormData();
   public selectedFile: File = null;
   public imageSrc: string;
@@ -29,35 +30,46 @@ export class ImageComponent implements OnInit, OnDestroy {
 
   isCreateImg=true;
   subscription: Subscription;
-  isLoading = false;
-  errorMessage: string=null;
-  successMessage: string=null;
+  showMyContainer: boolean = false;
+  // isLoading = false;
+  // errorMessage: string=null;
+  // successMessage: string=null;
   submitted = false;
+  @Input() componentUploading: string=null;
+  @Input() isMultipleUpload: boolean=true;
+  @Input() uploadedImageUrl:  ImageUrl[] =[];
+  @Output() submitedImages = new EventEmitter<boolean>();
+  @Output() componentCalling = new EventEmitter<string>();
+  // uploadedImageUrl: ImageUrl[] =[];
+  private  uploadedImageSub: Subscription;
+
+  @Input() portfolioTypes: any = []
 
 
-  portfolioTypes: any = ['Architecture', 'Hand-Drawing', 'Corousel']
 
   constructor(private uploadService: UploadService) { }
 
   ngOnInit(): void {
+    console.log("isMultipleUpload : " + this.isMultipleUpload)
+    this.uploadService.uploadedDataSource.next([]);
     this.subscription = this.uploadService.isLoadingChanged
     .subscribe(
       (isLoading: boolean) => {
-       this.isLoading = isLoading;
+      //  this.isLoading = isLoading;
       }
     );
 
     this.subscription = this.uploadService.errorMessageChanged
     .subscribe(
       (errorMessage: string) => {
-        this.errorMessage = errorMessage;
+        // this.errorMessage = errorMessage;
       }
     );
 
     this.subscription = this.uploadService.successMessageChanged
     .subscribe(
       (successMessage: string) => {
-        this.successMessage = successMessage;
+        // this.successMessage = successMessage;
       }
     );
     this.subscription = this.uploadService.imagesAdded
@@ -66,6 +78,12 @@ export class ImageComponent implements OnInit, OnDestroy {
         this.dataEmit();
       }
     );
+   this.uploadedImageSub =this.uploadService.uploadedDataSource 
+   .subscribe(
+    (imageUrls: ImageUrl[]) => {
+      // this.uploadedImageUrl = imageUrls;
+    }
+  );
     this.initForm();
   }
 
@@ -96,6 +114,8 @@ export class ImageComponent implements OnInit, OnDestroy {
    this.uploadService.createImage(this.form.value);
     this.dataEmit()
     this.reset();
+    this.submitedImages.emit(true);
+    this.componentCalling.emit(this.componentUploading);
   }
 
   private initForm() {
@@ -133,6 +153,9 @@ export class ImageComponent implements OnInit, OnDestroy {
         }));
         var reader = new FileReader();
         reader.onload = (eventItem: any) => {
+          if(!this.isMultipleUpload){
+            this.imagePreviews = [];
+          }
           this.imagePreviews.push(eventItem.target.result);
           this.form.get('images').updateValueAndValidity();
         }
@@ -182,6 +205,9 @@ export class ImageComponent implements OnInit, OnDestroy {
 
       var reader = new FileReader();
       reader.onload = (eventItem: any) => {
+        if(!this.isMultipleUpload){
+          this.imagePreviews = [];
+        }
         this.imagePreviews.push(eventItem.target.result);
         this.form.get('images').updateValueAndValidity();
       }
@@ -191,8 +217,23 @@ export class ImageComponent implements OnInit, OnDestroy {
    // convenience getter for easy access to form fields
    get f() { return this.form.controls; }
 
+   onNewRecipe(){
+    // this.router.navigate(['image'], {relativeTo: this.route});
+
+  }
+  toggleShow() {
+
+    this.showMyContainer = ! this.showMyContainer;
+    
+    }
+    onCancel(){
+
+      this.reset();
+      this.toggleShow();
+    }
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.uploadedImageSub.unsubscribe();
   }
 
 }

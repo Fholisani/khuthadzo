@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { Image } from 'src/app/model/image.model';
+import { Image, ImageUrl } from 'src/app/model/image.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
@@ -21,8 +21,12 @@ export class UploadDataComponent implements OnInit {
   @Input() isImageUpload: boolean;
   @Input() isImgAvailable: boolean;
   @Input() isCreateImg: boolean;
+  @Input() portfolioType: String;
   isAuthenticated = false;
   private userSub: Subscription;
+  uploadedImageUrl: ImageUrl[] =[];
+  
+  
 
   constructor(private dataStorageService: DataStorageService,
      private route: ActivatedRoute,private router: Router,  private blogService: BlogService,
@@ -74,7 +78,18 @@ export class UploadDataComponent implements OnInit {
     this.dataStorageService.saveImages() 
     .subscribe(
       response => {
-        console.log(response + "Testing 1 0 1");
+        console.log(response[0][0] + " : Testing 1 0 1");
+       
+        let ms =  response[0][0];
+
+       ms.imageUrls.forEach(element => {
+        console.log(element + " : Testing 1 0 1 element");
+        element.description = ms.description;
+        this.uploadedImageUrl.push(element);
+       
+
+       });
+        this.uploadService.uploadedImgDataSource(this.uploadedImageUrl);
         this.uploadService.cleanImages()
         this.uploadService.setLoadingIndicator(false);
         this.uploadService.setSuccessMessage("Uploaded successfully");
@@ -82,7 +97,14 @@ export class UploadDataComponent implements OnInit {
       },
       errorMessage => {
         console.log('HTTP Error', errorMessage)
-        let errMsg = `Unable to post due to ${errorMessage.message}`;
+        let errMsg = `Unable to post due to `;
+        if(errorMessage == undefined){
+
+          errMsg += ' unknown issue '
+        }else{
+          errMsg += `${errorMessage.message}`
+        }
+        
         this.uploadService.setErrorMessage(errMsg);
         this.uploadService.setSuccessMessage(null);
         this.uploadService.setLoadingIndicator(false);
@@ -92,16 +114,35 @@ export class UploadDataComponent implements OnInit {
   }
 
   onFetchDataImg() {
-    this.dataStorageService.fetchImages().subscribe((images: Image[])=>{
-      console.log('HTTP IMG' + images)
-      this.uploadService.setImages(images);
-      this.uploadService.setLoadingIndicator(false);
-    },errorMessage =>{
-   
-      console.log('HTTP Error', errorMessage)
-      let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
-      this.uploadService.setErrorMessage(errMsg);
-      this.uploadService.setLoadingIndicator(false);
-    });
+    console.log("Upload - onFetchDataImg using portfolio : " + this.portfolioType);
+
+    if(this.portfolioType === "Architecture"){
+      this.dataStorageService.fetchImages(this.portfolioType).subscribe((images: Image[])=>{
+        console.log('HTTP IMG' + images)
+        this.uploadService.setImages(images);
+        this.uploadService.setLoadingIndicator(false);
+      },errorMessage =>{
+     
+        console.log('HTTP Error', errorMessage)
+        let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
+        this.uploadService.setErrorMessage(errMsg);
+        this.uploadService.setLoadingIndicator(false);
+      });
+
+    }else if(this.portfolioType === "Hand-Drawing"){
+      this.dataStorageService.fetchImages(this.portfolioType).subscribe((images: Image[])=>{
+        console.log('HTTP IMG' + images)
+        this.uploadService.setHandDrawingImages(images);
+        this.uploadService.setLoadingIndicator(false);
+      },errorMessage =>{
+     
+        console.log('HTTP Error', errorMessage)
+        let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
+        this.uploadService.setErrorMessage(errMsg);
+        this.uploadService.setLoadingIndicator(false);
+      });
+
+    }
+
   }
 }

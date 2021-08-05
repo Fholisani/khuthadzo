@@ -34,7 +34,6 @@ import { LightgalleryModule } from 'lightgallery/angular/10';
 import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing.component';
 import { ArchitectureComponent } from './blog/portfolio/architecture/architecture.component';
 import { UploadDataComponent } from './blog/post/post-detail/upload-data/upload-data.component';
-import { ImageComponent } from './blog/portfolio/image/image.component';
 
 import { DropzoneDirective } from './shared/dropzone.directive';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
@@ -49,6 +48,11 @@ import { environment } from '../environments/environment';
 import { UploadFormComponent } from './blog/components/upload-form/upload-form.component';
 import { UploadListComponent } from './blog/components/upload-list/upload-list.component';
 import { UploadDetailsComponent } from './blog/components/upload-details/upload-details.component';
+import { PostImageComponent } from './blog/post/post-image/post-image.component';
+import { PostImageItemComponent } from './blog/post/post-new/post-image-item/post-image-item.component';
+import { ImageUploadComponent } from './blog/portfolio/image-upload/image-upload.component';
+import { AlertMessageComponent } from './shared/alert-message/alert-message.component';
+import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
 
 @NgModule({
   declarations: [
@@ -73,13 +77,17 @@ import { UploadDetailsComponent } from './blog/components/upload-details/upload-
     HandDrawingComponent,
     ArchitectureComponent,
     UploadDataComponent,
-    ImageComponent,
     DropzoneDirective,
     LoadingSpinnerComponent,
     AuthComponent,
     UploadFormComponent,
     UploadListComponent,
     UploadDetailsComponent,
+    PostImageComponent,
+    PostImageItemComponent,
+    ImageUploadComponent,
+    AlertMessageComponent,
+    ImageUploadImplComponent,
   
 
  

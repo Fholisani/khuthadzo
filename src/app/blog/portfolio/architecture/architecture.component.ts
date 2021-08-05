@@ -44,6 +44,7 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
   successMessage: string=null;
   private userSub: Subscription;
   isAuthenticated = false;
+  portfolioType: string = 'Architecture';
 
 
 
@@ -169,7 +170,7 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
       
            const item = new GalleryItem(element.id.toString(), '11400-933',
       element.imageUrl,
-      element.imageUrls[0].url, 
+      element.imageUrls[0].url + '?size=medium', 
        `<div class="lightGallery-captions">
       <h4>Photo by <a href="https://unsplash.com/@jxnsartstudio">Garrett Jackson</a></h4>
       <p>Published on May 8, 2020</p></div>`);

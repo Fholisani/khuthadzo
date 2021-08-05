@@ -45,7 +45,7 @@ export class FileUploadService {
       uploadTask.snapshotChanges().pipe(
         finalize(() => {
           storageRef.getDownloadURL().subscribe(downloadURL => {
-            fileUpload.imageUrls.push(new ImageUrl(imageElement.image.name, downloadURL));
+            fileUpload.imageUrls.push(new ImageUrl(imageElement.image.name, downloadURL,""));
 
             this.saveFileImageData(fileUpload);
           });

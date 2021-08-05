@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Image } from '../model/image.model';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { Image, ImageUrl } from '../model/image.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
   imagesChanged = new Subject<Image[]>();
+  imagesHandDrawingChanged = new Subject<Image[]>();
   imagesAdded = new Subject<Image[]>();
   private images: Image[] = [];
+  private imagesHandDrawing: Image[] = [];
   private imagesAdd: Image[] = [];
   isLoading=false;
   isLoadingChanged=new Subject<boolean>();
@@ -16,6 +18,7 @@ export class UploadService {
   errorMessageChanged=new Subject<string>();
   successMessage: string=null;
   successMessageChanged=new Subject<string>();
+  uploadedDataSource: BehaviorSubject<ImageUrl[]> = new BehaviorSubject([]);
   constructor() { }
 
   setErrorMessage(errorMessage: string) {
@@ -26,6 +29,10 @@ export class UploadService {
   setSuccessMessage(successMessage: string) {
     this.successMessage = successMessage;
     this.successMessageChanged.next(this.successMessage);
+  }
+
+  uploadedImgDataSource(imageUrls: ImageUrl[]) {
+    this.uploadedDataSource.next(imageUrls);
   }
   
   setLoadingIndicator(isLoading: boolean){
@@ -38,6 +45,13 @@ export class UploadService {
   }
   getImages(){
     return this.images.slice();
+  }
+  setHandDrawingImages(images: Image[]){
+    this.imagesHandDrawing = images;
+    this.imagesHandDrawingChanged.next(this.imagesHandDrawing.slice());
+  }
+  getHandDrawingImages(){
+    return this.imagesHandDrawing.slice();
   }
  
   getImage(index: number) {

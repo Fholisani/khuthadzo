@@ -2,7 +2,7 @@
     <div class="row">
         
         <div class="col-md-12">
-            <form class="mb-5" id="newPostForm" [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
+            <form class="row g-3" id="newPostForm" [formGroup]="newPostForm" (ngSubmit)="onSubmit()">
                 <h2 class="text-black-50 mb-4">Post Content</h2>
                
                 <div class="float-end">
@@ -14,8 +14,6 @@
                     [isImgAvailable]="isImageUpload"
                     [isCreateImg]="isCreateImg">
                 </app-upload-data>
-            
-               
                 </div>
                 <br>
                 <br>
@@ -30,68 +28,93 @@
                         <app-loading-spinner></app-loading-spinner>
                       </div>
                 </div>
-                <div class="form-group">
-                    <input class="form-control py-4" id="headingInput" data-cy="headingInput" type="text" 
-                    placeholder="Post heading" formControlName="heading"
-                    [ngClass]="{ 'is-invalid': submitted && f.heading.errors }"
-                    required />
-                    <div *ngIf="submitted && f.heading.errors" class="invalid-feedback" data-sb-feedback="name:required">Heading required.</div>
-
-                </div>
-                <div class="form-group">
-                    <input class="form-control py-4" id="subHeadingInput" data-cy="subHeadingInput" type="text" 
-                    placeholder="Post subheading" formControlName="subHeading" 
-                    [ngClass]="{ 'is-invalid': submitted && f.subHeading.errors }"
-                    required />
-                    <div *ngIf="submitted && f.subHeading.errors" class="invalid-feedback" data-sb-feedback="name:required">Subheading required.</div>
-
-                </div>
-                <div class="form-group">
-
-                    <label class="form-label">Add Post Background</label>
-                    <img *ngFor='let url of urlsBackground'  [src]="url" height="200"> <br/>
-
-                    <input type='file' 
-                    #takeInput
-                    class="form-control" (change)="onSelectFileBackground($event)" 
-                    formArrayName="backgroundImage"
-                    accept="image/png,image/jpeg"
-                    [ngClass]="{ 'is-invalid': submitted && (f.backgroundImage.errors || f.backgroundImage.invalid) }"
-                    required
-                    />
-                    <div *ngIf="submitted && (f.backgroundImage.errors || f.backgroundImage.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Background image required.</div>
-                    <!-- <input class="form-control py-4" id="backgroundImageInput" data-cy="backgroundImageInput" type="text" 
-                    placeholder="Post background image (enter a URL)" formControlName="backgroundImage"  />
-                    <div class="form-text text-white-50">Use an image URL (ex. https://source.unsplash.com/WLUHO9A_xik/1600x900)</div> -->
-                    <!-- <div class="invalid-feedback" *ngIf='backgroundImageControl.hasError("required")'>Background image required</div>
-                    <div class="invalid-feedback" *ngIf='backgroundImageControl.hasError("backgroundImage")'>Background image is not valid</div> -->
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control py-3" id="bodyInput" autosize data-cy="bodyInput" placeholder="Post body text (markdown supported)"
-                     formControlName="body"
-                     [ngClass]="{ 'is-invalid': submitted && f.body.errors }"
-                     required></textarea>
-                    <div class="form-text text-white-50"><fa-icon class="mr-1" [icon]='["fab", "markdown"]'></fa-icon>Markdown supported</div>
-                    <div *ngIf="submitted && f.body.errors" class="invalid-feedback" data-sb-feedback="name:required">Message body is required.</div>
-
-                    <!-- <div class="invalid-feedback" *ngIf='bodyControl.hasError("required")'>Body content required</div>
-                    <div class="invalid-feedback" *ngIf='bodyControl.hasError("body")'>Body content is not valid</div> -->
-                </div>
-            
-                <div class="form-group">
-                    <!-- pc, premier, easy, rmb , wealth service  -->
-                    <br>
-                    <label class="form-label">Add Images</label>
-                    <input type="file"
-                           #takeMultipleInput
-                           class="form-control"
-                           (change)="onSelectFile($event)"
-                           multiple accept="image/png,image/jpeg" 
-                           formArrayName="imageurls"
-                           [ngClass]="{ 'is-invalid': submitted && (f.imageurls.errors || f.imageurls.invalid) }"
-                     required/>
-                     <div *ngIf="submitted && (f.imageurls.errors || f.imageurls.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Images required.</div>
+               
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header">Detail information</div>
+                    <div class="card-body text-secondary">
+                      <h5 class="card-title">Content</h5>
+                      <div class="form-group">
+                        <input class="form-control py-4" id="headingInput" data-cy="headingInput" type="text" 
+                        placeholder="Post heading" formControlName="heading"
+                        [ngClass]="{ 'is-invalid': submitted && f.heading.errors }"
+                        required />
+                        <div *ngIf="submitted && f.heading.errors" class="invalid-feedback" data-sb-feedback="name:required">Heading required.</div>
+    
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control py-4" id="subHeadingInput" data-cy="subHeadingInput" type="text" 
+                        placeholder="Post subheading" formControlName="subHeading" 
+                        [ngClass]="{ 'is-invalid': submitted && f.subHeading.errors }"
+                        required />
+                        <div *ngIf="submitted && f.subHeading.errors" class="invalid-feedback" data-sb-feedback="name:required">Subheading required.</div>
+    
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control py-3" id="bodyInput" autosize data-cy="bodyInput" placeholder="Post body text (markdown supported)"
+                         formControlName="body"
+                         [ngClass]="{ 'is-invalid': submitted && f.body.errors }"
+                         required></textarea>
+                        <div class="form-text text-white-50"><fa-icon class="mr-1" [icon]='["fab", "markdown"]'></fa-icon>Markdown supported</div>
+                        <div *ngIf="submitted && f.body.errors" class="invalid-feedback" data-sb-feedback="name:required">Message body is required.</div>
+    
+                        <!-- <div class="invalid-feedback" *ngIf='bodyControl.hasError("required")'>Body content required</div>
+                        <div class="invalid-feedback" *ngIf='bodyControl.hasError("body")'>Body content is not valid</div> -->
+                    </div>
+                    </div>
                   </div>
+                  <div class="card border-primary mb-3">
+                    <div class="card-header">Post Background</div>
+                    <div class="card-body text-primary">
+                      <h5 class="card-title">Add Post Background</h5>
+                      <div class="form-group">
+
+                        <div class="alert alert-danger" *ngIf="!hasComponentSubmitedBgImages && submitted && (f.backgroundImage.errors || f.backgroundImage.invalid)">
+                          <p>Post Background Image is required.</p>
+                        </div>
+           
+                        <app-alert-message [isLoading]="isUploadBgLoading" [errorMessage]="errorUploadBgMessage" 
+                        [successMessage]="successUploadBgMessage"></app-alert-message>
+                        <app-image-upload [componentUploading]="'backgroundImg'" 
+                        [uploadedImageUrl]="uploadedBgImageUrl"
+                        [portfolioTypes]="bgPortfolioTypes"
+                        [isMultipleUpload]="isMultipleBgUpload"
+                        (submitedImages)="acceptData($event)"
+                        (componentCalling)="componentUploading($event)"></app-image-upload>
+ 
+                        <div *ngIf="submitted && (f.backgroundImage.errors || f.backgroundImage.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Background image required.</div>
+                      
+                    </div>
+                    </div>
+                  </div>
+                  <div class="card border-success mb-3">
+                    <div class="card-header">Upload Post Images</div>
+                    <div class="card-body text-success">
+                      <h5 class="card-title">Add Image</h5>
+                      
+                    <div class="form-group">
+               
+                                <div class="alert alert-danger" *ngIf="!hasComponentSubmitedPostImages && submitted && (f.imageurls.errors || f.imageurls.invalid)">
+                                    <p>Images required.</p>
+                                  </div>
+                 
+                                <div *ngIf="submitted && (f.imageurls.errors || f.imageurls.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Images required.</div>
+                             
+                                <app-alert-message [isLoading]="isUploadLoading" [errorMessage]="errorUploadMessage" 
+                                [successMessage]="successUploadMessage"></app-alert-message>
+
+                                <app-image-upload [componentUploading]="'postImg'" 
+                              [uploadedImageUrl]="uploadedImageUrl"
+                              [portfolioTypes]="portfolioTypes"
+                              [isMultipleUpload]="isMultipleUpload"
+                              (submitedImages)="acceptPostData($event)"
+                              (componentCalling)="componentUploading($event)"></app-image-upload>
+ 
+                    </div>
+                          
+                    </div>
+                  </div>
+            
+         
                   <br>
                   <div class="container">
                   <div class="row imagetiles" >

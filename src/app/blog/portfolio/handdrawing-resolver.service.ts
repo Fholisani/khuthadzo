@@ -7,27 +7,28 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PortfolioResolverService implements Resolve<Image[]> {
+export class HanddrawingResolverService implements Resolve<Image[]> {
+
   constructor(
     private dataStorageService: DataStorageService,
     private uploadService: UploadService
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const images = this.uploadService.getImages();
+    const images = this.uploadService.getHandDrawingImages();
 
     if (images.length === 0) {
-      this.onFetchDataImg()
+      this.onFetchDataImgHandDrawing()
       return ;
     } else {
       return images;
     }
   }
 
-  onFetchDataImg() {
-    this.dataStorageService.fetchImages('Architecture').subscribe((images: Image[])=>{
+  onFetchDataImgHandDrawing() {
+    this.dataStorageService.fetchImages('Hand-Drawing').subscribe((images: Image[])=>{
       console.log('HTTP IMG' + images)
-      this.uploadService.setImages(images);
+      this.uploadService.setHandDrawingImages(images);
       this.uploadService.setLoadingIndicator(false);
     },errorMessage =>{
    
