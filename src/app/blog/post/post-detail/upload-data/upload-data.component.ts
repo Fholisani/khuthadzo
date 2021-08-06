@@ -75,41 +75,41 @@ export class UploadDataComponent implements OnInit {
   }
 
   onSaveDataImg() {
-    this.dataStorageService.saveImages() 
-    .subscribe(
-      response => {
-        console.log(response[0][0] + " : Testing 1 0 1");
+    // this.dataStorageService.saveImages() 
+    // .subscribe(
+    //   response => {
+    //     console.log(response[0][0] + " : Testing 1 0 1");
        
-        let ms =  response[0][0];
+    //     let ms =  response[0][0];
 
-       ms.imageUrls.forEach(element => {
-        console.log(element + " : Testing 1 0 1 element");
-        element.description = ms.description;
-        this.uploadedImageUrl.push(element);
+    //    ms.imageUrls.forEach(element => {
+    //     console.log(element + " : Testing 1 0 1 element");
+    //     element.description = ms.description;
+    //     this.uploadedImageUrl.push(element);
        
 
-       });
-        this.uploadService.uploadedImgDataSource(this.uploadedImageUrl);
-        this.uploadService.cleanImages()
-        this.uploadService.setLoadingIndicator(false);
-        this.uploadService.setSuccessMessage("Uploaded successfully");
-        this.uploadService.setErrorMessage(null);
-      },
-      errorMessage => {
-        console.log('HTTP Error', errorMessage)
-        let errMsg = `Unable to post due to `;
-        if(errorMessage == undefined){
+    //    });
+    //     this.uploadService.uploadedImgDataSource(this.uploadedImageUrl);
+    //     this.uploadService.cleanImages()
+    //     this.uploadService.setLoadingIndicator(false);
+    //     this.uploadService.setSuccessMessage("Uploaded successfully");
+    //     this.uploadService.setErrorMessage(null);
+    //   },
+    //   errorMessage => {
+    //     console.log('HTTP Error', errorMessage)
+    //     let errMsg = `Unable to post due to `;
+    //     if(errorMessage == undefined){
 
-          errMsg += ' unknown issue '
-        }else{
-          errMsg += `${errorMessage.message}`
-        }
+    //       errMsg += ' unknown issue '
+    //     }else{
+    //       errMsg += `${errorMessage.message}`
+    //     }
         
-        this.uploadService.setErrorMessage(errMsg);
-        this.uploadService.setSuccessMessage(null);
-        this.uploadService.setLoadingIndicator(false);
+    //     this.uploadService.setErrorMessage(errMsg);
+    //     this.uploadService.setSuccessMessage(null);
+    //     this.uploadService.setLoadingIndicator(false);
         
-      });
+    //   });
    // this.router.navigate(['../'], { relativeTo: this.route });
   }
 

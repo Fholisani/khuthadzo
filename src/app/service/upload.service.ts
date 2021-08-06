@@ -8,10 +8,16 @@ import { Image, ImageUrl } from '../model/image.model';
 export class UploadService {
   imagesChanged = new Subject<Image[]>();
   imagesHandDrawingChanged = new Subject<Image[]>();
-  imagesAdded = new Subject<Image[]>();
+  imagesAdded = new  BehaviorSubject<Image>(null);;
+  imagesBgAdded =new  BehaviorSubject<Image>(null);;
+  // imagesPostAdded = new Subject<Image>();
+  // imagesPostAdded= new  BehaviorSubject<Image>(null);
+  imagesPostAdded: Subject<any> = new Subject<any>();
   private images: Image[] = [];
   private imagesHandDrawing: Image[] = [];
-  private imagesAdd: Image[] = [];
+  private imagesBgAdd : Image;
+  private imagesPostAdd :Image ;
+  private imagesAdd: Image;
   isLoading=false;
   isLoadingChanged=new Subject<boolean>();
   errorMessage=null;
@@ -19,6 +25,9 @@ export class UploadService {
   successMessage: string=null;
   successMessageChanged=new Subject<string>();
   uploadedDataSource: BehaviorSubject<ImageUrl[]> = new BehaviorSubject([]);
+  // Observable navItem stream
+ // navItem$ = this.imagesPostAdded.asObservable();
+  
   constructor() { }
 
   setErrorMessage(errorMessage: string) {
@@ -61,21 +70,57 @@ export class UploadService {
     this.images.splice(index, 1);
     this.imagesChanged.next(this.images.slice());
 
-    this.imagesAdd =  this.images;
-    this.imagesAdded.next(this.imagesAdd.slice());
+    // this.imagesAdd =  this.images;
+    // this.imagesAdded.next(this.imagesAdd);
   }
   cleanImages() {
-    this.imagesAdd = [];
-    this.imagesAdded.next(this.imagesAdd.slice());
+    this.imagesAdd = null;
+  //  this.imagesAdded.next(this.imagesAdd);
   }
-   createImage(payload: Image) {
+  cleanBgImages() {
+    this.imagesBgAdd = null;
+   // this.imagesPostAdded.next(this.imagesBgAdd);
+  }
+  cleanPostImages() {
+    this.imagesPostAdd = null;
+   // this.imagesBgAdded.next(this.imagesPostAdd);
+  }
+   createImage(payload: Image,componentUploading: string) {
     payload.id =Math.floor(Math.random() * 100) + 1;
     payload.imageUrls =[];
-    this.imagesAdd.push(payload);
-    this.imagesAdded.next(this.imagesAdd.slice());
+    
+    console.log("*** Notify subscriber for component : " + componentUploading);
+    if(componentUploading==='postImg'){
+      this.imagesPostAdd =payload;
+      this.imagesPostAdded.next(this.imagesPostAdd);
+      // this.cleanImages();
+      // this.cleanBgImages();
+      
+    }
+    if(componentUploading==='backgroundImg'){
+      this.imagesBgAdd =payload;
+      this.imagesBgAdded.next(this.imagesBgAdd);
+      // this.cleanImages();
+      // this.cleanPostImages();
+      
+    }
+    if(componentUploading==='upload'){
+      this.imagesAdd =payload;
+      this.imagesAdded.next(this.imagesAdd);
+      // this.cleanBgImages();
+      // this.cleanPostImages();
+      
+      
+    }
 
   }
+  getImagesPostAdded(){
+    return this.imagesPostAdd;
+  }
+  getImagesBgAdded(){
+    return this.imagesBgAdd;
+  }
   getImagesAdded(){
-    return this.imagesAdd.slice();
+    return this.imagesAdd;
   }
 }

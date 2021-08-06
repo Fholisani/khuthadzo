@@ -119,7 +119,7 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
 
   this.subscription = this.uploadService.imagesAdded
     .subscribe(
-      (images: Image[]) => {
+      (images: Image) => {
         this.dataEmit();
       }
     );
@@ -184,15 +184,17 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
   }
 
   dataEmit() {
-    const images = this.uploadService.getImagesAdded();
+    const imageObj = this.uploadService.getImagesAdded();
+    this.numberOfPosts = 0;
+    this.isImgAvailable = false;
    
-    if (images.length > 0) {
-      this.numberOfPosts = images.length;
-      this.isImgAvailable = true;
-    } else {
-      this.numberOfPosts = 0;
-      this.isImgAvailable = false;
-    }
+    // if (images.length > 0) {
+    //   this.numberOfPosts = images.length;
+    //   this.isImgAvailable = true;
+    // } else {
+    //   this.numberOfPosts = 0;
+    //   this.isImgAvailable = false;
+    // }
   }
 
 

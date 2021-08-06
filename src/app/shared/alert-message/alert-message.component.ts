@@ -13,5 +13,9 @@ export class AlertMessageComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  reset(){
+    this.errorMessage =null;
+    this.successMessage =null;
+  }
 
 }

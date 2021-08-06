@@ -94,39 +94,39 @@ export class BlogService {
   createPost(payload: Post) {
 
     payload.id =Math.floor(Math.random() * 100) + 1;
-    payload.postCardImage ="https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg";
-    payload.galleryImages = [
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-big.jpeg',
-        description: 'Testing 1'
-      },
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-big.jpeg',
-        description: 'Testing 2'
-      },
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
-        description: 'Testing 3'
-      },
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
-        description: 'Testing 4'
-      }
-    ];
+    // payload.postCardImage ="https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg";
+    // payload.galleryImages = [
+    //   {
+    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-small.jpeg',
+    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg',
+    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-big.jpeg',
+    //     description: 'Testing 1'
+    //   },
+    //   {
+    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-small.jpeg',
+    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-medium.jpeg',
+    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-big.jpeg',
+    //     description: 'Testing 2'
+    //   },
+    //   {
+    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
+    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
+    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
+    //     description: 'Testing 3'
+    //   },
+    //   {
+    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
+    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
+    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
+    //     description: 'Testing 4'
+    //   }
+    // ];
 
     payload.date =  new Date("2019-01-16");
     payload.author = "*Khuthi*";
     payload.readTime = "#1 min read";
     payload.slug = "Slug";
-    payload.bgImage = "https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg";
+    // payload.bgImage = "https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg";
 
     this.postsAdd.push(payload);
     this.postsAdded.next(this.postsAdd.slice());

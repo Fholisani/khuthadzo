@@ -29,7 +29,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   isImgAvailable: boolean;
 
   isCreateImg=true;
-  subscription: Subscription;
+  private subscription: Subscription;
   showMyContainer: boolean = false;
   // isLoading = false;
   // errorMessage: string=null;
@@ -41,7 +41,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   @Output() submitedImages = new EventEmitter<boolean>();
   @Output() componentCalling = new EventEmitter<string>();
   // uploadedImageUrl: ImageUrl[] =[];
-  private  uploadedImageSub: Subscription;
+
 
   @Input() portfolioTypes: any = []
 
@@ -72,31 +72,33 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         // this.successMessage = successMessage;
       }
     );
-    this.subscription = this.uploadService.imagesAdded
-    .subscribe(
-      (images: Image[]) => {
-        this.dataEmit();
-      }
-    );
-   this.uploadedImageSub =this.uploadService.uploadedDataSource 
-   .subscribe(
-    (imageUrls: ImageUrl[]) => {
-      // this.uploadedImageUrl = imageUrls;
-    }
-  );
+    // this.subscription = this.uploadService.imagesAdded
+    // .subscribe(
+    //   (images: Image) => {
+    //     this.dataEmit();
+    //   }
+    // );
+  //  this.uploadedImageSub =this.uploadService.uploadedDataSource 
+  //  .subscribe(
+  //   (imageUrls: ImageUrl[]) => {
+  //     // this.uploadedImageUrl = imageUrls;
+  //   }
+  // );
     this.initForm();
   }
 
   dataEmit() {
-    const images = this.uploadService.getImagesAdded();
+    //const imageObj = this.uploadService.getImagesAdded();
+    this.numberOfPosts = 0;
+    this.isImgAvailable = false;
    
-    if (images.length > 0) {
-      this.numberOfPosts = images.length;
-      this.isImgAvailable = true;
-    } else {
-      this.numberOfPosts = 0;
-      this.isImgAvailable = false;
-    }
+    // if (images.length > 0) {
+    //   this.numberOfPosts = images.length;
+    //   this.isImgAvailable = true;
+    // } else {
+    //   this.numberOfPosts = 0;
+    //   this.isImgAvailable = false;
+    // }
   }
 
   onSavePost() {
@@ -104,6 +106,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
+    this.componentCalling.emit(this.componentUploading);
     this.form.setValue({
       id: 0,
       title: this.form.value.title,
@@ -111,11 +114,12 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       portfolioType: this.form.value.portfolioType,
       images: this.form.value.images
     });
-   this.uploadService.createImage(this.form.value);
+    this.uploadService.createImage(this.form.value,this.componentUploading);
     this.dataEmit()
     this.reset();
     this.submitedImages.emit(true);
-    this.componentCalling.emit(this.componentUploading);
+    this.toggleShow();
+    
   }
 
   private initForm() {
@@ -232,8 +236,10 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       this.toggleShow();
     }
   ngOnDestroy() {
+    console.log("=========== unsubscribe image upload 1 =================");
+    this.subscription.remove;
     this.subscription.unsubscribe();
-    this.uploadedImageSub.unsubscribe();
+    // this.uploadedImageSub.unsubscribe();
   }
 
 }

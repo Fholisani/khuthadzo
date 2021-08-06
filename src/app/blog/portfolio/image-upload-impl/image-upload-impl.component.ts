@@ -1,3 +1,4 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Image, ImageUrl } from 'src/app/model/image.model';
@@ -9,49 +10,59 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
   templateUrl: './image-upload-impl.component.html',
   styleUrls: ['./image-upload-impl.component.css']
 })
-export class ImageUploadImplComponent implements OnInit {
-  subscription: Subscription;
+export class ImageUploadImplComponent implements OnInit, OnDestroy {
+  subscriptionImg: Subscription;
+  private subscriptionUploadImg: Subscription;
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
   hasSubmitedImages = false;
   componentUploadingImg : string =null;
   uploadedImageUrl: ImageUrl[] =[];
-  images: Image[] = [];
+  imageObj: Image;
   isMultipleUpload: boolean=true;
   portfolioTypes: any = ['Carousel','Hand-Drawing', 'Architecture' ]
   constructor(private uploadService: UploadService,
     private dataStorageService: DataStorageService) { }
 
   ngOnInit(): void {
-    this.subscription = this.uploadService.isLoadingChanged
+    this.subscriptionImg = this.uploadService.isLoadingChanged
     .subscribe(
       (isLoading: boolean) => {
         this.isLoading = isLoading;
       }
     );
 
-    this.subscription = this.uploadService.errorMessageChanged
+    this.subscriptionImg = this.uploadService.errorMessageChanged
     .subscribe(
       (errorMessage: string) => {
          this.errorMessage = errorMessage;
       }
     );
 
-    this.subscription = this.uploadService.successMessageChanged
+    this.subscriptionImg = this.uploadService.successMessageChanged
     .subscribe(
       (successMessage: string) => {
          this.successMessage = successMessage;
       }
     );
-    this.subscription = this.uploadService.imagesAdded
+    this.subscriptionUploadImg = this.uploadService.imagesAdded
     .subscribe(
-      (images: Image[]) => {
-        this.images = images;
-        this.onSaveDataImg()
+      (image: Image) => {
+        if(image !== null){
+          console.log("Upload image only if its the correct" + this.componentUploadingImg);
+        if(this.componentUploadingImg==='upload'){
+
+          this.imageObj = image;
+          this.onSaveDataImg();
+          }
+        }else{
+          console.log("Should not upload -Images just cleaned up - " + this.componentUploadingImg);
+        }
+        
       }
     );
-    this.images = this.uploadService.getImagesAdded();
+    
   }
 
   acceptData(data) {
@@ -69,7 +80,11 @@ export class ImageUploadImplComponent implements OnInit {
     this.componentUploadingImg = data;
   }
   onSaveDataImg() {
-    this.dataStorageService.saveImages() 
+    console.log(" ======Calling from IMAGE-UPLOAD component======= : "+ this.componentUploadingImg);
+    
+
+   
+    this.subscriptionImg=  this.dataStorageService.saveImages(this.componentUploadingImg) 
     .subscribe(
       response => {
         console.log(response[0][0] + " : Testing 1 0 1");
@@ -84,13 +99,16 @@ export class ImageUploadImplComponent implements OnInit {
            });
            this.uploadService.uploadedImgDataSource(this.uploadedImageUrl);
       
-        }
+        
 
   
-        this.uploadService.cleanImages()
+        this.uploadService.cleanImages();
+        this.uploadService.cleanPostImages();
+        this.uploadService.cleanBgImages();
         this.uploadService.setLoadingIndicator(false);
         this.uploadService.setSuccessMessage("Uploaded successfully");
         this.uploadService.setErrorMessage(null);
+          }
       },
       errorMessage => {
         console.log('HTTP Error', errorMessage)
@@ -107,7 +125,17 @@ export class ImageUploadImplComponent implements OnInit {
         this.uploadService.setLoadingIndicator(false);
         
       });
+ 
    // this.router.navigate(['../'], { relativeTo: this.route });
+  }
+  ngOnDestroy() {
+    console.log("=========== unsubscribe image upload impl 1  =================");
+    this.subscriptionImg.remove;
+    this.subscriptionImg.unsubscribe();
+    this.subscriptionUploadImg.remove;
+    this.subscriptionUploadImg.unsubscribe();
+    
+   
   }
 
 }

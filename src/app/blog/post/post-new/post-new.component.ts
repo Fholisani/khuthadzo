@@ -8,7 +8,9 @@ import { Image, ImageUrl } from 'src/app/model/image.model';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { UploadService } from 'src/app/service/upload.service';
+import { AlertMessageComponent } from 'src/app/shared/alert-message/alert-message.component';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { ImageUploadComponent } from '../../portfolio/image-upload/image-upload.component';
 import { mimeType } from '../../portfolio/image/mime-type.validator';
 
 @Component({
@@ -34,7 +36,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
   isImgAvailable: boolean;
   isCreateImg = false;
   submitted = false;
-  images: Image[] = [];
+  imageObj: Image ;
   uploadedImageUrl: ImageUrl[] =[];
   uploadedBgImageUrl: ImageUrl[] =[];
   // hasSubmitedImages = false;
@@ -56,7 +58,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
   @ViewChild('takeMultipleInput', { static: false })
   InputVarMultiple: ElementRef;
-  subscription: Subscription;
+  private subscription: Subscription;
   isLoading = false;
   errorMessage: string = null;
   successMessage: string = null;
@@ -69,8 +71,10 @@ export class PostNewComponent implements OnInit, OnDestroy {
   errorUploadBgMessage: string = null;
   successUploadBgMessage: string = null;
   portfolioTypes: any = ['Post']
-  bgPortfolioTypes: any = ['Background']
-
+  bgPortfolioTypes: any = ['Background'];
+  private  uploadedPostImageSub: Subscription;
+  private  uploadedBgImageSub: Subscription;
+  @ViewChild('app-alert-message') childAlertMessageComponent: AlertMessageComponent;
 
 
 
@@ -81,10 +85,14 @@ export class PostNewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private uploadService: UploadService,
-    private dataStorageService: DataStorageService
+    private dataStorageService: DataStorageService,
   ) { }
 
   ngOnInit(): void {
+    if (this.subscription) {
+      console.log("===Unsubscribe after a check==== ");
+      this.subscription.unsubscribe();
+    }
     this.subscription = this.blogService.isLoadingChanged
       .subscribe(
         (isLoading: boolean) => {
@@ -113,16 +121,47 @@ export class PostNewComponent implements OnInit, OnDestroy {
         }
       );
 
-    this.subscription = this.uploadService.imagesAdded
+    this.uploadedBgImageSub = this.uploadService.imagesBgAdded
     .subscribe(
-      (images: Image[]) => {
-        this.images = images;
-        this.onSaveDataImg()
+      (image: Image) => {
+        if(image !== null ){
+          if(this.uploadedBgImageUrl.length < 1 ){
+            console.log("Post image only if its the correct component" + this.componentUploadingImg);
+            if(this.componentUploadingImg==='postImg'
+            || this.componentUploadingImg==='backgroundImg'){
+    
+              this.imageObj = image;
+              this.onSaveDataImg();
+              }
+          }else{
+            
+            this.errorUploadBgMessage = "Only one backgroud image can be uploaded!";
+          }
+        }else{
+          console.log("Should not upload -Images just cleaned up - " + this.componentUploadingImg);
+        }
       }
     );
-    this.images = this.uploadService.getImagesAdded();
+   // this.imageObj = this.uploadService.getImagesAdded();
 
 
+   this.uploadedPostImageSub = this.uploadService.imagesPostAdded
+    .subscribe(
+      (image: Image) => {
+        if(image !== null){
+          console.log("Post image only if its the correct component - navItem" + this.componentUploadingImg);
+          if(this.componentUploadingImg==='postImg'
+          || this.componentUploadingImg==='backgroundImg'){
+  
+            this.imageObj = image;
+            this.onSaveDataImg();
+            }
+        }else{
+          console.log("Should not upload -Images just cleaned up - " + this.componentUploadingImg);
+        }
+      }
+    );
+    
     
     this.subscription = this.uploadService.isLoadingChanged
     .subscribe(
@@ -187,7 +226,9 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
 
   onSaveDataImg() {
-    this.dataStorageService.saveImages() 
+    console.log(" ======Calling from POST-NEW component======= : "+ this.componentUploadingImg);
+
+    this.subscription = this.dataStorageService.saveImages(this.componentUploadingImg) 
     .subscribe(
       response => {
         console.log(response[0][0] + " : Testing 1 0 1");
@@ -201,6 +242,12 @@ export class PostNewComponent implements OnInit, OnDestroy {
             this.uploadedImageUrl.push(element);
            });
            this.uploadService.uploadedImgDataSource(this.uploadedImageUrl);
+           this.uploadService.cleanImages();
+           this.uploadService.cleanPostImages();
+           this.uploadService.cleanBgImages();
+           this.uploadService.setLoadingIndicator(false);
+           this.uploadService.setSuccessMessage("Uploaded successfully");
+           this.uploadService.setErrorMessage(null);
       
         }
 
@@ -211,11 +258,14 @@ export class PostNewComponent implements OnInit, OnDestroy {
             this.uploadedBgImageUrl.push(element);
            });
            this.uploadService.uploadedImgDataSource(this.uploadedBgImageUrl); 
+           this.uploadService.cleanImages();
+           this.uploadService.cleanPostImages();
+           this.uploadService.cleanBgImages();
+           this.uploadService.setLoadingIndicator(false);
+           this.uploadService.setSuccessMessage("Uploaded successfully");
+           this.uploadService.setErrorMessage(null);
         }
-        this.uploadService.cleanImages()
-        this.uploadService.setLoadingIndicator(false);
-        this.uploadService.setSuccessMessage("Uploaded successfully");
-        this.uploadService.setErrorMessage(null);
+
       },
       errorMessage => {
         console.log('HTTP Error', errorMessage)
@@ -232,6 +282,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
         this.uploadService.setLoadingIndicator(false);
         
       });
+      
+    
    // this.router.navigate(['../'], { relativeTo: this.route });
   }
   private initForm() {
@@ -307,8 +359,10 @@ export class PostNewComponent implements OnInit, OnDestroy {
     this.submitted = true;
     console.log('Push image file');
 
+    
     for (let i = 0; i < this.uploadedImageUrl.length; i++) {
       (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
+        reference: new FormControl(this.uploadedImageUrl[i].reference, Validators.required),
         name: new FormControl(this.uploadedImageUrl[i].name, Validators.required),
         url: new FormControl(this.uploadedImageUrl[i].url, {
           validators: [Validators.required],
@@ -322,6 +376,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
     for (let i = 0; i < this.uploadedBgImageUrl.length; i++) {
       (<FormArray>this.newPostForm.get('backgroundImage')).push(new FormGroup({
+        reference: new FormControl(this.uploadedBgImageUrl[i].reference, Validators.required),
         name: new FormControl(this.uploadedBgImageUrl[i].name, Validators.required),
         url: new FormControl(this.uploadedBgImageUrl[i].url, {
           validators: [Validators.required],
@@ -349,7 +404,6 @@ export class PostNewComponent implements OnInit, OnDestroy {
       //this.onCancel();
       this.reset();
 
-
     }else{
       if(this.newPostForm.controls.imageurls.invalid && this.hasComponentSubmitedPostImages ){
 
@@ -373,11 +427,16 @@ export class PostNewComponent implements OnInit, OnDestroy {
     this.imageurlsLocal = [];
     this.urlsBackground = [];
 
-    this.InputVarSingle.nativeElement.value = "";
-    this.InputVarMultiple.nativeElement.value = "";
+    // this.InputVarSingle.nativeElement.value = "";
+    // this.InputVarMultiple.nativeElement.value = "";
     this.errorMessage = null;
     this.successMessage = null;
-
+    this.errorUploadBgMessage = null;
+    this.errorUploadMessage = null;
+    this.successUploadBgMessage =null;
+    this.successUploadMessage=null;
+    this.uploadedImageUrl =[];
+    this.uploadedBgImageUrl=[];
     this.initForm();
   }
 
@@ -519,13 +578,20 @@ export class PostNewComponent implements OnInit, OnDestroy {
   }
   componentUploading(data) {
     console.log(
-      "this is the child data displaying in parent component: componentUploading : ",
+      "this is the child data displaying in parent component: componentUploadingImg : ",
       data
     );
     this.componentUploadingImg = data;
   }
   ngOnDestroy() {
+    console.log("=========== unsubscribe post new  =================");
+    this.subscription.remove
     this.subscription.unsubscribe();
+    this.uploadedBgImageSub.remove;
+    this.uploadedBgImageSub.unsubscribe();
+    this.uploadedPostImageSub.remove;
+    this.uploadedPostImageSub.unsubscribe();
+
   }
 
 }

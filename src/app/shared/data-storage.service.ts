@@ -78,23 +78,43 @@ export class DataStorageService {
 
 
 
-  saveImages(): Observable<unknown | Error> {
+  saveImages(componentUploadingImg : string): Observable<unknown | Error> {
 
-    const images = this.uploadService.getImagesAdded();
+    let imageObj= null;
+    console.log("======Get images for component  : ===== " + componentUploadingImg);
+    if(componentUploadingImg==='postImg'){
+     
+      imageObj = this.uploadService.getImagesPostAdded();
+      
+    }
+    if(componentUploadingImg==='backgroundImg'){
+      imageObj = this.uploadService.getImagesBgAdded();
+      
+    }
+    if(componentUploadingImg==='upload'){
+
+      imageObj = this.uploadService.getImagesAdded();
+      
+    }
+   
+    if(imageObj === null){
+      console.log("======Should not push empty Imagess : =====");
+      return;
+    }
     const finalImages = [];
     const calls = [];
     this.uploadService.setLoadingIndicator(true);
-    images.forEach(element => {
+    // images.forEach(element => {
 
-      calls.push(this.pushFileImageToStorageLocal(element)
+      calls.push(this.pushFileImageToStorageLocal(imageObj)
         .pipe(
           
           //Use switchMap to call another API(s)
           switchMap((responses: ImageUrl[]) => {
             //Lets map so to an observable of API call
-            element.imageUrls = responses;
-            finalImages.push(element);
-            console.log("Element data : " + JSON.stringify(element));
+            imageObj.imageUrls = responses;
+            finalImages.push(imageObj);
+            console.log("Element data : " + JSON.stringify(imageObj));
             //  const allObs$ = this.storeImage(element);///element.map(so => this.storeImage(element));
 
             const allObs$ = this.storeImage(finalImages);
@@ -108,7 +128,7 @@ export class DataStorageService {
           }),
           catchError(this.handleError)
         ));
-    });
+    // });
     return forkJoin(calls);
 
   }
@@ -175,7 +195,7 @@ export class DataStorageService {
 
     const req = new HttpRequest('POST', `${this.imageUrl}/blogger/image/v1`, formData, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'json'
     });
 
     return this.http.request(req);
@@ -200,14 +220,16 @@ export class DataStorageService {
         filter(response => response.type === HttpEventType.Response),
         map(response => {
           console.log('PushED images Map type ' + response.type);
-          let message = '';
+          let reference = '';
+          let url = '';
           if (response.type === HttpEventType.Response) {
-            message = response.body;
-            console.log('Locate image URL : ' + message);
+            reference = response.body.reference;
+            url = response.body.url;
+            console.log('Locate image URL : ' + url);
           
           }
 
-          return new ImageUrl(imageElement.image.name, message,"")
+          return new ImageUrl(imageElement.image.name,url,reference )
           
         }),
         catchError(this.handleError)

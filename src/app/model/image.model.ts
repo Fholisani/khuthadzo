@@ -29,10 +29,10 @@ export class ImageUrl {
   
     public name: string;
     public url: string;
-    public description: string;
-    constructor(name: string, url: string, description: string){
+    public reference: string;
+    constructor(name: string, url: string, reference: string){
         this.name = name;
         this.url = url;
-        this.description= description;
+        this.reference= reference;
     }
 }
