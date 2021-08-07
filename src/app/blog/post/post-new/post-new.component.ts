@@ -22,7 +22,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
   post?: Post;
   newPostForm: FormGroup;
-  imageurlsLocal = [];
+  imageUrlsLocal = [];
   urlsBackground = [];
   base64String: string;
   name: string;
@@ -219,7 +219,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
         subHeading: this.post.subHeading,
         backgroundImage: this.post.backgroundImage,
         body: this.post.body,
-        imageurls: this.post.imageurls,
+        imageUrls: this.post.imageUrls,
       });
     }
   }
@@ -294,7 +294,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
     let postSubHeading = '';
     let postMeta = '';
     let postBody = '';
-    let postImageurls = new FormArray([], [Validators.required]);
+    let postImageUrls = new FormArray([], [Validators.required]);
 
 
     if (this.editMode) {
@@ -318,9 +318,9 @@ export class PostNewComponent implements OnInit, OnDestroy {
       }
 
       if (postData['imageurls']) {
-        for (let url of postData.imageurls) {
-          this.imageurlsLocal.push({ base64String: url.url, });
-          postImageurls.push(
+        for (let url of postData.imageUrls) {
+          this.imageUrlsLocal.push({ base64String: url.url, });
+          postImageUrls.push(
             new FormGroup({
               name: new FormControl(url.name, Validators.required),
               url: new FormControl(url.url, Validators.required),
@@ -337,7 +337,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
       subHeading: new FormControl(postSubHeading, Validators.required),
       backgroundImage: postBackgroundImage,
       body: new FormControl(postBody, Validators.required),
-      imageurls: postImageurls,
+      imageUrls: postImageUrls,
 
     });
     this.dataEmit();
@@ -361,7 +361,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
     
     for (let i = 0; i < this.uploadedImageUrl.length; i++) {
-      (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
+      (<FormArray>this.newPostForm.get('imageUrls')).push(new FormGroup({
         reference: new FormControl(this.uploadedImageUrl[i].reference, Validators.required),
         name: new FormControl(this.uploadedImageUrl[i].name, Validators.required),
         url: new FormControl(this.uploadedImageUrl[i].url, {
@@ -371,7 +371,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
       }));
 
     }
-    this.newPostForm.get('imageurls').updateValueAndValidity();
+    this.newPostForm.get('imageUrls').updateValueAndValidity();
 
 
     for (let i = 0; i < this.uploadedBgImageUrl.length; i++) {
@@ -388,7 +388,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
     this.newPostForm.get('backgroundImage').updateValueAndValidity();
   
     // this.newPostForm.patchValue({
-    //   imageurls: myValue1, 
+    //   imageUrls: myValue1, 
     //   // formControlName2: myValue2 (can be omitted)
     // });
     if (this.newPostForm.status === 'VALID') {
@@ -405,7 +405,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
       this.reset();
 
     }else{
-      if(this.newPostForm.controls.imageurls.invalid && this.hasComponentSubmitedPostImages ){
+      if(this.newPostForm.controls.imageUrls.invalid && this.hasComponentSubmitedPostImages ){
 
           alert("Please, Make sure images POST are added!!");
           this.hasComponentSubmitedPostImages = false;
@@ -424,7 +424,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
   reset() {
     this.submitted = false;
     this.newPostForm.reset();
-    this.imageurlsLocal = [];
+    this.imageUrlsLocal = [];
     this.urlsBackground = [];
 
     // this.InputVarSingle.nativeElement.value = "";
@@ -448,8 +448,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
   }
 
   removeImage(i) {
-    this.imageurlsLocal.splice(i, 1);
-    (<FormArray>this.newPostForm.get('imageurls')).removeAt(i)
+    this.imageUrlsLocal.splice(i, 1);
+    (<FormArray>this.newPostForm.get('imageUrls')).removeAt(i)
   }
 
   removeImageBackground(i) {
@@ -514,8 +514,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
     //   for (let i = 0; i < filesAmount; i++) {
     //     var reader = new FileReader();
     //     reader.onload = (event: any) => {
-    //       this.imageurlsLocal.push({ base64String: event.target.result, });
-    //       (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
+    //       this.imageUrlsLocal.push({ base64String: event.target.result, });
+    //       (<FormArray>this.newPostForm.get('imageUrls')).push(new FormGroup({
     //         name: new FormControl("image" + (+1), Validators.required),
     //         url: new FormControl(event.target.result,
     //           Validators.required)
@@ -533,7 +533,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
       for (let i = 0; i < filesAmount; i++) {
 
         const file = (event.target as HTMLInputElement).files[i];
-        (<FormArray>this.newPostForm.get('imageurls')).push(new FormGroup({
+        (<FormArray>this.newPostForm.get('imageUrls')).push(new FormGroup({
           name: new FormControl("image" + (+1), Validators.required),
           url: new FormControl(file, {
             validators: [Validators.required],
@@ -542,8 +542,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
         }));
         var reader = new FileReader();
         reader.onload = (eventItem: any) => {
-          this.imageurlsLocal.push(eventItem.target.result);
-          this.newPostForm.get('imageurls').updateValueAndValidity();
+          this.imageUrlsLocal.push(eventItem.target.result);
+          this.newPostForm.get('imageUrls').updateValueAndValidity();
         }
         reader.readAsDataURL(event.target.files[i]);
       }

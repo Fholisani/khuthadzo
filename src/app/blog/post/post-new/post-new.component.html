@@ -93,11 +93,11 @@
                       
                     <div class="form-group">
                
-                                <div class="alert alert-danger" *ngIf="!hasComponentSubmitedPostImages && submitted && (f.imageurls.errors || f.imageurls.invalid)">
+                                <div class="alert alert-danger" *ngIf="!hasComponentSubmitedPostImages && submitted && (f.imageUrls.errors || f.imageUrls.invalid)">
                                     <p>Images required.</p>
                                   </div>
                  
-                                <div *ngIf="submitted && (f.imageurls.errors || f.imageurls.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Images required.</div>
+                                <div *ngIf="submitted && (f.imageUrls.errors || f.imageUrls.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Images required.</div>
                              
                                 <app-alert-message [isLoading]="isUploadLoading" [errorMessage]="errorUploadMessage" 
                                 [successMessage]="successUploadMessage"></app-alert-message>
@@ -118,7 +118,7 @@
                   <br>
                   <div class="container">
                   <div class="row imagetiles" >
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6" *ngFor='let url of imageurlsLocal; let i = index'>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6" *ngFor='let url of imageUrlsLocal; let i = index'>
                         <img class="img-responsive" style="max-height: 70px;" [src]="url">
                         <a (click)="removeImage(i)" class="btn btn-xs btn-danger">Remove</a>
                       </div>

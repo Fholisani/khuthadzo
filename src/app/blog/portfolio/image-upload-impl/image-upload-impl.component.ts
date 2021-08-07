@@ -21,7 +21,7 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
   uploadedImageUrl: ImageUrl[] =[];
   imageObj: Image;
   isMultipleUpload: boolean=true;
-  portfolioTypes: any = ['Carousel','Hand-Drawing', 'Architecture' ]
+  portfolioTypes: any = ['Carousel','HandDrawing', 'Architecture' ]
   constructor(private uploadService: UploadService,
     private dataStorageService: DataStorageService) { }
 

@@ -108,23 +108,30 @@ export class DataStorageService {
 
       calls.push(this.pushFileImageToStorageLocal(imageObj)
         .pipe(
+          tap(response => {
+            console.log(response);
+
+          }),
           
           //Use switchMap to call another API(s)
-          switchMap((responses: ImageUrl[]) => {
-            //Lets map so to an observable of API call
+          // switchMap((responses: ImageUrl[]) => {
+          //   //Lets map so to an observable of API call
+          //   imageObj.imageUrls = responses;
+          //   finalImages.push(imageObj);
+          //   console.log("Element data : " + JSON.stringify(imageObj));
+          //   //  const allObs$ = this.storeImage(element);///element.map(so => this.storeImage(element));
+
+          //   const allObs$ = this.storeImage(finalImages);
+          //   //forkJoin will wait for the response to come for all of the observables
+          //   return allObs$;
+          // }),
+          map((responses: ImageUrl[]) => {
+            console.log('PushED images Map : ' + responses);
             imageObj.imageUrls = responses;
             finalImages.push(imageObj);
-            console.log("Element data : " + JSON.stringify(imageObj));
-            //  const allObs$ = this.storeImage(element);///element.map(so => this.storeImage(element));
+  
 
-            const allObs$ = this.storeImage(finalImages);
-            //forkJoin will wait for the response to come for all of the observables
-            return allObs$;
-          }),
-          map(response => {
-            console.log('PushED images Map : ' + response);
-
-            return response;//;new ImageUrl(imageElement.image.name, message)
+            return finalImages;//;new ImageUrl(imageElement.image.name, message)
           }),
           catchError(this.handleError)
         ));
@@ -187,11 +194,14 @@ export class DataStorageService {
 
   }
 
-  upload(file: File): Observable<HttpEvent<any>> {
+  upload(file: File, fileUploadDetails: Image): Observable<HttpEvent<any>> {
     console.log('Push images Local instances');
     const formData: FormData = new FormData();
 
     formData.append('image', file);
+    formData.append('description', fileUploadDetails.description);
+    formData.append('portfolioType', fileUploadDetails.portfolioType);
+    formData.append('title', fileUploadDetails.title);
 
     const req = new HttpRequest('POST', `${this.imageUrl}/blogger/image/v1`, formData, {
       reportProgress: true,
@@ -210,7 +220,8 @@ export class DataStorageService {
 
     fileUpload.images.forEach(imageElement => {
 
-      calls.push(this.upload(imageElement.image).pipe(
+      calls.push(this.upload(imageElement.image,
+        fileUpload).pipe(
 
         tap(response => {
           console.log('PushED images Tap');

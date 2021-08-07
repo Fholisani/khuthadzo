@@ -9,15 +9,15 @@ export class Post {
     public galleryImages: GalleryImages[];
     public date :Date;
     public author: string;
-    public readTime: string;
-    public imageurls: ImageData[];
+    public readTime: number;
+    public imageUrls: ImageData[];
     public backgroundImage: ImageData[];
     public postCardImage: string;
 
 
     constructor(id: number,slug: string,bgImage: string,heading: string,
         subHeading: string,meta: string,body: string, galleryImages: GalleryImages[], date : Date,
-        author: string, readTime: string,backgroundImage: ImageData[], imageurls:ImageData[], postCardImage: string) {
+        author: string, readTime: number,backgroundImage: ImageData[], imageUrls:ImageData[], postCardImage: string) {
             this.id =id;
             this.slug =slug;
             this.bgImage = bgImage;
@@ -30,7 +30,7 @@ export class Post {
             this.date =date;
             this.author =author;
             this.readTime = readTime;
-            this.imageurls =imageurls;
+            this.imageUrls =imageUrls;
             this.postCardImage = postCardImage;
     }
 }
