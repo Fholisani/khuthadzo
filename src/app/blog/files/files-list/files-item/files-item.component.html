@@ -1,0 +1,19 @@
+<a
+style="cursor: pointer;" 
+class="list-group-item clearfix" 
+routerLinkActive="active"
+[routerLink]="[index,componentUploading]"
+
+(click)="cleanMessages()" 
+>
+
+   <div class="pull-left">
+       <h4 class="list-group-item-heading">{{image.name}}</h4>
+       <p class="list-group-item-text">{{image.reference}}</p>
+   </div>
+   <span class="pull-right">
+       <!-- src="{{recipe.imagePath}}"
+    [routerLink] ="[index,componentUploading,componentUploading]" -->
+       <img [src]="image.url" alt="{{image.name}}" class="img-responsive" style="max-height: 100px;">
+   </span>
+</a>

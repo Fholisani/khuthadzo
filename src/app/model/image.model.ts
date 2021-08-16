@@ -1,15 +1,15 @@
 export class Image {
 
     public id: number;
-    public title: string;
+    public tittle: string;
     public description: string;
     public portfolioType: string;
     public images: ImageFile[];
     public imageUrl : string;
     public imageUrls : ImageUrl[];
-    constructor(id: number,title: string, description: string, images: ImageFile[], imageUrl: string, imageUrls : ImageUrl[]){
+    constructor(id: number,tittle: string, description: string, images: ImageFile[], imageUrl: string, imageUrls : ImageUrl[]){
         this.id =id;
-        this.title = title;
+        this.tittle = tittle;
         this.description =description;
         this.images =images;
         this.imageUrl = imageUrl;

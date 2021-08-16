@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ContetFile } from '../model/content-file.model';
+import { ImageUrl } from '../model/image.model';
+import { PostCardResponse } from '../model/post-card-response.model';
+import { PostDetailResponse } from '../model/post-response.model';
 import { Post } from '../model/post.model';
 
 @Injectable({
@@ -10,8 +14,14 @@ export class BlogService {
 
 
   postsChanged = new Subject<Post[]>();
+  postCardsChanged = new Subject<PostCardResponse[]>();
   postsAdded = new Subject<Post[]>();
+  
   private posts: Post[] = [];
+  // private fileImageUrls: ImageUrl[] = [];
+  private postCards: PostCardResponse[] = [];
+  private postDetailResponse: PostDetailResponse = null;
+  postDetailResponseChanged = new Subject<PostDetailResponse>();
   private postsAdd: Post[] = [];
   isLoading=false;
   isLoadingChanged=new Subject<boolean>();
@@ -19,6 +29,8 @@ export class BlogService {
   errorMessageChanged=new Subject<string>();
   successMessage: string=null;
   successMessageChanged=new Subject<string>();
+  
+  
 
   setErrorMessage(errorMessage: string) {
     this.errorMessage = errorMessage;
@@ -37,8 +49,22 @@ export class BlogService {
     this.posts = posts;
     this.postsChanged.next(this.posts.slice());
   }
+  setPostCards(postCards: PostCardResponse[]){
+    this.postCards = postCards;
+    this.postCardsChanged.next(this.postCards.slice());
+  }
+  setPostDetailResponse(postDetailResponse: PostDetailResponse){
+    this.postDetailResponse = postDetailResponse;
+    this.postDetailResponseChanged.next(this.postDetailResponse);
+  }
   getPosts(){
     return this.posts.slice();
+  }
+  getPostCards(){
+    return this.postCards.slice();
+  }
+  getPostDetailResponse(){
+    return this.postDetailResponse;
   }
   getPostsAdded(){
     return this.postsAdd.slice();

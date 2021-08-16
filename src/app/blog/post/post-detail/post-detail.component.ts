@@ -4,8 +4,10 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gal
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { PostDetailResponse } from 'src/app/model/post-response.model';
 import { GalleryImages, Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -16,12 +18,18 @@ export class PostDetailComponent implements OnInit,OnDestroy {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   post: Post;
+  postDetailResponse : PostDetailResponse;
   id: number;
   private userSub: Subscription;
+  private subscription: Subscription;
+  private subscriptionPostDetail: Subscription;
   isAuthenticated = false;
+  isLoading = false;
+  errorMessage: string = null;
 
   constructor(private blogService: BlogService, private route: ActivatedRoute,
-    private router: Router,  private authService: AuthService) { }
+    private router: Router,  private authService: AuthService,
+    private dataStorageService: DataStorageService,) { }
 
   ngOnInit(): void {
 
@@ -29,8 +37,32 @@ export class PostDetailComponent implements OnInit,OnDestroy {
     .subscribe(
       (params: Params) => {
         this.id = +params['id'];
-        this.post = this.blogService.getPost(this.id);
-        this.galleryImages = this.post.galleryImages;
+        console.log("Parameter ID : "+ this.id);
+        this.onFetchData(this.id);
+       
+      }
+    );
+
+
+    this.subscriptionPostDetail = this.blogService.postDetailResponseChanged
+    .subscribe(
+      (postDetailResponse: PostDetailResponse) => {
+        this.postDetailResponse = postDetailResponse;
+        this.galleryImages = this.postDetailResponse.galleryImages;
+        console.log("galleryImages : "+  this.galleryImages)
+      }
+    );
+
+    this.subscription = this.blogService.isLoadingChanged
+    .subscribe(
+      (isLoading: boolean) => {
+        this.isLoading = isLoading;
+      }
+    );
+    this.subscription = this.blogService.errorMessageChanged
+    .subscribe(
+      (errorMessage: string) => {
+        this.errorMessage = errorMessage;
       }
     );
 
@@ -84,20 +116,39 @@ export class PostDetailComponent implements OnInit,OnDestroy {
     //     }
     //   ],  new Date("2019-01-16"),"*Khuthi*","#1 min read",[],[],
     //   "https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg");
-      this.galleryImages = this.post.galleryImages;
+      //this.galleryImages = this.postDetailResponse.galleryImages;
   }
 
   onEditRecipe() {
     //this.router.navigate(['edit'], {relativeTo: this.route});
-   this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
+   this.router.navigate(['edit'], {relativeTo: this.route});
   }
 
   onDeleteRecipe() {
     this.blogService.deletePost(this.id);
     this.router.navigate(['/home']);
   }
+
+  onFetchData(postId: number) {
+    this.blogService.setLoadingIndicator(true);
+    return this.dataStorageService.fetchDetailPosts(postId).subscribe(postDetail => {
+
+      this.blogService.setPostDetailResponse(postDetail);
+    
+      this.blogService.setLoadingIndicator(false);
+    }, errorMessage => {
+
+      console.log('HTTP Error', errorMessage)
+      let errMsg = `Unable to retrieve blog post due to  ${errorMessage}()`;
+      this.blogService.setErrorMessage(errMsg);
+      this.blogService.setLoadingIndicator(false);
+    });
+  }
   ngOnDestroy() {
     this.userSub.unsubscribe();
+    this.subscription.unsubscribe();
+    this.subscriptionPostDetail.unsubscribe();
   }
+  
 
 }

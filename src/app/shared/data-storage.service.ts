@@ -11,6 +11,9 @@ import { AuthService } from '../auth/auth.service';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { forkJoin } from 'rxjs';
+import { PostCardResponse } from '../model/post-card-response.model';
+import { PostDetailResponse } from '../model/post-response.model';
+import { ContetFile } from '../model/content-file.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,8 +41,8 @@ export class DataStorageService {
     this.blogService.setLoadingIndicator(true);
     const posts = this.blogService.getPostsAdded();
     return this.http
-      .put<undefined>(
-        `${this.url}/posts.json`,
+      .post<undefined>(
+        `${this.imageUrl}/blogger/post`,
         posts
       ).pipe(
         tap(response => {
@@ -54,21 +57,23 @@ export class DataStorageService {
   fetchPosts() {
     this.blogService.setLoadingIndicator(true);
     return this.http
-      .get<Post[]>(
-        `${this.url}/posts.json`
+      .get<PostCardResponse[]>(
+        `${this.imageUrl}/blogger/blog?pageNo=0&pageSize=10&sortBy=date`
       )
       .pipe(
-        map(posts => {
-          return posts.map(post => {
-            return {
-              ...post,
-              galleryImages: post.galleryImages ? post.galleryImages : []
-            };
-          });
-        }),
+        map(response => response
+        //   posts => {
+        //   return posts.map(post => {
+        //     return {
+        //       ...post,
+        //       galleryImages: post.galleryImages ? post.galleryImages : []
+        //     };
+        //   });
+        // }
+        ),
         tap(posts => {
           console.log("Fetching post...");
-          this.blogService.setPosts(posts);
+          this.blogService.setPostCards(posts);
           this.blogService.setLoadingIndicator(false);
 
         }),
@@ -76,7 +81,80 @@ export class DataStorageService {
       )
   }
 
+  fetchDetailPosts(postId : number) {
+    this.blogService.setLoadingIndicator(true);
+    return this.http
+      .get<PostDetailResponse>(
+        `${this.imageUrl}/blogger/blog/${postId}`
+      )
+      .pipe(
+        map(response => response
+        ),
+        tap(post => {
+          console.log("Fetching post detail...");
+          // this.blogService.setPostDetailResponse(post);
+          // this.blogService.setLoadingIndicator(false);
 
+        }),
+        catchError(this.handleError)
+      )
+  }
+
+  fetchFileUploaded(reference : number) {
+    this.blogService.setLoadingIndicator(true);
+    return this.http
+      .get<PostDetailResponse>(
+        `${this.imageUrl}/blogger/files/${reference}`
+      )
+      .pipe(
+        map(response => response
+        ),
+        tap(post => {
+          console.log("Fetching files detail...");
+          // this.blogService.setPostDetailResponse(post);
+          // this.blogService.setLoadingIndicator(false);
+
+        }),
+        catchError(this.handleError)
+      )
+  }
+
+  updateContentImages(componentUploadingImg : string): Observable<ContetFile | Error> {
+    let imageObj= null;
+    console.log("======Get images for component  : ===== " + componentUploadingImg);
+    if(componentUploadingImg==='postImg'){
+     
+      imageObj = this.uploadService.getUpdateContentPostImg();
+      
+    }
+    if(componentUploadingImg==='backgroundImg'){
+      imageObj = this.uploadService.getUpdateContentBgImg();
+      
+    }
+    if(componentUploadingImg==='upload'){
+
+      imageObj = this.uploadService.getUpdateContentUploadedImg();
+      
+    }
+    if(imageObj === null){
+      console.log("======Should not push empty Imagess : =====");
+      return;
+    }
+
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Image deatail data : " + JSON.stringify(imageObj));
+    return this.http
+      .put<ContetFile>(
+        `${this.url}/updated.json`,
+        imageObj
+      ).pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        map((response : ContetFile )=> response));
+
+  }
 
   saveImages(componentUploadingImg : string): Observable<unknown | Error> {
 
@@ -201,7 +279,7 @@ export class DataStorageService {
     formData.append('image', file);
     formData.append('description', fileUploadDetails.description);
     formData.append('portfolioType', fileUploadDetails.portfolioType);
-    formData.append('title', fileUploadDetails.title);
+    formData.append('title', fileUploadDetails.tittle);
 
     const req = new HttpRequest('POST', `${this.imageUrl}/blogger/image/v1`, formData, {
       reportProgress: true,

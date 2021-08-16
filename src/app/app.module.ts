@@ -53,6 +53,15 @@ import { PostImageItemComponent } from './blog/post/post-new/post-image-item/pos
 import { ImageUploadComponent } from './blog/portfolio/image-upload/image-upload.component';
 import { AlertMessageComponent } from './shared/alert-message/alert-message.component';
 import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
+import { FilesComponent } from './blog/files/files.component';
+import { FilesListComponent } from './blog/files/files-list/files-list.component';
+import { FilesDetailComponent } from './blog/files/files-detail/files-detail.component';
+import { FilesStartComponent } from './blog/files/files-start/files-start.component';
+import { FilesEditComponent } from './blog/files/files-edit/files-edit.component';
+import { FilesItemComponent } from './blog/files/files-list/files-item/files-item.component';
+import { PostBgComponent } from './blog/post/post-edit/post-bg/post-bg.component';
+import { PostPtComponent } from './blog/post/post-edit/post-pt/post-pt.component';
+
 
 @NgModule({
   declarations: [
@@ -88,6 +97,15 @@ import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/ima
     ImageUploadComponent,
     AlertMessageComponent,
     ImageUploadImplComponent,
+    FilesComponent,
+    FilesListComponent,
+    FilesDetailComponent,
+    FilesStartComponent,
+    FilesEditComponent,
+    FilesItemComponent,
+    PostBgComponent,
+    PostPtComponent,
+   
   
 
  

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { PostCardResponse } from 'src/app/model/post-card-response.model';
 
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
@@ -8,14 +9,14 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PostResolverService implements Resolve<Post[]> {
+export class PostResolverService implements Resolve<PostCardResponse[]> {
   constructor(
     private dataStorageService: DataStorageService,
     private blogService: BlogService,
   ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)  {
-    const posts = this.blogService.getPosts();
+    const posts = this.blogService.getPostCards();
    
     console.log('Current State url : ' + state.url 
     + ' - Posts available locally : ' + posts.length);
@@ -28,9 +29,9 @@ export class PostResolverService implements Resolve<Post[]> {
     }
   }
   onFetchData() {
-    return this.dataStorageService.fetchPosts().subscribe(posts=>{
+    return this.dataStorageService.fetchPosts().subscribe(postCards=>{
      
-      this.blogService.setPosts(posts);
+      this.blogService.setPostCards(postCards);
       this.blogService.setLoadingIndicator(false);
     },errorMessage =>{
    

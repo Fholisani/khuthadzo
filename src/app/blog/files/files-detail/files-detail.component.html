@@ -1,0 +1,45 @@
+
+<div *ngIf="componentUploadingImg==='backgroundImg'" >
+    <h2>Manage Background Image</h2>
+</div>
+
+<div *ngIf="componentUploadingImg==='postImg'" >
+
+    <h2>Manage Post Image</h2>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <img [src]="imageContent.url" alt="{{imageContent.tittle}}" class="img-responsive" 
+        style="max-height:180px;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{imageContent.tittle}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="btn-group"
+        appDropdown>
+            <button type="button" class="btn btn-primary dropdown-toggle">
+                Manage Image<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" style="cursor: pointer;" (click)="onEditFileUploaded()">Edit Recipe</a></li>
+                <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteFileUploaded()">Delete Recipe</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{imageContent.reference}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{imageContent.description}}
+    </div>
+</div>

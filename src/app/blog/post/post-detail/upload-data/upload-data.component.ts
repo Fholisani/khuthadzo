@@ -61,9 +61,9 @@ export class UploadDataComponent implements OnInit {
   }
 
   onFetchData() {
-    this.dataStorageService.fetchPosts().subscribe(posts=>{
+    this.dataStorageService.fetchPosts().subscribe(postCards=>{
      
-      this.blogService.setPosts(posts);
+      this.blogService.setPostCards(postCards);
       this.blogService.setLoadingIndicator(false);
     },errorMessage =>{
    

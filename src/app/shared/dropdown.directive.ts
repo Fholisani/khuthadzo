@@ -6,7 +6,7 @@ import { Directive, HostListener, HostBinding, ElementRef, Renderer2, Output, Ev
 export class DropdownDirective {
   @Output() clickElsewhere = new EventEmitter<MouseEvent>(); 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
-  @HostBinding('class.open') isOpen = false;
+  @HostBinding('class.show') isOpen = false;
 
   @HostListener('click') toggleOpen() {
     this.isOpen = !this.isOpen;

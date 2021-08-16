@@ -2,6 +2,12 @@
 <br>
 <div class="container">
     <div class="row">
+      <div *ngIf="isLoading">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <div class="alert alert-danger" *ngIf="errorMessage">
+        <p>{{errorMessage}}</p>
+      </div>
       <div class="col-sm-8">
 
         <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
@@ -16,36 +22,38 @@
           Manage Post <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-          <li><a style="cursor: pointer;" (click)="onEditRecipe()">Edit Post</a></li>
-          <li><a style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Post</a></li>
+          <li><a class="dropdown-item" style="cursor: pointer;" (click)="onEditRecipe()">Edit Post</a></li>
+          <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Post</a></li>
         </ul>
       </div>
 
-        <div class="card text-dark bg-light mb-3">
+      
+        <div class="card text-dark bg-light mb-3" *ngIf="postDetailResponse">
             <div class="card-header">
-                <h3 class="card-title">{{post.heading}}</h3>
+                <h3 class="card-title">{{postDetailResponse.heading}}</h3>
             </div>
             <br>
             <div class="card-body">
               <h5 class="card-title"> <markdown ngPreserveWhitespaces>
-                {{post.subHeading}}
+                {{postDetailResponse.subHeading}}
               </markdown></h5>
              
               <p class="card-text">
-                <markdown ngPreserveWhitespaces>{{post.body}}</markdown></p>
+                <markdown ngPreserveWhitespaces>{{postDetailResponse.body}}</markdown></p>
 
                 <p class="card-text">
-                    Date : {{post.body}}
+                    Date : {{postDetailResponse.body}}
                 </p>
                 <p class="card-text">
-                    Author : {{post.author}}
+                    Author : {{postDetailResponse.author}}
                 </p>
                 <p class="card-text">
-                    Read Time : {{post.readTime}}
+                    Read Time  {{postDetailResponse.readTime}} Minutes
                 </p>
             </div>
           </div>
       </div>
+      
     </div>
 
   </div>

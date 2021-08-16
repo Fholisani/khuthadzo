@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PostCard } from 'src/app/model/post-card.model';
+import { PostCardResponse } from 'src/app/model/post-card-response.model';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 
@@ -10,9 +10,10 @@ import { BlogService } from 'src/app/service/blog-service.service';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  postCards: PostCard[];
+ // postCards: PostCard[];
   numberOfPosts: number;
   posts: Post[];
+  postCards: PostCardResponse[];
   isPostAvailable = false;
   isCreatePost = false;
   subscription: Subscription;
@@ -42,10 +43,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     // "https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg",5)];
 
 
-    this.subscription = this.blogService.postsChanged
+    this.subscription = this.blogService.postCardsChanged
       .subscribe(
-        (posts: Post[]) => {
-          this.posts = posts;
+        (postCards: PostCardResponse[]) => {
+          this.postCards = postCards;
           this.newPostsAvailable();
         }
       );
@@ -84,14 +85,21 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   newPostsAvailable() {
-    var localPostCards = [];
-    this.posts.forEach(post => {
-      const postCard = new PostCard(post.heading, post.subHeading, post.postCardImage, post.id);
-      localPostCards.push(postCard);
-    });
-    this.postCards = localPostCards;
-    this.errorMessage=null;
-    this.successMessage=null;
+    if(this.postCards !== undefined){
+      var localPostCards = [];
+      this.postCards.forEach(post => {
+        //const postCard = new PostCard(post.heading, post.subHeading, post.postCardImage, post.id);
+        const postCard = new PostCardResponse(post.postId,post.heading, post.subHeading, post.backgroundImage, post.readTime,
+        post.reference,post.date);
+        
+        localPostCards.push(postCard);
+      });
+      this.postCards = localPostCards;
+      this.errorMessage=null;
+      this.successMessage=null;
+
+    }
+
 
   }
 

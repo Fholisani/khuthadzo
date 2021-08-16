@@ -44,9 +44,9 @@ export class SearchComponent implements OnInit {
           console.log(this.formData);
           // Handle saving form data
 
-          this.dataStorageService.fetchPosts().subscribe(posts => {
+          this.dataStorageService.fetchPosts().subscribe(postCards => {
 
-            this.blogService.setPosts(posts);
+            this.blogService.setPostCards(postCards);
             this.blogService.setLoadingIndicator(false);
             this.onSearchResults();
           }, errorMessage => {
