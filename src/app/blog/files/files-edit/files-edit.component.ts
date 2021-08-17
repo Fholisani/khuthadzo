@@ -50,13 +50,22 @@ export class FilesEditComponent implements OnInit, OnDestroy {
   id: number;
   editMode = false;
   componentUploadingImg: string;
-
+  extractedPostId: number = 0;
+  public href: string = null;
   constructor(private route: ActivatedRoute,private router: Router,
     private uploadService: UploadService) { }
 
   ngOnInit(): void {
     console.log("isMultipleUpload : " + this.isMultipleUpload)
 
+    this.href = this.router.url;
+    console.log(this.router.url);
+    if(this.href !== null){
+      //Extract id after /post/0/...
+      let extractedPt = this.href.split('/')[2];
+      this.extractedPostId = +extractedPt;
+    }
+   
 
     this.uploadService.uploadedDataSource.next([]);
 
@@ -71,12 +80,15 @@ export class FilesEditComponent implements OnInit, OnDestroy {
         console.log("Is edit mode : " + this.editMode + " : " + this.componentUploadingImg);
         if(this.componentUploadingImg==='postImg'){
           this.portfolioTypes =['Post']
+          this.isMultipleUpload =true;
         }
         if(this.componentUploadingImg==='upload'){
           this.portfolioTypes =['Carousel','HandDrawing', 'Architecture' ]
+          this.isMultipleUpload =true;
         }
         if(this.componentUploadingImg==='backgroundImg'){
           this.portfolioTypes =['Background']
+          this.isMultipleUpload =false;
         }
         this.initForm();
       }
@@ -158,7 +170,8 @@ export class FilesEditComponent implements OnInit, OnDestroy {
         tittle: this.form.value.tittle,
         description: this.form.value.description,
         portfolioType: this.form.value.portfolioType,
-        images: this.form.value.images
+        images: this.form.value.images,
+        postId: this.form.value.postId,
       });
       this.uploadService.createImage(this.form.value,this.componentUploadingImg);
       
@@ -238,6 +251,7 @@ export class FilesEditComponent implements OnInit, OnDestroy {
         description: new FormControl(imgDescription, Validators.required),
         portfolioType: new FormControl(imgPortfolioType, Validators.required),
         images: imgImages,
+        postId: new FormControl(this.extractedPostId),
   
       });
     }

@@ -53,6 +53,24 @@ export class DataStorageService {
         map(response => response));
     
   }
+  updatePost(): Observable<undefined | Error> {
+
+    this.blogService.setLoadingIndicator(true);
+    const post = this.blogService.getUpdatedPost();
+    return this.http
+      .put<undefined>(
+        // `${this.imageUrl}/blogger/post/${post.index}`,
+        `${this.url}/postupdate.json`,
+        post.post
+      ).pipe(
+        tap(response => {
+          console.log(response);
+
+
+        }),
+        map(response => response));
+    
+  }
 
   fetchPosts() {
     this.blogService.setLoadingIndicator(true);
@@ -145,7 +163,7 @@ export class DataStorageService {
     console.log("Image deatail data : " + JSON.stringify(imageObj));
     return this.http
       .put<ContetFile>(
-        `${this.url}/updated.json`,
+        `${this.imageUrl}/blogger/content/${imageObj.contentId}`,
         imageObj
       ).pipe(
         tap(response => {
@@ -258,7 +276,7 @@ export class DataStorageService {
           console.log('PushED images Map');
           // fileUpload.imageUrls.push(new ImageUrl(imageElement.image.name, response));
 
-          return new ImageUrl(imageElement.image.name, response,"")
+          return new ImageUrl(imageElement.image.name, response,"","")
         }),
         catchError(this.handleError)
 
@@ -275,11 +293,18 @@ export class DataStorageService {
   upload(file: File, fileUploadDetails: Image): Observable<HttpEvent<any>> {
     console.log('Push images Local instances');
     const formData: FormData = new FormData();
+    let postId = 0 +'';
+    if(fileUploadDetails.postId){
+      postId = fileUploadDetails.postId +'';
+    }
+
 
     formData.append('image', file);
     formData.append('description', fileUploadDetails.description);
     formData.append('portfolioType', fileUploadDetails.portfolioType);
     formData.append('title', fileUploadDetails.tittle);
+    formData.append('postId',postId );
+    
 
     const req = new HttpRequest('POST', `${this.imageUrl}/blogger/image/v1`, formData, {
       reportProgress: true,
@@ -311,14 +336,16 @@ export class DataStorageService {
           console.log('PushED images Map type ' + response.type);
           let reference = '';
           let url = '';
+          let contentId = '';
           if (response.type === HttpEventType.Response) {
             reference = response.body.reference;
             url = response.body.url;
-            console.log('Locate image URL : ' + url);
+            contentId = response.body.contentId;
+            console.log('contentId : ' +contentId +  ' - Locate image URL : ' + url);
           
           }
 
-          return new ImageUrl(imageElement.image.name,url,reference )
+          return new ImageUrl(imageElement.image.name,url,reference , contentId)
           
         }),
         catchError(this.handleError)
@@ -379,6 +406,20 @@ export class DataStorageService {
 
 
   }
+  deleteImage(contentFile: ContetFile): Observable<unknown | Error> {
+    this.uploadService.setLoadingIndicator(true);
+    return this.http
+      .delete<unknown>(
+        `${this.imageUrl}/blogger/image/v1/${contentFile.reference}`,
+       
+      ).pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        map(response => response));
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = "An unkonwn error occured";
     console.log("Error - " + errorRes);

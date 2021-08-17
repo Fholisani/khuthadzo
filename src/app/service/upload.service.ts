@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContetFile } from '../model/content-file.model';
 import { Image, ImageUrl } from '../model/image.model';
+import { RemoveImg } from '../model/remove-img.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,11 +48,13 @@ export class UploadService {
  // navItem$ = this.imagesPostAdded.asObservable();
  fileImageBgChanged = new Subject<ContetFile[]>();
  fileImageBgDelete = new Subject<ContetFile[]>();
- fileImageBgDeleteLocalIndex = new Subject<number>();
+ fileImageBgObjDelete = new Subject<ContetFile>();
+ fileImageBgDeleteLocalIndex = new Subject<RemoveImg>();
 
  fileImagePostChanged = new Subject<ContetFile[]>();
  fileImagePostDelete = new Subject<ContetFile[]>();
- fileImagePostDeleteLocalIndex = new Subject<number>();
+ fileImagePostObjDelete = new Subject<ContetFile>();
+ fileImagePostDeleteLocalIndex = new Subject<RemoveImg>();
 
  componentCallingFileEdit = new  BehaviorSubject<string>(null);
  private fileImageBgUrls: ContetFile[]=[];
@@ -244,18 +247,20 @@ export class UploadService {
 
   }
   deleteBgFileUploaded(index: number){
-
+      this.fileImageBgDeleteLocalIndex.next(new RemoveImg(index,this.fileImageBgUrls[index] ));
+      this.fileImageBgObjDelete.next(this.fileImageBgUrls[index]);
       this.fileImageBgUrls.slice(index,1);
       this.fileImageBgDelete.next(this.fileImageBgUrls.slice());
-      this.fileImageBgDeleteLocalIndex.next(index);
+      
 
   }
 
   deletePostFileUploaded(index: number){
-
+    this.fileImagePostDeleteLocalIndex.next(new RemoveImg(index,this.fileImagePostUrls[index] ));
+    this.fileImagePostObjDelete.next(this.fileImagePostUrls[index]);
     this.fileImagePostUrls.slice(index,1);
     this.fileImagePostDelete.next(this.fileImagePostUrls.slice());
-    this.fileImagePostDeleteLocalIndex.next(index);
+   
 
 }
 

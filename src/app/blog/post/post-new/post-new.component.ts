@@ -393,8 +393,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
     // });
     if (this.newPostForm.status === 'VALID') {
       if (this.editMode) {
-        this.blogService.updatePost(this.id, this.newPostForm.value);
-        this.router.navigate(['/search']);
+        // this.blogService.updatePost(this.id, this.newPostForm.value);
+        // this.router.navigate(['/search']);
       } else {
 
         this.blogService.createPost(this.newPostForm.value);

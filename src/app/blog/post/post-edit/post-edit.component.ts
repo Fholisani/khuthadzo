@@ -7,7 +7,9 @@ import { element } from 'protractor';
 import { Subscription } from 'rxjs';
 import { ContetFile } from 'src/app/model/content-file.model';
 import { Image, ImageUrl } from 'src/app/model/image.model';
+import { PostUpdate } from 'src/app/model/post-update.model';
 import { Post } from 'src/app/model/post.model';
+import { RemoveImg } from 'src/app/model/remove-img.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { AlertMessageComponent } from 'src/app/shared/alert-message/alert-message.component';
@@ -61,6 +63,8 @@ export class PostEditComponent implements OnInit, OnDestroy {
   InputVarMultiple: ElementRef;
   private subscriptionContetFileBg: Subscription;
   private subscriptionContetFileBgDelete: Subscription;
+  private subscriptionFileImageBgObjDelete: Subscription;
+  private subscriptionFileImagePostObjDelete: Subscription;
   private subscriptionContetFilePostDelete: Subscription;
   private subscriptionContetFilePost: Subscription;
   private contentImageListBgAddedSub: Subscription;
@@ -81,6 +85,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   private uploadedBgImageSub: Subscription;
   componentBgUploading: string = 'backgroundImg';
   private subscription: Subscription;
+  private subscriptionPostUpdateChanged: Subscription;
   private subscriptionComponent: Subscription;
   @ViewChild('app-alert-message') childAlertMessageComponent: AlertMessageComponent;
   uploadedContentImageBg: ContetFile[] = [];
@@ -99,25 +104,35 @@ export class PostEditComponent implements OnInit, OnDestroy {
     console.log("=====POST EDIT GO AHEAD AND REMOVE SUSBCRIPTIONS=====");
 
     if (this.contentImagesBgAddedSub) {
-      this.contentImagesBgAddedSub.remove
+      this.contentImagesBgAddedSub.remove;
       this.contentImagesBgAddedSub.unsubscribe();
     }
   
     if (this.contentImagesPostAddedSub) {
-      this.contentImagesPostAddedSub.remove
+      this.contentImagesPostAddedSub.remove;
       this.contentImagesPostAddedSub.unsubscribe();
     }
     if(this.subscriptionContetFileBgDelete){
-      this.subscriptionContetFileBgDelete.remove
+      this.subscriptionContetFileBgDelete.remove;
       this.subscriptionContetFileBgDelete.unsubscribe();
     }
+
+  
+    if(this.subscriptionFileImageBgObjDelete){
+      this.subscriptionFileImageBgObjDelete.remove;
+      this.subscriptionFileImageBgObjDelete.unsubscribe();
+    }
     //
+    if(this.subscriptionFileImagePostObjDelete){
+      this.subscriptionFileImagePostObjDelete.remove;
+      this.subscriptionFileImagePostObjDelete.unsubscribe();
+    }
     if(this.subscriptionContetFilePostDelete){
-      this.subscriptionContetFilePostDelete.remove
+      this.subscriptionContetFilePostDelete.remove;
       this.subscriptionContetFilePostDelete.unsubscribe();
     }
     // if(this.subscriptionContetFileBg){
-    this.subscriptionContetFileBg.remove
+    this.subscriptionContetFileBg.remove;
     this.subscriptionContetFileBg.unsubscribe();
     // } 
     // if(this.subscriptionContetFilePost){
@@ -131,6 +146,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
       this.contentImageListBgAddedSub.unsubscribe();
     }
 
+    if(this.subscriptionPostUpdateChanged){
+      this.subscriptionPostUpdateChanged.unsubscribe();
+    }
 
     this.subscription.remove
     this.subscription.unsubscribe();
@@ -159,7 +177,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.subscriptionContetFileBgDelete = this.uploadService.fileImageBgDelete.subscribe(
       (imageFileContent: ContetFile[]) => {
         console.log("Deleted the image file by sending to the service : "  + imageFileContent);
-        this.successUploadMessage = "Succesfully deleted the Image!!";
+       // this.successUploadMessage = "Succesfully deleted the Image!!";
         // this.uploadedContentImageBg = imageFileContent;
        // this.uploadedContentImageBg = this.uploadService.getBgFilesUploaded();
 
@@ -169,13 +187,31 @@ export class PostEditComponent implements OnInit, OnDestroy {
     //fileImageBgDeleteLocalIndex
     //fileImageBgDelete
     this.subscriptionContetFileBgDelete = this.uploadService.fileImageBgDeleteLocalIndex.subscribe(
-      (index: number) => {
-        console.log("Deleted the image file at local Index : "  + index);
+      (removeImg: RemoveImg) => {
+        console.log("Deleted the image file at local Index : "  + removeImg.index);
 
         // this.uploadedContentImageBg = imageFileContent;
-        this.removeImageBackgroundV2(index);
+        this.onDeleteImg(removeImg, 'backgroundImg');
+     
        
 
+      }
+    );
+
+    //
+    this.subscriptionFileImageBgObjDelete = this.uploadService.fileImageBgObjDelete.subscribe(
+      (contentFile: ContetFile) => {
+        console.log("Deleted the image file at local Index : "  + contentFile);
+
+   //     this.onDeleteImg(contentFile);
+      }
+    );
+
+    this.subscriptionFileImagePostObjDelete = this.uploadService.fileImagePostObjDelete.subscribe(
+      (contentFile: ContetFile) => {
+        console.log("Deleted the image file at local Index : "  + contentFile);
+
+      //  this.onDeleteImg(contentFile);
       }
     );
 
@@ -192,7 +228,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.subscriptionContetFilePostDelete = this.uploadService.fileImagePostDelete.subscribe(
       (imageFileContent: ContetFile[]) => {
         console.log("Deleted the image file by sending to the service : "  + imageFileContent);
-        this.successUploadMessage = "Succesfully deleted the Image!!";
+       // this.successUploadMessage = "Succesfully deleted the Image!!";
         // this.uploadedContentImageBg = imageFileContent;
        // this.uploadedContentImageBg = this.uploadService.getBgFilesUploaded();
 
@@ -202,11 +238,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
     //fileImageBgDeleteLocalIndex
     //fileImageBgDelete
     this.subscriptionContetFilePostDelete = this.uploadService.fileImagePostDeleteLocalIndex.subscribe(
-      (index: number) => {
-        console.log("Deleted the image file at local Index : "  + index);
+      (removeImg: RemoveImg) => {
+        console.log("Deleted the image file at local Index : "  + removeImg.index);
 
         // this.uploadedContentImageBg = imageFileContent;
-        this.removeImagePostV2(index);
+        this.onDeleteImg(removeImg,'postImg');
+       
        
 
       }
@@ -214,6 +251,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
       this.editMode = params['id'] != null;
+     
       this.initForm();
     });
     // let uplImage =[];
@@ -251,6 +289,14 @@ export class PostEditComponent implements OnInit, OnDestroy {
       .subscribe(
         (posts: Post[]) => {
           this.dataEmit();
+        }
+      );
+    this.subscriptionPostUpdateChanged = this.blogService.postUpdateChanged
+      .subscribe(
+        (post: PostUpdate) => {
+          //Call the serice to updateCall
+          
+          this.onUpdateData();
         }
       );
 
@@ -347,6 +393,9 @@ export class PostEditComponent implements OnInit, OnDestroy {
           if (this.componentUploadingImg === 'backgroundImg') {
             this.errorUploadBgMessage = errorMessage;
           }
+          // if(this.errorUploadBgMessage){
+          //   this.errorUploadBgMessage = null;
+          // }
 
         }
       );
@@ -479,6 +528,28 @@ export class PostEditComponent implements OnInit, OnDestroy {
     // this.router.navigate(['../'], { relativeTo: this.route });
   }
 
+
+  onUpdateData() {
+    this.dataStorageService.updatePost()
+      .subscribe(
+        response => {
+          console.log(response);        
+          this.blogService.setLoadingIndicator(false);
+          this.blogService.setSuccessMessage("Update successfully");
+          this.blogService.setErrorMessage(null);
+          //Fire another event to get latest ResponseDetails
+          //this.onFetchData(this.id);
+        },
+        errorMessage => {
+          console.log('HTTP Error', errorMessage)
+          let errMsg = `Unable to save due to  ${errorMessage.message}()`;
+          this.blogService.setErrorMessage(errMsg);
+          this.blogService.setLoadingIndicator(false);
+          this.blogService.setSuccessMessage(null);
+          
+        });
+  }
+
   onSaveDataImg() {
     console.log(" ======Calling from POST-NEW component======= : " + this.componentUploadingImg);
 
@@ -496,7 +567,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
               this.uploadedImageUrl.push(element);
 
               
-              this.uploadedContentImagePost.push(new ContetFile(0,this.id,
+              this.uploadedContentImagePost.push(new ContetFile(+element.contentId,this.id,
                 element.reference,element.url,element.description,ms.portfolioType,ms.tittle));
               
             });
@@ -517,11 +588,11 @@ export class PostEditComponent implements OnInit, OnDestroy {
               element.description = ms.description;
               this.uploadedBgImageUrl.push(element);
               
-              this.uploadedContentImagePost.push(new ContetFile(0,this.id,
+              this.uploadedContentImageBg.push(new ContetFile(+element.contentId,this.id,
                 element.reference,element.url,element.description,ms.portfolioType,ms.tittle));
             });
             this.takeContentImage = this.uploadService.getImagesBgAdded();
-            this.uploadService.updateFileList(this.takeContentImage, this.componentUploadingImg, this.uploadedBgImageUrl[0]);
+            //this.uploadService.updateFileList(this.takeContentImage, this.componentUploadingImg, this.uploadedBgImageUrl[0]);
             this.uploadService.uploadedImgDataSource(this.uploadedBgImageUrl);
             this.uploadService.cleanImages();
             this.uploadService.cleanPostImages();
@@ -551,6 +622,49 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
     // this.router.navigate(['../'], { relativeTo: this.route });
   }
+
+  onDeleteImg(removeImg : RemoveImg,componentUploadingImg){
+    this.subscription = this.dataStorageService.deleteImage(removeImg.contentFile)
+    .subscribe(
+      response => {
+      
+        this.uploadService.setLoadingIndicator(false);
+        this.uploadService.setSuccessMessage(null);
+        this.uploadService.setErrorMessage(null);
+        if (componentUploadingImg === 'postImg') {
+          this.removeImagePostV2(removeImg.index);
+          this.successUploadMessage = "Succesfully deleted the Image!!";
+        }
+        if (componentUploadingImg === 'backgroundImg') {
+          this.removeImageBackgroundV2(removeImg.index);
+          this.successUploadBgMessage = "Succesfully deleted the Image!!";
+        }
+
+
+      },
+      errorMessage => {
+        console.log('HTTP Error', errorMessage)
+        let errMsg = `Unable to delete due to `;
+        if (errorMessage == undefined) {
+
+          errMsg += ' service unavailable! '
+        } else {
+          errMsg += `${errorMessage.message}`
+        }
+
+        this.uploadService.setErrorMessage(errMsg);
+        this.uploadService.setSuccessMessage(null);
+        this.uploadService.setLoadingIndicator(false);
+        if (componentUploadingImg === 'postImg') {
+          this.errorUploadMessage = "Failed to delete the image!!";
+        }
+        if (componentUploadingImg === 'backgroundImg') {
+          this.errorUploadBgMessage = "Failed to delete the image!!";
+        }
+        
+
+      });
+  }
   private initForm() {
     let postId = 0;
     let postSlug = '';
@@ -569,7 +683,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
       postData.contentFilesBg.forEach(element => {
         this.uploadService.addFileBg(element);
-        this.uploadedBgImageUrl.push(new ImageUrl(element.tittle, element.url, element.reference));
+        this.uploadedBgImageUrl.push(new ImageUrl(element.tittle, element.url, element.reference,element.contentId+''));
 
       });
       postData.contentFilesPost.forEach(element => {
@@ -639,12 +753,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
     this.submitted = true;
     console.log('Push image file');
 
-
-    for (let i = 0; i < this.uploadedImageUrl.length; i++) {
+    (<FormArray>this.newPostForm.get('imageUrls')).clear();
+    for (let i = 0; i < this.uploadedContentImagePost.length; i++) {
       (<FormArray>this.newPostForm.get('imageUrls')).push(new FormGroup({
-        reference: new FormControl(this.uploadedImageUrl[i].reference, Validators.required),
-        name: new FormControl(this.uploadedImageUrl[i].name, Validators.required),
-        url: new FormControl(this.uploadedImageUrl[i].url, {
+        reference: new FormControl(this.uploadedContentImagePost[i].reference, Validators.required),
+        name: new FormControl(this.uploadedContentImagePost[i].tittle, Validators.required),
+        url: new FormControl(this.uploadedContentImagePost[i].url, {
           validators: [Validators.required],
           // asyncValidators: [mimeType]
         })
@@ -652,19 +766,19 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
     }
     this.newPostForm.get('imageUrls').updateValueAndValidity();
-    const postData = this.blogService.getPostDetailResponse();
+    // const postData = this.blogService.getPostDetailResponse();
 
-    postData.contentFilesBg.forEach(element => {
+    // postData.contentFilesBg.forEach(element => {
 
-      this.uploadedBgImageUrl.push(new ImageUrl(element.tittle, element.url, element.reference));
+    //   this.uploadedBgImageUrl.push(new ImageUrl(element.tittle, element.url, element.reference, element.contentId+''));
 
-    });
-
-    for (let i = 0; i < this.uploadedBgImageUrl.length; i++) {
+    // });
+    (<FormArray>this.newPostForm.get('backgroundImage')).clear();
+    for (let i = 0; i < this.uploadedContentImageBg.length; i++) {
       (<FormArray>this.newPostForm.get('backgroundImage')).push(new FormGroup({
-        reference: new FormControl(this.uploadedBgImageUrl[i].reference, Validators.required),
-        name: new FormControl(this.uploadedBgImageUrl[i].name, Validators.required),
-        url: new FormControl(this.uploadedBgImageUrl[i].url, {
+        reference: new FormControl(this.uploadedContentImageBg[i].reference, Validators.required),
+        name: new FormControl(this.uploadedContentImageBg[i].tittle, Validators.required),
+        url: new FormControl(this.uploadedContentImageBg[i].url, {
           validators: [Validators.required],
           // asyncValidators: [mimeType]
         })
@@ -678,9 +792,15 @@ export class PostEditComponent implements OnInit, OnDestroy {
     //   // formControlName2: myValue2 (can be omitted)
     // });
     if (this.newPostForm.status === 'VALID') {
+      this.errorUploadBgMessage = null;
+        this.errorUploadMessage = null;
+        this.successUploadBgMessage = null;
+        this.successUploadMessage = null;
+       
       if (this.editMode) {
-        this.blogService.updatePost(this.id, this.newPostForm.value);
-        this.router.navigate(['/search']);
+        
+        this.blogService.updatePost(new PostUpdate(this.id, this.newPostForm.value));
+       // this.router.navigate(['/search']);
       } else {
 
         this.blogService.createPost(this.newPostForm.value);
@@ -688,9 +808,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
       this.dataEmit()
       //this.onCancel();
-      this.reset();
+     // this.reset();
+        
 
     } else {
+      this.successUploadBgMessage = null;
+      this.successUploadMessage = null;
       if (this.newPostForm.controls.imageUrls.invalid && this.hasComponentSubmitedPostImages) {
 
         alert("Please, Make sure images POST are added!!");
@@ -892,9 +1015,20 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
     }
 
-    // onCancel(){
-
-    //   this.reset();
-    //   this.toggleShow();
-    // }
+    onFetchData(postId: number) {
+      this.blogService.setLoadingIndicator(true);
+      return this.dataStorageService.fetchDetailPosts(postId).subscribe(postDetail => {
+  
+        this.blogService.setPostDetailResponse(postDetail);
+      
+        this.blogService.setLoadingIndicator(false);
+        this.initForm();
+      }, errorMessage => {
+  
+        console.log('HTTP Error', errorMessage)
+        let errMsg = `Unable to retrieve blog post due to  ${errorMessage}()`;
+        this.blogService.setErrorMessage(errMsg);
+        this.blogService.setLoadingIndicator(false);
+      });
+    }
 }

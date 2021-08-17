@@ -4,6 +4,7 @@ import { ContetFile } from '../model/content-file.model';
 import { ImageUrl } from '../model/image.model';
 import { PostCardResponse } from '../model/post-card-response.model';
 import { PostDetailResponse } from '../model/post-response.model';
+import { PostUpdate } from '../model/post-update.model';
 import { Post } from '../model/post.model';
 
 @Injectable({
@@ -16,11 +17,14 @@ export class BlogService {
   postsChanged = new Subject<Post[]>();
   postCardsChanged = new Subject<PostCardResponse[]>();
   postsAdded = new Subject<Post[]>();
+
+  postUpdateChanged = new Subject<PostUpdate>();
   
   private posts: Post[] = [];
   // private fileImageUrls: ImageUrl[] = [];
   private postCards: PostCardResponse[] = [];
   private postDetailResponse: PostDetailResponse = null;
+  private postUpdate: PostUpdate = null;
   postDetailResponseChanged = new Subject<PostDetailResponse>();
   private postsAdd: Post[] = [];
   isLoading=false;
@@ -57,6 +61,15 @@ export class BlogService {
     this.postDetailResponse = postDetailResponse;
     this.postDetailResponseChanged.next(this.postDetailResponse);
   }
+  updatePost(postUpdated: PostUpdate) {
+    this.postUpdate = postUpdated;
+    this.postUpdateChanged.next(this.postUpdate);
+
+  }
+  getUpdatedPost(){
+    return this.postUpdate;
+  }
+
   getPosts(){
     return this.posts.slice();
   }
@@ -72,82 +85,11 @@ export class BlogService {
   getPost(index: number) {
     return this.posts[index];
   }
-  updatePost(index: number, newPost: Post) {
 
-
-    newPost.postCardImage ="https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg";
-    newPost.galleryImages = [
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-big.jpeg',
-        description: 'Testing 1'
-      },
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-big.jpeg',
-        description: 'Testing 2'
-      },
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
-        description: 'Testing 3'
-      },
-      {
-        small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
-        medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
-        big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
-        description: 'Testing 4'
-      }
-    ];
-
-    newPost.date =  new Date("2019-01-16");
-    newPost.author = "*Khuthi*";
-    newPost.readTime = 20;
-    newPost.slug = "Slug";
-    newPost.bgImage = "https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg";
-
-
-    this.posts[index] = newPost;
-    this.postsChanged.next(this.posts.slice());
-
-    //this.postsAdd.push(newPost);
-    this.postsAdd =  this.posts;
-    this.postsAdded.next(this.postsAdd.slice());
-  }
   createPost(payload: Post) {
 
     payload.id =Math.floor(Math.random() * 100) + 1;
-    // payload.postCardImage ="https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg";
-    // payload.galleryImages = [
-    //   {
-    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-small.jpeg',
-    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg',
-    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-big.jpeg',
-    //     description: 'Testing 1'
-    //   },
-    //   {
-    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-small.jpeg',
-    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-medium.jpeg',
-    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/2-big.jpeg',
-    //     description: 'Testing 2'
-    //   },
-    //   {
-    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
-    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
-    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
-    //     description: 'Testing 3'
-    //   },
-    //   {
-    //     small: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-small.jpeg',
-    //     medium: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-medium.jpeg',
-    //     big: 'https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/3-big.jpeg',
-    //     description: 'Testing 4'
-    //   }
-    // ];
-
+  
     payload.date =  new Date("2019-01-16");
     payload.author = "*Khuthi*";
     payload.readTime = 20;

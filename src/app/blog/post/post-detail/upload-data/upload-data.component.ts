@@ -60,6 +60,7 @@ export class UploadDataComponent implements OnInit {
         });
   }
 
+
   onFetchData() {
     this.dataStorageService.fetchPosts().subscribe(postCards=>{
      
