@@ -20,6 +20,7 @@ import { ContetFile } from '../model/content-file.model';
 })
 export class DataStorageService {
 
+
   url = 'https://ng-course-recipe-book-b8129-default-rtdb.firebaseio.com';
   imageUrl = 'http://127.0.0.1:8432';
   private basePath = '/uploads';
@@ -59,8 +60,8 @@ export class DataStorageService {
     const post = this.blogService.getUpdatedPost();
     return this.http
       .put<undefined>(
-        // `${this.imageUrl}/blogger/post/${post.index}`,
-        `${this.url}/postupdate.json`,
+       `${this.imageUrl}/blogger/post/${post.index}`,
+       // `${this.url}/postupdate.json`,
         post.post
       ).pipe(
         tap(response => {
@@ -117,7 +118,24 @@ export class DataStorageService {
         catchError(this.handleError)
       )
   }
+  postDelete(postId: number) {
+      this.blogService.setLoadingIndicator(true);
+    return this.http
+      .delete<undefined>(
+        `${this.imageUrl}/blogger/post/${postId}/delete`
+      )
+      .pipe(
+        map(response => response
+        ),
+        tap(post => {
+          console.log("Fetching post detail...");
+          // this.blogService.setPostDetailResponse(post);
+          // this.blogService.setLoadingIndicator(false);
 
+        }),
+        catchError(this.handleError)
+      )
+  }
   fetchFileUploaded(reference : number) {
     this.blogService.setLoadingIndicator(true);
     return this.http

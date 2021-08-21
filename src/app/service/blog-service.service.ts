@@ -33,6 +33,7 @@ export class BlogService {
   errorMessageChanged=new Subject<string>();
   successMessage: string=null;
   successMessageChanged=new Subject<string>();
+  postDeleteChanged = new Subject<number>();
   
   
 
@@ -107,12 +108,8 @@ export class BlogService {
 
 
 
-  deletePost(index: number) {
-    this.posts.splice(index, 1);
-    this.postsChanged.next(this.posts.slice());
-
-    this.postsAdd =  this.posts;
-    this.postsAdded.next(this.postsAdd.slice());
+  deletePost(postId: number) {
+    this.postDeleteChanged.next(postId);
   }
 
   constructor() { }

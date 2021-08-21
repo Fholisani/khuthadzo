@@ -22,6 +22,7 @@ export class PostDetailComponent implements OnInit,OnDestroy {
   id: number;
   private userSub: Subscription;
   private subscription: Subscription;
+  private subscriptionPostDelete: Subscription;
   private subscriptionPostDetail: Subscription;
   isAuthenticated = false;
   isLoading = false;
@@ -57,6 +58,13 @@ export class PostDetailComponent implements OnInit,OnDestroy {
     .subscribe(
       (isLoading: boolean) => {
         this.isLoading = isLoading;
+      }
+    );
+
+    this.subscriptionPostDelete = this.blogService.postDeleteChanged
+    .subscribe(
+      (postId: number) => {
+        this.onPostDelete(postId);
       }
     );
     this.subscription = this.blogService.errorMessageChanged
@@ -126,7 +134,7 @@ export class PostDetailComponent implements OnInit,OnDestroy {
 
   onDeleteRecipe() {
     this.blogService.deletePost(this.id);
-    this.router.navigate(['/home']);
+  //  this.router.navigate(['/home']);
   }
 
   onFetchData(postId: number) {
@@ -144,10 +152,25 @@ export class PostDetailComponent implements OnInit,OnDestroy {
       this.blogService.setLoadingIndicator(false);
     });
   }
+  onPostDelete(postId: number) {
+    this.blogService.setLoadingIndicator(true);
+    return this.dataStorageService.postDelete(postId).subscribe(postDetail => {
+
+      this.blogService.setLoadingIndicator(false);
+      this.router.navigate(['/home']);
+    }, errorMessage => {
+
+      console.log('HTTP Error', errorMessage)
+      let errMsg = `Unable to delete blog post due to  ${errorMessage}()`;
+      this.blogService.setErrorMessage(errMsg);
+      this.blogService.setLoadingIndicator(false);
+    });
+  }
   ngOnDestroy() {
     this.userSub.unsubscribe();
     this.subscription.unsubscribe();
     this.subscriptionPostDetail.unsubscribe();
+    this.subscriptionPostDelete.unsubscribe();
   }
   
 

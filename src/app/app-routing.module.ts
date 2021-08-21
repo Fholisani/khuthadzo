@@ -15,9 +15,7 @@ import { HanddrawingResolverService } from './blog/portfolio/handdrawing-resolve
 import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
 import { PortfolioResolverService } from './blog/portfolio/portfolio-resolver.service';
 import { PostDetailComponent } from './blog/post/post-detail/post-detail.component';
-import { PostBgComponent } from './blog/post/post-edit/post-bg/post-bg.component';
 import { PostEditComponent } from './blog/post/post-edit/post-edit.component';
-import { PostPtComponent } from './blog/post/post-edit/post-pt/post-pt.component';
 import { PostNewComponent } from './blog/post/post-new/post-new.component';
 import { PostResolverService } from './blog/post/post-resolver.service';
 import { PostStartComponent } from './blog/post/post-start/post-start.component';
