@@ -8,50 +8,61 @@
       <div class="alert alert-danger" *ngIf="errorMessage">
         <p>{{errorMessage}}</p>
       </div>
-      <div class="col-sm-8">
+      <div class="col-sm-12">
+        <div class="header d-flex flex-column align-items-center">
+          <h1 class="display-6 mt-3 mb-0">{{postDetailResponse.heading}}</h1>
+          <p class="lead mt-2 mb-4">
+            <markdown ngPreserveWhitespaces>{{postDetailResponse.body}}</markdown>
+            
+          </p>
+          <p class="card-text">
+            Date : {{postDetailResponse.date}}
+        </p>
+        <p class="card-text">
+            Author : {{postDetailResponse.author}}
+        </p>
+        <p class="card-text">
+            Read Time  {{postDetailResponse.readTime}} Minutes
+        </p>
+          <div *ngIf="!isAuthenticated"
+          class="btn-group dropdown"
+          appDropdown >
+          <button
+            type="button"
+            class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Manage Post <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" style="cursor: pointer;" (click)="onEditRecipe()">Edit Post</a></li>
+            <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Post</a></li>
+          </ul>
+        </div>
+         <p></p>
+     
+     
 
-        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-      </div>
-      <div class="col-sm-4">
-        <div *ngIf="isAuthenticated"
-        class="btn-group dropdown"
-        appDropdown >
-        <button
-          type="button"
-          class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Manage Post <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" style="cursor: pointer;" (click)="onEditRecipe()">Edit Post</a></li>
-          <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Post</a></li>
-        </ul>
-      </div>
-
+        </div>
+    
+   
+        
       
-        <div class="card text-dark bg-light mb-3" *ngIf="postDetailResponse">
-            <div class="card-header">
-                <h3 class="card-title">{{postDetailResponse.heading}}</h3>
-            </div>
-            <br>
-            <div class="card-body">
-              <h5 class="card-title"> <markdown ngPreserveWhitespaces>
-                {{postDetailResponse.subHeading}}
-              </markdown></h5>
+      <div class="col-sm-12">
+     
+        <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
+       
+          <div #ipt id="inline-gallery-container" class="d-flex justify-content-center">
+            
+            <p>Show data!!</p>
              
-              <p class="card-text">
-                <markdown ngPreserveWhitespaces>{{postDetailResponse.body}}</markdown></p>
-
-                <p class="card-text">
-                    Date : {{postDetailResponse.body}}
-                </p>
-                <p class="card-text">
-                    Author : {{postDetailResponse.author}}
-                </p>
-                <p class="card-text">
-                    Read Time  {{postDetailResponse.readTime}} Minutes
-                </p>
-            </div>
-          </div>
+            <lightgallery *ngIf="isReady" [settings]="settings" [onInit]="Init" class="inline-gallery-container">
+          
+            </lightgallery>
+          
+      
+         </div>
+      
+        </div>
+       
       </div>
       
     </div>

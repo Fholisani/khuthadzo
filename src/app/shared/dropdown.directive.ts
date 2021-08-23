@@ -4,7 +4,7 @@ import { Directive, HostListener, HostBinding, ElementRef, Renderer2, Output, Ev
   selector: '[appDropdown]'
 })
 export class DropdownDirective {
-  @Output() clickElsewhere = new EventEmitter<MouseEvent>(); 
+  // @Output() clickElsewhere = new EventEmitter<MouseEvent>(); 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
   @HostBinding('class.show') isOpen = false;
 
@@ -20,21 +20,21 @@ export class DropdownDirective {
 
 
  
- @HostListener('document:click', ['$event'])
-  public onDocumentClick(event: MouseEvent): void {
+//  @HostListener('document:click', ['$event'])
+//   public onDocumentClick(event: MouseEvent): void {
 
-    const targetElement = event.target as HTMLElement;
+//     const targetElement = event.target as HTMLElement;
  
-      // Check if the click was outside the element
-      if (targetElement && !this.el.nativeElement.contains(targetElement)) {
+//       // Check if the click was outside the element
+//       if (targetElement && !this.el.nativeElement.contains(targetElement)) {
          
-         //this.clickElsewhere.emit(event);
-         let part = this.el.nativeElement.querySelector('.dropdown-menu');
+//          //this.clickElsewhere.emit(event);
+//          let part = this.el.nativeElement.querySelector('.dropdown-menu');
 
-         this.renderer.removeClass(part, 'show');
-         this.isOpen = !this.isOpen;
-      }
-  }
+//          this.renderer.removeClass(part, 'show');
+//          this.isOpen = !this.isOpen;
+//       }
+//   }
 
   
 

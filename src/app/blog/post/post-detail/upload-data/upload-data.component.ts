@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Image, ImageUrl } from 'src/app/model/image.model';
+import { GalleryImages } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
@@ -118,7 +119,7 @@ export class UploadDataComponent implements OnInit {
     console.log("Upload - onFetchDataImg using portfolio : " + this.portfolioType);
 
     if(this.portfolioType === "Architecture"){
-      this.dataStorageService.fetchImages(this.portfolioType).subscribe((images: Image[])=>{
+      this.dataStorageService.fetchImages(this.portfolioType).subscribe((images: GalleryImages[])=>{
         console.log('HTTP IMG' + images)
         this.uploadService.setImages(images);
         this.uploadService.setLoadingIndicator(false);
@@ -130,8 +131,8 @@ export class UploadDataComponent implements OnInit {
         this.uploadService.setLoadingIndicator(false);
       });
 
-    }else if(this.portfolioType === "Hand-Drawing"){
-      this.dataStorageService.fetchImages(this.portfolioType).subscribe((images: Image[])=>{
+    }else if(this.portfolioType === "HandDrawing" || this.portfolioType === "Hand-Drawing" ){
+      this.dataStorageService.fetchImages("HandDrawing").subscribe((images: GalleryImages[])=>{
         console.log('HTTP IMG' + images)
         this.uploadService.setHandDrawingImages(images);
         this.uploadService.setLoadingIndicator(false);

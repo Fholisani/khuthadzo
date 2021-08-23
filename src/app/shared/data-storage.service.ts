@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, filter, finalize, last, map, switchMap, tap } from 'rxjs/operators';
-import { Post } from '../model/post.model';
+import { GalleryImages, Post } from '../model/post.model';
 import { BlogService } from '../service/blog-service.service';
 import { UploadService } from '../service/upload.service';
 import { Image, ImageUrl } from '../model/image.model';
@@ -383,24 +383,16 @@ export class DataStorageService {
     this.uploadService.setLoadingIndicator(true);
     console.log("Pulling images of portfolio type : " + portfolioType);
     return this.http
-      .get<Image[]>(
-        `${this.url}/images.json`
+      .get<GalleryImages[]>(
+        `${this.imageUrl}/blogger/image/v1/${portfolioType.toUpperCase()}/portfolio?pageNo=0&pageSize=200&sortBy=releaseDate`
       )
       .pipe(
-        map(images => {
-          return images.map(image => {
-            return {
-              ...image,
-              imageUrl: image.imageUrls[0].url
-              // imageUrl: image.imageUrl ? 'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80' :
-              //   'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80'
-            };
-          });
-        }),
+       
         tap(images => {
           console.log("Fetching images..." + images);
 
         }),
+        map(images =>images),
         catchError(this.handleError)
       )
   }
@@ -429,6 +421,20 @@ export class DataStorageService {
     return this.http
       .delete<unknown>(
         `${this.imageUrl}/blogger/image/v1/${contentFile.reference}`,
+       
+      ).pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        map(response => response));
+  }
+
+  deleteUploadImage(galleryImage: GalleryImages): Observable<unknown | Error> {
+    this.uploadService.setLoadingIndicator(true);
+    return this.http
+      .delete<unknown>(
+        `${this.imageUrl}/blogger/image/v1/${galleryImage.reference}`,
        
       ).pipe(
         tap(response => {

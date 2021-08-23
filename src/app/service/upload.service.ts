@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContetFile } from '../model/content-file.model';
 import { Image, ImageUrl } from '../model/image.model';
+import { GalleryImages } from '../model/post.model';
 import { RemoveImg } from '../model/remove-img.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
-  imagesChanged = new Subject<Image[]>();
-  imagesHandDrawingChanged = new Subject<Image[]>();
+  imagesChanged = new Subject<GalleryImages[]>();
+  imagesDeleteChanged = new Subject<GalleryImages[]>();
+  imagesHandDrawingChanged = new Subject<GalleryImages[]>();
   imagesAdded = new  BehaviorSubject<Image>(null);
   imagesBgAdded =new  BehaviorSubject<Image>(null);
 
@@ -19,8 +21,8 @@ export class UploadService {
   // imagesPostAdded = new Subject<Image>();
   // imagesPostAdded= new  BehaviorSubject<Image>(null);
   imagesPostAdded: Subject<any> = new Subject<any>();
-  private images: Image[] = [];
-  private imagesHandDrawing: Image[] = [];
+  private images: GalleryImages[] = [];
+  private imagesHandDrawing: GalleryImages[] = [];
   private imagesBgAdd : Image;
   private imagesPostAdd :Image ;
   private imagesAdd: Image;
@@ -60,6 +62,8 @@ export class UploadService {
  private fileImageBgUrls: ContetFile[]=[];
  private fileImagePostUrls: ContetFile[]=[];
 
+ fileImageDeleteLocalIndex = new Subject<RemoveImg>();
+
   constructor() { }
 
   // private fileImageBgUrls: ContetFile[] = [
@@ -91,14 +95,14 @@ export class UploadService {
     this.isLoading = isLoading;
     this.isLoadingChanged.next(this.isLoading);
   }
-  setImages(images: Image[]){
+  setImages(images: GalleryImages[]){
     this.images = images;
     this.imagesChanged.next(this.images.slice());
   }
   getImages(){
     return this.images.slice();
   }
-  setHandDrawingImages(images: Image[]){
+  setHandDrawingImages(images: GalleryImages[]){
     this.imagesHandDrawing = images;
     this.imagesHandDrawingChanged.next(this.imagesHandDrawing.slice());
   }
@@ -111,7 +115,7 @@ export class UploadService {
   }
   deleteImage(index: number) {
     this.images.splice(index, 1);
-    this.imagesChanged.next(this.images.slice());
+    this.imagesDeleteChanged.next(this.images.slice());
 
     // this.imagesAdd =  this.images;
     // this.imagesAdded.next(this.imagesAdd);
@@ -247,16 +251,22 @@ export class UploadService {
 
   }
   deleteBgFileUploaded(index: number){
-      this.fileImageBgDeleteLocalIndex.next(new RemoveImg(index,this.fileImageBgUrls[index] ));
+      this.fileImageBgDeleteLocalIndex.next(new RemoveImg(index,this.fileImageBgUrls[index], null ));
       this.fileImageBgObjDelete.next(this.fileImageBgUrls[index]);
       this.fileImageBgUrls.slice(index,1);
       this.fileImageBgDelete.next(this.fileImageBgUrls.slice());
       
 
   }
+  deleteFileUploaded(index: number){
+      this.fileImageDeleteLocalIndex.next(new RemoveImg(index,null,this.images[index]));
+  }
+  deleteFileUploadedHandDrawing(index: number){
+    this.fileImageDeleteLocalIndex.next(new RemoveImg(index,null,this.imagesHandDrawing[index]));
+}
 
   deletePostFileUploaded(index: number){
-    this.fileImagePostDeleteLocalIndex.next(new RemoveImg(index,this.fileImagePostUrls[index] ));
+    this.fileImagePostDeleteLocalIndex.next(new RemoveImg(index,this.fileImagePostUrls[index], null ));
     this.fileImagePostObjDelete.next(this.fileImagePostUrls[index]);
     this.fileImagePostUrls.slice(index,1);
     this.fileImagePostDelete.next(this.fileImagePostUrls.slice());

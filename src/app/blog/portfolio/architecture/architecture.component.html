@@ -3,15 +3,13 @@
     <div class="container">
       <div class="row">
         <br>
-        <br>
-        <br>
-        <br>
+    
         <div class="col-md-12">
-          <app-upload-data [numberOfPosts]="numberOfPosts" [isPostAvailable]="isPostAvailable"
+          <!-- <app-upload-data [numberOfPosts]="numberOfPosts" [isPostAvailable]="isPostAvailable"
             [isCreatePost]="isCreatePost" [isImageUpload]="isImageUpload" [isImgAvailable]="isImgAvailable"
             [isCreateImg]="isCreateImg"
             [portfolioType]="portfolioType">
-          </app-upload-data>
+          </app-upload-data> -->
           <br>
           <br>
           <div class="alert alert-success" *ngIf="successMessage">
@@ -26,18 +24,19 @@
 
         </div>
 
-        <div class="col-md-12" *ngIf="!isLoading">
+        <div class="col-md-12" >
 
           <!-- <br>
           <button (click)="addImage()">Add image</button>
           <br> -->
-          <lightgallery [settings]="settings" [onInit]="onInit">
+          <lightgallery [settings]="settings" [onInit]="Init" [onAfterClose]="AfterClose" [onBeforeOpen]="BeforeOpen">
             <a *ngFor="let item of items; let i = index" [attr.data-lg-size]="item.size" class="gallery-item"
-              [attr.href]="item.src">
-              <img class="img-responsive" src="{{ item.thumb }}" />
+              [attr.data-src]="item.src" [attr.data-alt]="item.reference" [attr.data-sub-html]="item.subHtml">
+              <img class="img-responsive" alt="{{item.id + '-'+ i}}" src="{{ item.thumb }}" />
                     
-              <button *ngIf="isAuthenticated" (click)="removeImage(i)" type="button" class="btn btn-danger">Remove</button>
+              <!-- <button *ngIf="isAuthenticated" (click)="removeImage(i)" type="button" class="btn btn-danger">Remove</button> -->
             </a>
+  
             <br>
           </lightgallery>
         </div>

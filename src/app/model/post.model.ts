@@ -40,12 +40,26 @@ export class GalleryImages{
     public medium: string;
     public big: string;
     public description: string;
+    public postId: number;
+    public reference: number;
+    public size: string;
+    public url: string;
+    public subHtml:string;
+    public label:string;
+    public name:string;
 
-    constructor(small: string, medium: string,big: string,description: string){
+    constructor(small: string, medium: string,big: string,description: string,
+        postId: number, reference: number, size: string, subHtml:string,label:string, name:string){
         this.small= small;
         this.medium = medium
         this.big = big;
         this.description = description;
+        this.postId = postId;
+        this.reference = reference;
+        this.size = size;
+        this.subHtml = subHtml;
+        this.label = label;
+        this.name = name;
     }
 
 }
