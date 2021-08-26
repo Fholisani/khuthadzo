@@ -6,13 +6,23 @@
           <br>
         <app-alert-message [isLoading]="isLoading" [errorMessage]="errorMessage" 
         [successMessage]="successMessage"></app-alert-message>
+
+        <div *ngIf="successMessage && imageLink">
+          <!-- <button class="btn btn-info" >Copy</button> -->
+          <p>
+            <markdown ngPreserveWhitespaces>URL Below can be copied and used for blog content creation! - 
+            {{'```' + imageLink + '```'}}</markdown></p>
+          
+        </div>
+       
         
         <app-image-upload [componentUploading]="'upload'" 
         [uploadedImageUrl]="uploadedImageUrl"
         [portfolioTypes]="portfolioTypes"
         [isMultipleUpload]="isMultipleUpload"
         (submitedImages)="acceptData($event)"
-        (componentCalling)="componentUploading($event)"></app-image-upload>
+        (componentCalling)="componentUploading($event)"
+        (portfolioUploading)="portfolioUploading($event)"></app-image-upload>
       </div>
     </div>
 </div>

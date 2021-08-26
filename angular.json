@@ -43,7 +43,13 @@
               "node_modules/lightgallery/css/lg-zoom.css",
               "node_modules/justifiedGallery/dist/css/justifiedGallery.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/prismjs/themes/prism.css",
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
+              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css",
+              "node_modules/katex/dist/katex.min.css",
+              "node_modules/prismjs/plugins/treeview/prism-treeview.css"
       
             ],
             "scripts": [
@@ -56,7 +62,26 @@
               "node_modules/emoji-toolkit/lib/js/joypixels.min.js",
               "node_modules/lightgallery/lightgallery.umd.js",
               "node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.js",
-              "node_modules/lightgallery/lightgallery.umd.js"
+              "node_modules/lightgallery/lightgallery.umd.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-csharp.min.js", 
+              "node_modules/prismjs/components/prism-css.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-bash.min.js",
+              "node_modules/prismjs/components/prism-shell-session.min.js",
+              
+              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.min.js",
+              "node_modules/emoji-toolkit/lib/js/joypixels.min.js",
+              "node_modules/katex/dist/katex.min.js",
+              "node_modules/prismjs/plugins/treeview/prism-treeview.min.js",
+              "node_modules/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
+              "node_modules/prismjs/components/prism-java.min.js",
+              
+              "node_modules/prismjs/components/prism-json.min.js",
+              "node_modules/prismjs/components/prism-basic.min.js",
+              "node_modules/prismjs/components.js"
+            
               
             ]
           },

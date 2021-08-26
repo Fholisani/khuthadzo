@@ -27,8 +27,11 @@ export class PortfolioResolverService implements Resolve<GalleryImages[]> {
   }
 
   onFetchDataImg() {
-    this.dataStorageService.fetchImages('Architecture').subscribe((images: GalleryImages[])=>{
-      console.log('HTTP IMG' + images)
+    const pageNo=0;
+    const pageSize=200;
+    this.uploadService.cleanImagesMasterMemory();
+    this.dataStorageService.fetchImages('Architecture', pageNo, pageSize).subscribe((images: GalleryImages[])=>{
+      console.log('Portfolio Architecture reolver starts..' )
       this.uploadService.setImages(images);
       this.uploadService.setLoadingIndicator(false);
     },errorMessage =>{

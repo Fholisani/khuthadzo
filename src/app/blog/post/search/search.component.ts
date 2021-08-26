@@ -33,7 +33,8 @@ export class SearchComponent implements OnInit {
 
   onSubmit(content) {
 
-
+    const pageNo=0;
+    const pageSize=6;
     //this.recipeService.newPost(this.recipeForm.value);
     console.log('Search ' + this.searchForm.value.search);
     if (this.searchForm.status === 'VALID') {
@@ -44,7 +45,7 @@ export class SearchComponent implements OnInit {
           console.log(this.formData);
           // Handle saving form data
 
-          this.dataStorageService.fetchPosts().subscribe(postCards => {
+          this.dataStorageService.searchPosts(pageNo,pageSize, this.formData).subscribe(postCards => {
 
             this.blogService.setPostCards(postCards);
             this.blogService.setLoadingIndicator(false);

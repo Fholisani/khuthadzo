@@ -49,6 +49,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
   isMultipleUpload: boolean = true;
   isMultipleBgUpload: boolean = false;
   showMyContainer: boolean = false;
+  convertedText: string='';
 
   // ViewChild is used to access the input element.
 
@@ -673,7 +674,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
     let postSubHeading = '';
     let postMeta = '';
     let postBody = '';
-    let postImageUrls = new FormArray([], [Validators.required]);
+    let postImageUrls = new FormArray([], /*[Validators.required]*/);
 
     this.uploadService.cleanAddFileBg();
     this.uploadService.cleanAddFilePost();
@@ -697,6 +698,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
       postSubHeading = postData.subHeading;
       // postMeta = postData.meta;
       postBody = postData.body;
+      this.convertedText = postData.body;
 
       // if (postData.backgroundImage) {
       //   for (let bgImage of postData.backgroundImage) {
@@ -733,6 +735,10 @@ export class PostEditComponent implements OnInit, OnDestroy {
       body: new FormControl(postBody, Validators.required),
       imageUrls: postImageUrls,
 
+    });
+    this.newPostForm.get('body').valueChanges.subscribe((change) => {
+      console.log(change);
+      this.convertedText = change;
     });
     this.dataEmit();
   }

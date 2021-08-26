@@ -61,6 +61,18 @@ import { FilesEditComponent } from './blog/files/files-edit/files-edit.component
 import { FilesItemComponent } from './blog/files/files-list/files-item/files-item.component';
 import { PostBgComponent } from './blog/post/post-edit/post-bg/post-bg.component';
 import { PostPtComponent } from './blog/post/post-edit/post-pt/post-pt.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { InfiniteScrollComponent } from './blog/components/infinite-scroll/infinite-scroll.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MarkdwonPipe } from './shared/markdwon.pipe';
+import { ExternalLinkDirective } from './shared/external-link.directive';
+import { AutosizeModule } from 'ngx-autosize';
+
+import { MarkedOptions, MarkedRenderer } from 'ngx-markdown';
+import "prismjs";
+import "prismjs/components/prism-typescript.min.js";
+import "prismjs/plugins/line-numbers/prism-line-numbers.js";
+import "prismjs/plugins/line-highlight/prism-line-highlight.js";
 
 
 @NgModule({
@@ -105,6 +117,9 @@ import { PostPtComponent } from './blog/post/post-edit/post-pt/post-pt.component
     FilesItemComponent,
     PostBgComponent,
     PostPtComponent,
+    InfiniteScrollComponent,
+    MarkdwonPipe,
+    ExternalLinkDirective,
    
   
 
@@ -124,10 +139,24 @@ import { PostPtComponent } from './blog/post/post-edit/post-pt/post-pt.component
     HttpClientModule,
     LightgalleryModule,
     MDBBootstrapModule.forRoot(),
-    MarkdownModule.forRoot({ loader: HttpClient }),
+
+
+    
+    MarkdownModule.forRoot({ loader: HttpClient, markedOptions: {
+      provide: MarkedOptions,
+      useFactory: markedOptionsFactory,
+      
+    }, }),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    NgxPaginationModule,
+    InfiniteScrollModule,
+    AutosizeModule,
+
+
+
+   
   
 
   ],
@@ -150,3 +179,25 @@ import { PostPtComponent } from './blog/post/post-edit/post-pt/post-pt.component
 export class AppModule {
   
  }
+// function that returns `MarkedOptions` with renderer override
+export function markedOptionsFactory(): MarkedOptions {
+  const renderer = new MarkedRenderer();
+
+  renderer.blockquote = (text: string) => {
+    return '<blockquote class="blockquote"><p>' + text + '</p></blockquote>';
+  };
+  renderer.table =(header: string, body: string)=>{
+    return '<div class="table-responsive"><table class="table table-hover"><thead class="thead-dark">'+ header+' </thead>' + body+ '</table></div>'
+  }
+
+
+  return {
+    renderer: renderer,
+    gfm: true,
+    
+    breaks: true,
+    pedantic: false,
+    smartLists: true,
+    smartypants: false,
+  };
+}

@@ -1,6 +1,13 @@
 <app-layout>
   <ng-container>
-    <div class="container">
+    <div class="container" 
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollUpDistance]="scrollUpDistance"
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown($event)"
+    >
+ 
       <div class="row">
         <br>
     
@@ -9,7 +16,8 @@
             [isCreatePost]="isCreatePost" [isImageUpload]="isImageUpload" [isImgAvailable]="isImgAvailable"
             [isCreateImg]="isCreateImg"
             [portfolioType]="portfolioType">
-          </app-upload-data> -->
+          </app-upload-data> 
+        https://stackblitz.com/edit/ngx-infinite-scroll?file=src%2Fapp%2Fapp.component.ts-->
           <br>
           <br>
           <div class="alert alert-success" *ngIf="successMessage">
@@ -30,7 +38,8 @@
           <button (click)="addImage()">Add image</button>
           <br> -->
           <lightgallery [settings]="settings" [onInit]="Init" [onAfterClose]="AfterClose" [onBeforeOpen]="BeforeOpen">
-            <a *ngFor="let item of items; let i = index" [attr.data-lg-size]="item.size" class="gallery-item"
+            <a *ngFor="let item of items | paginate
+            :config; let i = index" [attr.data-lg-size]="item.size" class="gallery-item"
               [attr.data-src]="item.src" [attr.data-alt]="item.reference" [attr.data-sub-html]="item.subHtml">
               <img class="img-responsive" alt="{{item.id + '-'+ i}}" src="{{ item.thumb }}" />
                     
@@ -41,6 +50,10 @@
           </lightgallery>
         </div>
 
+        <!-- <pagination-controls
+        class="pagi"
+        (pageChange)="pageChange($event)"
+      ></pagination-controls> -->
       </div>
     </div>
   </ng-container>

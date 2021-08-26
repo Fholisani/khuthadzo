@@ -29,7 +29,9 @@ export class PostResolverService implements Resolve<PostCardResponse[]> {
     }
   }
   onFetchData() {
-    return this.dataStorageService.fetchPosts().subscribe(postCards=>{
+    const pageNo=0;
+    const pageSize=6;
+    return this.dataStorageService.fetchPosts(pageNo,pageSize).subscribe(postCards=>{
      
       this.blogService.setPostCards(postCards);
       this.blogService.setLoadingIndicator(false);

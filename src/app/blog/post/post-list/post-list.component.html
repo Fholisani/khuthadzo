@@ -25,14 +25,15 @@
           
           <br>
           <div class="row" *ngIf="!isLoading">
-       <div *ngFor="let postCard of postCards;let i = index"
+       <div *ngFor="let postCard of postCards  | paginate
+       :config;let i = index"
      [ngClass]="{'col-xs-4 col-sm-4 col-md-4 col-lg-4': 3}">
   <!--Card-->
 <mdb-card dark="true">
 
     <!--Card image-->
     <div class="view overlay waves-light" mdbWavesEffect>
-        <mdb-card-img
+        <mdb-card-img class="card-img-top"
             src={{postCard.backgroundImage}}>
         </mdb-card-img>
         <a>
@@ -75,5 +76,10 @@
 <br>
        </div>
        </div>
+       <pagination-controls
+       class="pagi"
+       (pageChange)="pageChange($event)"
+     ></pagination-controls>
     </div>
+
 </div>   

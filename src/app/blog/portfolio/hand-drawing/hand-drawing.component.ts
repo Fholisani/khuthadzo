@@ -35,25 +35,38 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
   isPostAvailable = false;
   isCreatePost: boolean;;
 
-  isImageUpload=true;
+  isImageUpload = true;
   isImgAvailable: boolean;
 
-  isCreateImg=false;
+  isCreateImg = false;
 
   isLoading = false;
-  errorMessage: string=null;
-  successMessage: string=null;
+  errorMessage: string = null;
+  successMessage: string = null;
   private userSub: Subscription;
   isAuthenticated = false;
   portfolioType: string = 'Hand-Drawing';
   private subscriptionContetFileDelete: Subscription;
   private subscriptionDelete: Subscription;
+  private subscriptionHandImagesMasterMemoryChanged :Subscription;
   count: number = 1;
+  config: any;
+  sum = 100;
+  throttle = 300;
+  scrollDistance = 1;
+  scrollUpDistance = 2;
+  newPage: number =0;
 
 
 
   constructor(private uploadService: UploadService, private authService: AuthService,
-    private dataStorageService: DataStorageService,private changeDetection: ChangeDetectorRef) { }
+    private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef) {
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 200,
+      totalItems: 0
+    };
+  }
 
   ngOnInit(): void {
 
@@ -74,13 +87,35 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
       },
     }
 
+     
+        this.subscriptionHandImagesMasterMemoryChanged = this.uploadService.imagesHandMasterMemoryChanged
+        .subscribe(
+          (imagesMaster: GalleryImages[]) => {
+            console.log("Hand drawing Master memory has been updated to : " + imagesMaster.length);
+  
+  
+          }
+        );
+  
 
     this.subscriptionDelete = this.uploadService.imagesHandDrawingChanged
       .subscribe(
         (images: GalleryImages[]) => {
           console.log("Count number(imagesChanged) of times : " + (this.count++));
-          this.images = images;
-          this.newImagesAvailable();
+
+          if (images.length > 0) {
+            //this.config.totalItems = this.images[0].totalItems;
+            this.images = images;
+            this.newImagesAvailable();
+          }
+
+          
+     
+          if (this.images.length > 0) {
+            this.config.totalItems = this.images[0].totalItems;
+          }
+
+         
         }
       );
     this.subscriptionDelete = this.uploadService.imagesDeleteChanged
@@ -88,6 +123,11 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
         (images: GalleryImages[]) => {
           console.log("Count number(imagesDeleteChanged) of times : " + (this.count++));
           this.images = images;
+          if (this.images.length > 0) {
+            this.config.totalItems = this.images[0].totalItems;
+          }
+
+
 
         }
       );
@@ -122,7 +162,7 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
 
     this.subscriptionContetFileDelete = this.uploadService.fileImageDeleteLocalIndex.subscribe(
       (removeImg: RemoveImg) => {
-        console.log("Deleted the image file at local Index : " + removeImg.index);
+        console.log("****Deleted the image file at local Index***** : " + removeImg.index);
 
         // this.uploadedContentImageBg = imageFileContent;
         this.onDeleteImg(removeImg, 'upload');
@@ -153,7 +193,23 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
       localItems.push(item);
     });;
 
-    this.items = localItems;
+
+    // add another  items from the API
+  
+    if(this.items === undefined ||this.items.length === 0){
+      this.items = localItems;
+    }else{
+      console.log("Add more iterms trigered by the scroll !!");
+      localItems.forEach(element => {
+        this.items = [
+          ...this.items,
+          element,
+        ];
+  
+      });
+    }
+    
+   // this.items = localItems;
     this.needRefresh = true;
     this.errorMessage = null;
     this.successMessage = null;
@@ -166,7 +222,14 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
 
   }
 
+  addItems(startIndex, endIndex, _method) {
+    // for (let i = 0; i < this.sum; ++i) {
+    //   this.array[_method]([i, " ", this.generateWord()].join(""));
+    // }
+    this.images.forEach(element => {
 
+    });
+  }
   removeImage(index) {
 
     this.deleteFileUploaded(index);
@@ -287,9 +350,51 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
 
 
   }
+
+  pageChange(newPage: number) {
+    // console.log("Paging : " + newPage);
+    // this.config.currentPage = newPage;
+    // this.onFetchDataImgHandDrawing(newPage - 1, this.config.itemsPerPage);
+    // this.router.navigate([''], { queryParams: { page: newPage } });
+  }
+
+  onFetchDataImgHandDrawing(pageNo: number, pageSize: number) {
+
+    this.dataStorageService.fetchImages('HandDrawing', pageNo, pageSize).subscribe((images: GalleryImages[]) => {
+   //   console.log('HTTP IMG' + images)
+
+  
+    //this.config.totalItems = this.images[0].totalItems;
+     this.uploadService.setHandDrawingImages(images);
+
+    
+      this.uploadService.setLoadingIndicator(false);
+    }, errorMessage => {
+
+      console.log('HTTP Error', errorMessage)
+      let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
+      this.uploadService.setErrorMessage(errMsg);
+      this.uploadService.setLoadingIndicator(false);
+    });
+  }
+  onScrollDown(ev) {
+    console.log("scrolled down!!", ev);
+
+    // add another more items to the existing images
+    const newPg = ++this.newPage;
+    console.log("Add another more items to the existing images ==> " + newPg);
+
+    this.onFetchDataImgHandDrawing( newPg, this.config.itemsPerPage);
+    // this.appendItems(start, this.sum);
+
+    // this.direction = "down";
+    // alert("Scrolling!!!");
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionContetFileDelete.unsubscribe();
     this.subscriptionDelete.unsubscribe();
+    this.subscriptionHandImagesMasterMemoryChanged.remove;
+    this.subscriptionHandImagesMasterMemoryChanged.unsubscribe();
   }
 }

@@ -28,8 +28,11 @@ export class HanddrawingResolverService implements Resolve<GalleryImages[]> {
   }
 
   onFetchDataImgHandDrawing() {
-    this.dataStorageService.fetchImages('HandDrawing').subscribe((images: GalleryImages[])=>{
-      console.log('HTTP IMG' + images)
+    const pageNo=0;
+    const pageSize=200;
+    this.uploadService.cleanHandImagesMasterMemory();
+    this.dataStorageService.fetchImages('HandDrawing',  pageNo, pageSize).subscribe((images: GalleryImages[])=>{
+    //  console.log('HTTP IMG' + images)
       this.uploadService.setHandDrawingImages(images);
       this.uploadService.setLoadingIndicator(false);
     },errorMessage =>{

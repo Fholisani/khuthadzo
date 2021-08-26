@@ -20,6 +20,17 @@ import { mimeType } from '../../portfolio/image/mime-type.validator';
 })
 export class PostNewComponent implements OnInit, OnDestroy {
 
+
+  ngxMarkdownVersion = '11.1.3';
+
+  markdown = `| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |`;
+
+
+
   post?: Post;
   newPostForm: FormGroup;
   imageUrlsLocal = [];
@@ -45,6 +56,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
   componentUploadingImg : string =null;
   isMultipleUpload: boolean=true;
   isMultipleBgUpload: boolean=false;
+  convertedText: string='';
 
 
   // ViewChild is used to access the input element.
@@ -89,6 +101,8 @@ export class PostNewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+ 
     if (this.subscription) {
       console.log("===Unsubscribe after a check==== ");
       this.subscription.unsubscribe();
@@ -294,7 +308,7 @@ export class PostNewComponent implements OnInit, OnDestroy {
     let postSubHeading = '';
     let postMeta = '';
     let postBody = '';
-    let postImageUrls = new FormArray([], [Validators.required]);
+    let postImageUrls = new FormArray([], /*[Validators.required]*/);
 
 
     if (this.editMode) {
@@ -339,6 +353,11 @@ export class PostNewComponent implements OnInit, OnDestroy {
       body: new FormControl(postBody, Validators.required),
       imageUrls: postImageUrls,
 
+    });
+
+    this.newPostForm.get('body').valueChanges.subscribe((change) => {
+      console.log(change);
+      this.convertedText = change;
     });
     this.dataEmit();
   }

@@ -16,7 +16,7 @@ import { GalleryImages } from 'src/app/model/post.model';
 import { RemoveImg } from 'src/app/model/remove-img.model';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { Router } from '@angular/router';
-import {  ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 declare var $: any;
 
 
@@ -36,6 +36,8 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
   private images: GalleryImages[] = [];
   subscription: Subscription;
   subscriptionDelete: Subscription;
+  subscriptionImagesChanged: Subscription;
+  subscriptionImagesMasterMemoryChanged: Subscription;
   numberOfPosts: number;
   isPostAvailable = false;
   isCreatePost: boolean;;
@@ -53,12 +55,22 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
   portfolioType: string = 'Architecture';
   private subscriptionContetFileDelete: Subscription;
+  config: any;
+  throttle = 300;
+  scrollDistance = 1;
+  scrollUpDistance = 2;
+  newPage: number = 0;
 
 
 
 
   constructor(private uploadService: UploadService, private authService: AuthService,
-    private dataStorageService: DataStorageService,private changeDetection: ChangeDetectorRef) {
+    private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef) {
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 200,
+      totalItems: 0
+    };
 
   }
 
@@ -81,14 +93,30 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
         rotate: true
       },
     }
+    //imagesMasterMemoryChanged
+    this.subscriptionImagesMasterMemoryChanged = this.uploadService.imagesMasterMemoryChanged
+      .subscribe(
+        (imagesMaster: GalleryImages[]) => {
+          console.log("Architecture Master memory has been updated to : " + imagesMaster.length);
 
 
-    this.subscriptionDelete = this.uploadService.imagesChanged
+        }
+      );
+
+    this.subscriptionImagesChanged = this.uploadService.imagesChanged
       .subscribe(
         (images: GalleryImages[]) => {
-          console.log("Count number(imagesChanged) of times : " + (this.count++));
-          this.images = images;
-          this.newImagesAvailable();
+          console.log("Count number(imagesChanged) of times ==>>>>>>> : " + (this.count++));
+          if (images.length > 0) {
+            //this.config.totalItems = this.images[0].totalItems;
+            this.images = images;
+            this.newImagesAvailable();
+          }
+
+          if (this.images.length > 0) {
+            this.config.totalItems = this.images[0].totalItems;
+          }
+
         }
       );
     this.subscriptionDelete = this.uploadService.imagesDeleteChanged
@@ -96,6 +124,9 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
         (images: GalleryImages[]) => {
           console.log("Count number(imagesDeleteChanged) of times : " + (this.count++));
           this.images = images;
+          if (this.images.length > 0) {
+            this.config.totalItems = this.images[0].totalItems;
+          }
 
         }
       );
@@ -160,9 +191,24 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
         element.small,
         element.subHtml);;
       localItems.push(item);
-    });;
+    });
 
-    this.items = localItems;
+    // add another  items from the API
+
+    if (this.items === undefined || this.items.length === 0) {
+      this.items = localItems;
+    } else {
+      console.log("Add more iterms trigered by the scroll !!");
+      localItems.forEach(element => {
+        this.items = [
+          ...this.items,
+          element,
+        ];
+
+      });
+    }
+
+    // this.items = localItems;
     this.needRefresh = true;
     this.errorMessage = null;
     this.successMessage = null;
@@ -301,10 +347,50 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
 
         });
   }
+
+  pageChange(newPage: number) {
+    console.log("Paging : " + newPage);
+    this.config.currentPage = newPage;
+    this.onFetchDataImg(newPage - 1, this.config.itemsPerPage);
+    // this.router.navigate([''], { queryParams: { page: newPage } });
+  }
+
+  onFetchDataImg(pageNo: number, pageSize: number) {
+
+    this.dataStorageService.fetchImages('Architecture', pageNo, pageSize).subscribe((images: GalleryImages[]) => {
+      // console.log('HTTP IMG' + images)
+      this.uploadService.setImages(images);
+
+      this.uploadService.setLoadingIndicator(false);
+    }, errorMessage => {
+
+      console.log('HTTP Error', errorMessage)
+      let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
+      this.uploadService.setErrorMessage(errMsg);
+      this.uploadService.setLoadingIndicator(false);
+    });
+  }
+
+  onScrollDown(ev) {
+    console.log("scrolled down!!", ev);
+
+    // add another more items to the existing images
+    const newPg = ++this.newPage;
+    console.log("Add another more items to the existing images ==> " + newPg);
+
+    this.onFetchDataImg(newPg, this.config.itemsPerPage);
+    // this.appendItems(start, this.sum);
+
+    // this.direction = "down";
+    // alert("Scrolling!!!");
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionContetFileDelete.unsubscribe();
     this.subscriptionDelete.unsubscribe();
+    this.subscriptionImagesChanged.unsubscribe();
+    this.subscriptionImagesMasterMemoryChanged.remove;
+    this.subscriptionImagesMasterMemoryChanged.unsubscribe();
   }
 
 }

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { PostCardResponse } from 'src/app/model/post-card-response.model';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
+import { DataStorageService } from 'src/app/shared/data-storage.service';
 
 @Component({
   selector: 'app-post-list',
@@ -20,9 +21,18 @@ export class PostListComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
+  
+  config: any;
 
 
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService,
+    private dataStorageService: DataStorageService,) { 
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 6,
+      totalItems:1
+      };
+  }
 
 
   ngOnInit(): void {
@@ -46,8 +56,10 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.subscription = this.blogService.postCardsChanged
       .subscribe(
         (postCards: PostCardResponse[]) => {
+          console.log("Update post");
           this.postCards = postCards;
           this.newPostsAvailable();
+         
         }
       );
 
@@ -80,7 +92,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         }
       );
     this.posts = this.blogService.getPosts();
-    this.newPostsAvailable();
+  //  this.newPostsAvailable();
     this.dataEmit();
   }
 
@@ -90,8 +102,8 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.postCards.forEach(post => {
         //const postCard = new PostCard(post.heading, post.subHeading, post.postCardImage, post.id);
         const postCard = new PostCardResponse(post.postId,post.heading, post.subHeading, post.backgroundImage, post.readTime,
-        post.reference,post.date);
-        
+        post.reference,post.date, post.totalItems);
+        this.config.totalItems = post.totalItems;
         localPostCards.push(postCard);
       });
       this.postCards = localPostCards;
@@ -114,6 +126,28 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.isPostAvailable = false;
     }
   }
+  pageChange(newPage: number) {
+    console.log("Paging : " + newPage);
+    this.config.currentPage = newPage;
+    this.onFetchData(newPage -1, this.config.itemsPerPage);
+   // this.router.navigate([''], { queryParams: { page: newPage } });
+  }
+
+  onFetchData(pageNo: number, pageSize: number) {
+
+    return this.dataStorageService.fetchPosts(pageNo,pageSize).subscribe(postCards=>{
+      console.log("Paging : Done fetching ");
+      this.blogService.setPostCards(postCards);
+      this.blogService.setLoadingIndicator(false);
+    },errorMessage =>{
+   
+      console.log('HTTP Error', errorMessage)
+      let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
+      this.blogService.setErrorMessage(errMsg);
+      this.blogService.setLoadingIndicator(false);
+    });
+  }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

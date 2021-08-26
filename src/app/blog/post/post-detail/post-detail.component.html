@@ -9,22 +9,14 @@
         <p>{{errorMessage}}</p>
       </div>
       <div class="col-sm-12">
-        <div class="header d-flex flex-column align-items-center">
-          <h1 class="display-6 mt-3 mb-0">{{postDetailResponse.heading}}</h1>
-          <p class="lead mt-2 mb-4">
-            <markdown ngPreserveWhitespaces>{{postDetailResponse.body}}</markdown>
-            
-          </p>
-          <p class="card-text">
-            Date : {{postDetailResponse.date}}
-        </p>
-        <p class="card-text">
-            Author : {{postDetailResponse.author}}
-        </p>
-        <p class="card-text">
-            Read Time  {{postDetailResponse.readTime}} Minutes
-        </p>
-          <div *ngIf="!isAuthenticated"
+     
+        <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
+       
+      
+        </div>
+      <div class="col-sm-12">
+        <h1 class="header d-flex flex-column align-items-center display-6 mt-3 mb-0">{{postDetailResponse.heading}}
+          <div *ngIf="isAuthenticated"
           class="btn-group dropdown"
           appDropdown >
           <button
@@ -37,6 +29,39 @@
             <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Post</a></li>
           </ul>
         </div>
+        <p></p>
+        </h1>
+
+
+        <div #ipt id="inline-gallery-container" class="d-flex justify-content-center">
+            
+        
+           
+          <lightgallery *ngIf="isReady" [settings]="settings" [onInit]="Init" class="inline-gallery-container">
+        
+          </lightgallery>
+        
+    
+       </div>
+
+
+        <div >
+         
+          <markdown class="p-4 mb-4" [data]="postDetailResponse.body  | markdown"></markdown>
+          <p style="white-space: pre" >
+           
+            
+          </p>
+          <p class="card-text">
+            Date : {{postDetailResponse.date}}
+        </p>
+        <p class="card-text">
+          <markdown ngPreserveWhitespaces>Author - {{postDetailResponse.author}}</markdown>
+        </p>
+        <p class="card-text">
+            Read Time  {{postDetailResponse.readTime}} Minutes
+        </p>
+  
          <p></p>
      
      
@@ -46,22 +71,7 @@
    
         
       
-      <div class="col-sm-12">
-     
-        <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
-       
-          <div #ipt id="inline-gallery-container" class="d-flex justify-content-center">
-            
-            <p>Show data!!</p>
-             
-            <lightgallery *ngIf="isReady" [settings]="settings" [onInit]="Init" class="inline-gallery-container">
-          
-            </lightgallery>
-          
-      
-         </div>
-      
-        </div>
+
        
       </div>
       

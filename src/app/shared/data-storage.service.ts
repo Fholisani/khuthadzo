@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 import { PostCardResponse } from '../model/post-card-response.model';
 import { PostDetailResponse } from '../model/post-response.model';
 import { ContetFile } from '../model/content-file.model';
+import { SearchRequest } from '../model/search-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -73,11 +74,38 @@ export class DataStorageService {
     
   }
 
-  fetchPosts() {
+  fetchPosts(pageNo : number, pageSize: number) {
     this.blogService.setLoadingIndicator(true);
     return this.http
       .get<PostCardResponse[]>(
-        `${this.imageUrl}/blogger/blog?pageNo=0&pageSize=10&sortBy=date`
+        `${this.imageUrl}/blogger/blog?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=date`
+      )
+      .pipe(
+        map(response => response
+        //   posts => {
+        //   return posts.map(post => {
+        //     return {
+        //       ...post,
+        //       galleryImages: post.galleryImages ? post.galleryImages : []
+        //     };
+        //   });
+        // }
+        ),
+        tap(posts => {
+          console.log("Fetching post...");
+          this.blogService.setPostCards(posts);
+          this.blogService.setLoadingIndicator(false);
+
+        }),
+        catchError(this.handleError)
+      )
+  }
+
+  searchPosts(pageNo : number, pageSize: number, searchRequest: SearchRequest) {
+    this.blogService.setLoadingIndicator(true);
+    return this.http
+      .get<PostCardResponse[]>(
+        `${this.imageUrl}/blogger/post/search?pageNo=${pageNo}&pageSize=${pageSize}&search=${searchRequest.search}&sortBy=date`
       )
       .pipe(
         map(response => response
@@ -379,17 +407,17 @@ export class DataStorageService {
 
   }
 
-  fetchImages(portfolioType : String) {
+  fetchImages(portfolioType : String, pageNo : number, pageSize: number) {
     this.uploadService.setLoadingIndicator(true);
     console.log("Pulling images of portfolio type : " + portfolioType);
     return this.http
       .get<GalleryImages[]>(
-        `${this.imageUrl}/blogger/image/v1/${portfolioType.toUpperCase()}/portfolio?pageNo=0&pageSize=200&sortBy=releaseDate`
+        `${this.imageUrl}/blogger/image/v1/${portfolioType.toUpperCase()}/portfolio?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=releaseDate`
       )
       .pipe(
        
         tap(images => {
-          console.log("Fetching images..." + images);
+          //console.log("Fetching images..." + images);
 
         }),
         map(images =>images),

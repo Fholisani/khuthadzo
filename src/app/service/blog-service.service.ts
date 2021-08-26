@@ -93,7 +93,7 @@ export class BlogService {
   
     payload.date =  new Date("2019-01-16");
     payload.author = "*Khuthi*";
-    payload.readTime = 20;
+    payload.readTime = 5;
     payload.slug = "Slug";
     // payload.bgImage = "https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg";
 

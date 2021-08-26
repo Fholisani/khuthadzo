@@ -47,9 +47,10 @@ export class GalleryImages{
     public subHtml:string;
     public label:string;
     public name:string;
+    public totalItems:number;
 
     constructor(small: string, medium: string,big: string,description: string,
-        postId: number, reference: number, size: string, subHtml:string,label:string, name:string){
+        postId: number, reference: number, size: string, subHtml:string,label:string, name:string,totalItems:number){
         this.small= small;
         this.medium = medium
         this.big = big;
@@ -60,6 +61,7 @@ export class GalleryImages{
         this.subHtml = subHtml;
         this.label = label;
         this.name = name;
+        this.totalItems=totalItems
     }
 
 }

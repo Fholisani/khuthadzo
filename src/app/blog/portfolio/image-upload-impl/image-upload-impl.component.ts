@@ -1,9 +1,11 @@
 import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { ClipboardService } from 'ngx-clipboard';
 import { Subscription } from 'rxjs';
 import { Image, ImageUrl } from 'src/app/model/image.model';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+ 
 
 @Component({
   selector: 'app-image-upload-impl',
@@ -16,14 +18,16 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
+  imageLink: string=null;
   hasSubmitedImages = false;
   componentUploadingImg : string =null;
+  portfolioUploadingImg: string =null;
   uploadedImageUrl: ImageUrl[] =[];
   imageObj: Image;
   isMultipleUpload: boolean=true;
-  portfolioTypes: any = ['Carousel','HandDrawing', 'Architecture' ]
+  portfolioTypes: any = ['HandDrawing', 'Architecture', 'Blog','Carousel', ]
   constructor(private uploadService: UploadService,
-    private dataStorageService: DataStorageService) { }
+    private dataStorageService: DataStorageService, private clipboardApi: ClipboardService) { }
 
   ngOnInit(): void {
     this.subscriptionImg = this.uploadService.isLoadingChanged
@@ -79,6 +83,13 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
     );
     this.componentUploadingImg = data;
   }
+  portfolioUploading(data) {
+    console.log(
+      "this is the child data displaying in parent component: portfolioUploadingImg : ",
+      data
+    );
+    this.portfolioUploadingImg = data;
+  }
   onSaveDataImg() {
     console.log(" ======Calling from IMAGE-UPLOAD component======= : "+ this.componentUploadingImg);
     
@@ -95,12 +106,19 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
           ms.imageUrls.forEach(element => {
             console.log(element + " : Testing 1 0 1 element");
             element.description = ms.description;
+            if(this.portfolioUploadingImg ==='Blog'){
+              this.imageLink = element.url;
+            }else{
+              this.imageLink = null;
+            }
+          
             this.uploadedImageUrl.push(element);
+            
            });
            this.uploadService.uploadedImgDataSource(this.uploadedImageUrl);
       
         
-
+      
   
         this.uploadService.cleanImages();
         this.uploadService.cleanPostImages();
@@ -108,6 +126,7 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
         this.uploadService.setLoadingIndicator(false);
         this.uploadService.setSuccessMessage("Uploaded successfully");
         this.uploadService.setErrorMessage(null);
+        
           }
       },
       errorMessage => {

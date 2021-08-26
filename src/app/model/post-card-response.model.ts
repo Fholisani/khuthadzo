@@ -7,9 +7,10 @@ export class PostCardResponse {
     public readTime :number;
     public reference :number;
     public date :Date;
+    public totalItems:number;
 
     constructor(postId : string, heading : string,subHeading : string,backgroundImage : string, readTime : number,
-        reference: number,date :Date){
+        reference: number,date :Date, totalItems:number){
         this.postId = postId;
         this.heading = heading;
         this.subHeading = subHeading;
@@ -17,5 +18,6 @@ export class PostCardResponse {
         this.readTime = readTime;
         this.reference = reference;
         this.date = date;
+        this.totalItems = totalItems;
     }
 }

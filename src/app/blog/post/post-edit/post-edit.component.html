@@ -50,16 +50,32 @@
     
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control py-3" id="bodyInput" autosize data-cy="bodyInput" placeholder="Post body text (markdown supported)"
+                        
+                        <!-- <div class="invalid-feedback" *ngIf='bodyControl.hasError("required")'>Body content required</div>
+                        <div class="invalid-feedback" *ngIf='bodyControl.hasError("body")'>Body content is not valid</div> -->
+                        <div class="row">
+                          <div class="col-md-6">
+                              <h5>Markdown</h5>
+ 
+                              <textarea autosize class="form-control py-3" id="bodyInput" autosize data-cy="bodyInput" placeholder="Post body text (markdown supported)"
                          formControlName="body"
                          [ngClass]="{ 'is-invalid': submitted && f.body.errors }"
                          required></textarea>
                         <div class="form-text text-white-50"><fa-icon class="mr-1" [icon]='["fab", "markdown"]'></fa-icon>Markdown supported</div>
                         <div *ngIf="submitted && f.body.errors" class="invalid-feedback" data-sb-feedback="name:required">Message body is required.</div>
     
-                        <!-- <div class="invalid-feedback" *ngIf='bodyControl.hasError("required")'>Body content required</div>
-                        <div class="invalid-feedback" *ngIf='bodyControl.hasError("body")'>Body content is not valid</div> -->
-                    </div>
+                             <h5><a class="btn btn-outline-info" href="https://dillinger.io/">For advanced blog post use external editor</a> </h5>
+                          </div>
+                          <div class="col-md-6">
+                             <h5>Results</h5>
+                              <!-- Converted markdown will display here -->
+                      
+                              <div style="white-space: pre"  [innerHTML]="convertedText | markdown"></div>
+                            
+                          </div>
+                      </div>
+                    
+                      </div>
                     </div>
                   </div>
                   <div class="card border-primary mb-3">

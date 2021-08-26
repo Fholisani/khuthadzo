@@ -63,7 +63,9 @@ export class UploadDataComponent implements OnInit {
 
 
   onFetchData() {
-    this.dataStorageService.fetchPosts().subscribe(postCards=>{
+    const pageNo=0;
+    const pageSize=6;
+    this.dataStorageService.fetchPosts(pageNo, pageSize).subscribe(postCards=>{
      
       this.blogService.setPostCards(postCards);
       this.blogService.setLoadingIndicator(false);
@@ -117,9 +119,10 @@ export class UploadDataComponent implements OnInit {
 
   onFetchDataImg() {
     console.log("Upload - onFetchDataImg using portfolio : " + this.portfolioType);
-
+    const pageNo=0;
+    const pageSize=6;
     if(this.portfolioType === "Architecture"){
-      this.dataStorageService.fetchImages(this.portfolioType).subscribe((images: GalleryImages[])=>{
+      this.dataStorageService.fetchImages(this.portfolioType, pageNo, pageSize).subscribe((images: GalleryImages[])=>{
         console.log('HTTP IMG' + images)
         this.uploadService.setImages(images);
         this.uploadService.setLoadingIndicator(false);
@@ -132,7 +135,7 @@ export class UploadDataComponent implements OnInit {
       });
 
     }else if(this.portfolioType === "HandDrawing" || this.portfolioType === "Hand-Drawing" ){
-      this.dataStorageService.fetchImages("HandDrawing").subscribe((images: GalleryImages[])=>{
+      this.dataStorageService.fetchImages("HandDrawing",  pageNo, pageSize).subscribe((images: GalleryImages[])=>{
         console.log('HTTP IMG' + images)
         this.uploadService.setHandDrawingImages(images);
         this.uploadService.setLoadingIndicator(false);

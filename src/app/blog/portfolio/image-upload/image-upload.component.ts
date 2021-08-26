@@ -31,6 +31,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   isCreateImg=true;
   private subscription: Subscription;
   showMyContainer: boolean = false;
+  
   // isLoading = false;
   // errorMessage: string=null;
   // successMessage: string=null;
@@ -40,6 +41,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   @Input() uploadedImageUrl:  ImageUrl[] =[];
   @Output() submitedImages = new EventEmitter<boolean>();
   @Output() componentCalling = new EventEmitter<string>();
+  @Output() portfolioUploading = new EventEmitter<string>();
   // uploadedImageUrl: ImageUrl[] =[];
 
 
@@ -106,7 +108,10 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
+
+ 
     this.componentCalling.emit(this.componentUploading);
+    this.portfolioUploading.emit(this.form.value.portfolioType);
     this.form.setValue({
       id: 0,
       title: this.form.value.title,
@@ -114,10 +119,19 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       portfolioType: this.form.value.portfolioType,
       images: this.form.value.images
     });
+    if(this.form.value.portfolioType === 'Blog'){
+      
+      if(this.form.value.images.length > 1){
+        this.form.controls['images'].setErrors({'incorrect': true});
+        alert("Only one image is allowed for portfolio type BLOG!");     
+        return;
+      }
+    }
     this.uploadService.createImage(this.form.value,this.componentUploading);
     this.dataEmit()
     this.reset();
     this.submitedImages.emit(true);
+    this.componentCalling.emit(this.componentUploading);
     this.toggleShow();
     
   }
@@ -172,6 +186,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   changePortfolio(e) {
     console.log(e.value)
+  
     this.form.value.portfolioType.setValue(e.target.value, {
       onlySelf: true
     })
