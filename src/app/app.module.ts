@@ -77,7 +77,6 @@ import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

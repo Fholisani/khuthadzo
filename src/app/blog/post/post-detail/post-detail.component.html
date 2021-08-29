@@ -15,7 +15,7 @@
       
         </div>
       <div class="col-sm-12">
-        <h1 class="header d-flex flex-column align-items-center display-6 mt-3 mb-0" *ngIf="postDetailResponse">{{postDetailResponse.heading}}
+        <h1 class="header d-flex flex-column align-items-center display-6 mt-3 mb-0">{{postDetailResponse.heading}}
           <div *ngIf="isAuthenticated"
           class="btn-group dropdown"
           appDropdown >
@@ -47,18 +47,18 @@
 
         <div >
          
-          <markdown *ngIf="postDetailResponse" class="p-4 mb-4" [data]="postDetailResponse.body  | markdown"></markdown>
+          <markdown class="p-4 mb-4" [data]="postDetailResponse.body  | markdown"></markdown>
           <p style="white-space: pre" >
            
             
           </p>
-          <p class="card-text" *ngIf="postDetailResponse">
+          <p class="card-text">
             Date : {{postDetailResponse.date}}
         </p>
         <p class="card-text">
-          <markdown *ngIf="postDetailResponse" ngPreserveWhitespaces>Author - {{postDetailResponse.author}}</markdown>
+          <markdown ngPreserveWhitespaces>Author - {{postDetailResponse.author}}</markdown>
         </p>
-        <p class="card-text" *ngIf="postDetailResponse">
+        <p class="card-text">
             Read Time  {{postDetailResponse.readTime}} Minutes
         </p>
   

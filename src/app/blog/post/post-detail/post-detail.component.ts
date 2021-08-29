@@ -115,11 +115,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
   autoLaunch(launcDuration: number) {
     setTimeout(() => {
-      if( this.isReady){
-        this.lightGallery.openGallery();
+      this.lightGallery.openGallery();
 
-      }
-      
     }, launcDuration);
   }
 
@@ -220,7 +217,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       };
 
 
-  
+
       this.autoLaunch(200);
     }, errorMessage => {
 
