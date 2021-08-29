@@ -8,9 +8,10 @@ export class PostCardResponse {
     public reference :number;
     public date :Date;
     public totalItems:number;
+    public timeElapsed:string;
 
     constructor(postId : string, heading : string,subHeading : string,backgroundImage : string, readTime : number,
-        reference: number,date :Date, totalItems:number){
+        reference: number,date :Date, totalItems:number, timeElapsed: string){
         this.postId = postId;
         this.heading = heading;
         this.subHeading = subHeading;
@@ -19,5 +20,6 @@ export class PostCardResponse {
         this.reference = reference;
         this.date = date;
         this.totalItems = totalItems;
+        this.timeElapsed = timeElapsed;
     }
 }

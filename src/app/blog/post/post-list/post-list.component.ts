@@ -102,7 +102,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.postCards.forEach(post => {
         //const postCard = new PostCard(post.heading, post.subHeading, post.postCardImage, post.id);
         const postCard = new PostCardResponse(post.postId,post.heading, post.subHeading, post.backgroundImage, post.readTime,
-        post.reference,post.date, post.totalItems);
+        post.reference,post.date, post.totalItems,post.timeElapsed);
         this.config.totalItems = post.totalItems;
         localPostCards.push(postCard);
       });
