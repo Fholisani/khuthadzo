@@ -157,11 +157,8 @@ Alice->John: Yes... John, how are you?
 
   autoLaunch(launcDuration: number) {
     setTimeout(() => {
-      if( this.isReady){
-        this.lightGallery.openGallery();
+      this.lightGallery.openGallery();
 
-      }
-      
     }, launcDuration);
   }
 
@@ -262,7 +259,7 @@ Alice->John: Yes... John, how are you?
       };
 
 
-  
+
       this.autoLaunch(200);
     }, errorMessage => {
 
