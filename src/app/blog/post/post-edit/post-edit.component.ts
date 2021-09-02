@@ -15,7 +15,7 @@ import { UploadService } from 'src/app/service/upload.service';
 import { AlertMessageComponent } from 'src/app/shared/alert-message/alert-message.component';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { mimeType } from '../../portfolio/image/mime-type.validator';
-
+import mermaid from 'mermaid';
 @Component({
   selector: 'app-post-edit',
   templateUrl: './post-edit.component.html',
@@ -161,7 +161,12 @@ export class PostEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    mermaid.initialize({
+      securityLevel: 'loose'
+    });
+    setTimeout(() => {
+      mermaid.init()
+    },1000)
 
 
     console.log();

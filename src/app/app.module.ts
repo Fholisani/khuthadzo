@@ -1,5 +1,5 @@
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -190,15 +190,25 @@ export function markedOptionsFactory(): MarkedOptions {
   renderer.table =(header: string, body: string)=>{
     return '<div class="table-responsive"><table class="table table-hover"><thead class="thead-dark">'+ header+' </thead>' + body+ '</table></div>'
   }
-
+  renderer.code = function (code, language) {
+    if (language.match(/^mermaid/)) {
+      console.log("mermaid match found use div !!!!");
+      return '<div class="mermaid">' + code + '</div>';
+    } else {
+      console.log("mermaid match not found use pre !!!!");
+      return '<pre><code>' + code + '</code></pre>';
+    }
+  };
 
   return {
     renderer: renderer,
-    gfm: true,
-    
-    breaks: true,
+       gfm: true,
+  
+    breaks: false,
     pedantic: false,
+
     smartLists: true,
-    smartypants: false,
+    smartypants: false
+
   };
 }

@@ -44,12 +44,24 @@
               "node_modules/justifiedGallery/dist/css/justifiedGallery.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.css",
-              "node_modules/prismjs/themes/prism-okaidia.css",
               "node_modules/prismjs/themes/prism.css",
+              "node_modules/prismjs/themes/prism-okaidia.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
               "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css",
               "node_modules/katex/dist/katex.min.css",
-              "node_modules/prismjs/plugins/treeview/prism-treeview.css"
+              "node_modules/prismjs/plugins/treeview/prism-treeview.css",
+              "node_modules/prismjs/plugins/autolinker/prism-autolinker.css",
+              "node_modules/prismjs/plugins/diff-highlight/prism-diff-highlight.css",
+              "node_modules/prismjs/plugins/inline-color/prism-inline-color.css",
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.css",
+              "node_modules/prismjs/plugins/previewers/prism-previewers.css",
+              "node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.css",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.css",
+  
+              "node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css",
+              "node_modules/prismjs/plugins/wpd/prism-wpd.css"
+              
+      
       
             ],
             "scripts": [
@@ -80,7 +92,32 @@
               
               "node_modules/prismjs/components/prism-json.min.js",
               "node_modules/prismjs/components/prism-basic.min.js",
-              "node_modules/prismjs/components.js"
+              "node_modules/prismjs/components.js",
+              "node_modules/prismjs/plugins/autolinker/prism-autolinker.min.js",
+              "node_modules/prismjs/plugins/autoloader/prism-autoloader.min.js",
+              "node_modules/prismjs/plugins/command-line/prism-command-line.min.js",
+              "node_modules/prismjs/plugins/custom-class/prism-custom-class.min.js",
+              "node_modules/prismjs/plugins/data-uri-highlight/prism-data-uri-highlight.min.js",
+              "node_modules/prismjs/plugins/diff-highlight/prism-diff-highlight.min.js",
+              "node_modules/prismjs/plugins/download-button/prism-download-button.min.js",
+              "node_modules/prismjs/plugins/file-highlight/prism-file-highlight.min.js",
+              "node_modules/prismjs/plugins/filter-highlight-all/prism-filter-highlight-all.min.js",
+              "node_modules/prismjs/plugins/highlight-keywords/prism-highlight-keywords.min.js",
+              "node_modules/prismjs/plugins/inline-color/prism-inline-color.min.js",
+              "node_modules/prismjs/plugins/jsonp-highlight/prism-jsonp-highlight.min.js",
+              "node_modules/prismjs/plugins/keep-markup/prism-keep-markup.min.js",
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js",
+              "node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.min.js",
+              "node_modules/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed.min.js",
+              "node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.min.js",
+              "node_modules/prismjs/plugins/show-language/prism-show-language.min.js",
+              "node_modules/prismjs/plugins/toolbar/prism-toolbar.min.js",
+             
+              "node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.min.js",
+              "node_modules/prismjs/plugins/wpd/prism-wpd.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js"
+       
+
             
               
             ]

@@ -14,6 +14,7 @@ import lgFullScreen from 'lightgallery/plugins/fullscreen'
 import { ChangeDetectorRef } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { GalleryItem } from 'src/app/model/gallery-dynamic.model';
+import mermaid from 'mermaid';
 
 
 @Component({
@@ -43,6 +44,42 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   private dg: any;
 
 
+  markdown = `## Markdown __rulez__!
+---
+
+### Syntax highlight
+\`\`\`typescript
+const language = 'typescript';
+\`\`\`
+
+### Lists
+1. Ordered list
+2. Another bullet point
+  - Unordered list
+  - Another unordered bullet point
+
+### Blockquote
+> Blockquote to the max
+
+### KaTeX
+
+\$e=mc^2\$
+
+\`\`\`mermaid
+sequenceDiagram
+Alice ->> Bob: Hello Bob, how are you?
+Bob-->>John: How about you John?
+Bob--x Alice: I am good thanks!
+Bob-x John: I am good thanks!
+Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+Bob-->Alice: Checking with John...
+Alice->John: Yes... John, how are you?
+\`\`\`
+
+
+
+`;
   constructor(private blogService: BlogService, private route: ActivatedRoute,
     private router: Router, private authService: AuthService,
     private dataStorageService: DataStorageService, private elementRef: ElementRef,
@@ -52,7 +89,12 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
+    mermaid.initialize({
+      securityLevel: 'loose'
+    });
+    setTimeout(() => {
+      mermaid.init()
+    },1000)
 
     this.route.params
       .subscribe(

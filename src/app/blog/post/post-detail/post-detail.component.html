@@ -11,7 +11,8 @@
       <div class="col-sm-12">
      
         <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
-       
+        <!-- <markdown class="variable-binding" [data]="markdown | markdown" katex></markdown> -->
+
       
         </div>
       <div class="col-sm-12">
@@ -46,8 +47,8 @@
 
 
         <div >
-         
-          <markdown *ngIf="postDetailResponse" class="p-4 mb-4" [data]="postDetailResponse.body  | markdown"></markdown>
+          <markdown *ngIf="postDetailResponse"  [data]="postDetailResponse.body  | markdown"  katex></markdown>
+          <!-- <markdown *ngIf="postDetailResponse" class="p-4 mb-4" [data]="postDetailResponse.body  | markdown"></markdown> -->
           <p style="white-space: pre" >
            
             

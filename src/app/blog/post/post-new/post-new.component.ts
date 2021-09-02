@@ -12,6 +12,7 @@ import { AlertMessageComponent } from 'src/app/shared/alert-message/alert-messag
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { ImageUploadComponent } from '../../portfolio/image-upload/image-upload.component';
 import { mimeType } from '../../portfolio/image/mime-type.validator';
+import mermaid from 'mermaid';
 
 @Component({
   selector: 'app-post-new',
@@ -21,13 +22,7 @@ import { mimeType } from '../../portfolio/image/mime-type.validator';
 export class PostNewComponent implements OnInit, OnDestroy {
 
 
-  ngxMarkdownVersion = '11.1.3';
-
-  markdown = `| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |`;
+  
 
 
 
@@ -102,7 +97,12 @@ export class PostNewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
- 
+    mermaid.initialize({
+      securityLevel: 'loose'
+    });
+    setTimeout(() => {
+      mermaid.init()
+    },1000)
     if (this.subscription) {
       console.log("===Unsubscribe after a check==== ");
       this.subscription.unsubscribe();
@@ -358,6 +358,15 @@ export class PostNewComponent implements OnInit, OnDestroy {
     this.newPostForm.get('body').valueChanges.subscribe((change) => {
       console.log(change);
       this.convertedText = change;
+      if(this.convertedText &&this.convertedText.includes('mermaid')){
+        console.log("The text contains merimaid!!!!!!!!!!");
+        mermaid.initialize({
+          securityLevel: 'loose'
+        });
+        setTimeout(() => {
+          mermaid.init()
+        },1000)
+      }
     });
     this.dataEmit();
   }
