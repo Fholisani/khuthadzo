@@ -67,11 +67,12 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MarkdwonPipe } from './shared/markdwon.pipe';
 import { ExternalLinkDirective } from './shared/external-link.directive';
 import { AutosizeModule } from 'ngx-autosize';
-
+import { MatSliderModule } from '@angular/material/slider';
 import { MarkedOptions, MarkedRenderer } from 'ngx-markdown';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { ShareModule } from 'ngx-sharebuttons';
+import {MatButtonModule} from '@angular/material/button';
 
 
 import "prismjs";
@@ -165,6 +166,9 @@ import "prismjs/plugins/line-highlight/prism-line-highlight.js";
     }),
     ShareIconsModule,
     ShareModule,
+    MatSliderModule,
+    MatButtonModule
+
  
 
     
