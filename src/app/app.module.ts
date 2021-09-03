@@ -73,7 +73,7 @@ import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { ShareModule } from 'ngx-sharebuttons';
 import {MatButtonModule} from '@angular/material/button';
-
+import { ShareButtonsPopupModule } from 'ngx-sharebuttons/popup';
 
 import "prismjs";
 import "prismjs/components/prism-typescript.min.js";
@@ -164,10 +164,12 @@ import "prismjs/plugins/line-highlight/prism-line-highlight.js";
     ShareButtonsModule.withConfig({
       debug: true
     }),
+    ShareButtonsPopupModule,
     ShareIconsModule,
     ShareModule,
     MatSliderModule,
-    MatButtonModule
+    MatButtonModule,
+  
 
  
 

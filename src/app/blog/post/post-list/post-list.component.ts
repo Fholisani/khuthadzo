@@ -4,6 +4,7 @@ import { PostCardResponse } from 'src/app/model/post-card-response.model';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-list',
@@ -21,12 +22,13 @@ export class PostListComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
-  
+  host: string;
   config: any;
 
 
   constructor(private blogService: BlogService,
     private dataStorageService: DataStorageService,) { 
+    this.host = environment.host;
     this.config = {
       currentPage: 1,
       itemsPerPage: 6,

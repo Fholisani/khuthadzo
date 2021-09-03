@@ -51,7 +51,8 @@
                                     <!--Title-->
                                     <mdb-card-title>
                                         <h4>{{i + 1}} - {{postCard.heading}} <a class="activator px-3 mr-2">
-                                                <mdb-icon fas icon="share-alt" class="black-text"></mdb-icon>
+                                                <!-- <mdb-icon fas icon="share-alt" class="black-text"></mdb-icon> -->
+                                    
                                             </a></h4>
                                     </mdb-card-title>
                                     <hr class="hr-light">
@@ -64,8 +65,20 @@
                                         more</a>
                                     <!-- Card footer -->
                                     <div class="card-footer text-muted text-center mt-4">
-                                        {{postCard.timeElapsed}}
+                                       Posted {{postCard.timeElapsed}}
                                     </div>
+                                   
+                                    <share-buttons [theme]="'modern-light'"
+                                    [include]="['facebook','twitter','linkedin','whatsapp', 'email','copy']"
+                                    [show]="7"
+                                    [showIcon]="true"
+                                    [showText]="false"
+                                    [title]="postCard.heading"
+                                    [description]="postCard.subHeading"
+                                    [image]="postCard.backgroundImage"
+                                    [url]="host +'post/'+ postCard.postId+ '/'"
+                                    [autoSetMeta]="false"
+                                   ></share-buttons>
                                 </mdb-card-body>
                             </mdb-card>
 
