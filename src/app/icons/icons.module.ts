@@ -13,7 +13,7 @@ export class IconsModule {
     constructor(library: FaIconLibrary) {
         library.addIconPacks(
             fontAwesomeSolidIcons,
-            fontAwesomeRegularIcons,
+            // fontAwesomeRegularIcons,
             fontAwesomeBrandsIcons
         );
     }

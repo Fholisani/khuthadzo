@@ -2,6 +2,17 @@
     
     <div class="container">
         <div class="row">
+
+            <button mat-fab shareButton="facebook"
+                #fbBtn="shareButton"
+                [style.backgroundColor]="fbBtn?.color">
+  <fa-icon *ngIf="fbBtn" [icon]="fbBtn.icon" size="lg"></fa-icon>
+</button>
+<button mat-fab shareButton="twitter"
+                #twtBtn="shareButton"
+                [style.backgroundColor]="twtBtn?.color">
+  <fa-icon *ngIf="twtBtn" [icon]="twtBtn.icon" size="lg"></fa-icon>
+</button>
             <div class="col-lg-8 col-md-10 mx-auto">
                 <ul class="list-inline text-center">
                     <li class="list-inline-item">

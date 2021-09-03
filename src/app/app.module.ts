@@ -71,6 +71,9 @@ import { AutosizeModule } from 'ngx-autosize';
 import { MarkedOptions, MarkedRenderer } from 'ngx-markdown';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { ShareModule } from 'ngx-sharebuttons';
+
+
 import "prismjs";
 import "prismjs/components/prism-typescript.min.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
@@ -156,10 +159,15 @@ import "prismjs/plugins/line-highlight/prism-line-highlight.js";
     NgxPaginationModule,
     InfiniteScrollModule,
     AutosizeModule,
+    
     ShareButtonsModule.withConfig({
       debug: true
     }),
-    ShareIconsModule
+    ShareIconsModule,
+    ShareModule,
+ 
+
+    
 
 
    
