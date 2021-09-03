@@ -1,225 +1,216 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "Khuthadzo": {
-      "projectType": "application",
-      "schematics": {},
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/Khuthadzo",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-
-            "styles": [
-             
-              "node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/solid.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/regular.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/brands.min.css",
-              "node_modules/angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss",
-              "node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
-              "node_modules/animate.css/animate.min.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/primeng/resources/themes/arya-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/font-awesome/css/font-awesome.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/lightgallery/css/lightgallery.css",
-              "node_modules/lightgallery/css/lg-thumbnail.css",
-              "node_modules/lightgallery/css/lg-zoom.css",
-              "node_modules/justifiedGallery/dist/css/justifiedGallery.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "src/styles.css",
-              "node_modules/prismjs/themes/prism.css",
-              "node_modules/prismjs/themes/prism-okaidia.css",
-              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
-              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css",
-              "node_modules/katex/dist/katex.min.css",
-              "node_modules/prismjs/plugins/treeview/prism-treeview.css",
-              "node_modules/prismjs/plugins/autolinker/prism-autolinker.css",
-              "node_modules/prismjs/plugins/diff-highlight/prism-diff-highlight.css",
-              "node_modules/prismjs/plugins/inline-color/prism-inline-color.css",
-              "node_modules/prismjs/plugins/match-braces/prism-match-braces.css",
-              "node_modules/prismjs/plugins/previewers/prism-previewers.css",
-              "node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.css",
-  
-              "node_modules/prismjs/plugins/toolbar/prism-toolbar.css",
-              "node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css",
-              "node_modules/prismjs/plugins/wpd/prism-wpd.css"
-              
-      
-      
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/chart.js/dist/Chart.js",
-              "node_modules/hammerjs/hammer.min.js",
-              "node_modules/marked/lib/marked.js",
-              "node_modules/emoji-toolkit/lib/js/joypixels.min.js",
-              "node_modules/lightgallery/lightgallery.umd.js",
-              "node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.js",
-              "node_modules/lightgallery/lightgallery.umd.js",
-              "node_modules/prismjs/prism.js",
-              "node_modules/prismjs/components/prism-csharp.min.js", 
-              "node_modules/prismjs/components/prism-css.min.js",
-              "node_modules/prismjs/components/prism-typescript.min.js",
-              "node_modules/prismjs/components/prism-bash.min.js",
-              "node_modules/prismjs/components/prism-shell-session.min.js",
-              
-              "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
-              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.min.js",
-              "node_modules/emoji-toolkit/lib/js/joypixels.min.js",
-              "node_modules/katex/dist/katex.min.js",
-              "node_modules/prismjs/plugins/treeview/prism-treeview.min.js",
-              "node_modules/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
-              "node_modules/prismjs/components/prism-java.min.js",
-              
-              "node_modules/prismjs/components/prism-json.min.js",
-              "node_modules/prismjs/components/prism-basic.min.js",
-              "node_modules/prismjs/components.js",
-              "node_modules/prismjs/plugins/autolinker/prism-autolinker.min.js",
-              "node_modules/prismjs/plugins/autoloader/prism-autoloader.min.js",
-              "node_modules/prismjs/plugins/command-line/prism-command-line.min.js",
-              "node_modules/prismjs/plugins/custom-class/prism-custom-class.min.js",
-              "node_modules/prismjs/plugins/data-uri-highlight/prism-data-uri-highlight.min.js",
-              "node_modules/prismjs/plugins/diff-highlight/prism-diff-highlight.min.js",
-              "node_modules/prismjs/plugins/download-button/prism-download-button.min.js",
-              "node_modules/prismjs/plugins/file-highlight/prism-file-highlight.min.js",
-              "node_modules/prismjs/plugins/filter-highlight-all/prism-filter-highlight-all.min.js",
-              "node_modules/prismjs/plugins/highlight-keywords/prism-highlight-keywords.min.js",
-              "node_modules/prismjs/plugins/inline-color/prism-inline-color.min.js",
-              "node_modules/prismjs/plugins/jsonp-highlight/prism-jsonp-highlight.min.js",
-              "node_modules/prismjs/plugins/keep-markup/prism-keep-markup.min.js",
-              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js",
-              "node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.min.js",
-              "node_modules/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed.min.js",
-              "node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.min.js",
-              "node_modules/prismjs/plugins/show-language/prism-show-language.min.js",
-              "node_modules/prismjs/plugins/toolbar/prism-toolbar.min.js",
-             
-              "node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.min.js",
-              "node_modules/prismjs/plugins/wpd/prism-wpd.min.js",
-              "node_modules/mermaid/dist/mermaid.min.js"
-       
-
-            
-              
-            ]
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "Khuthadzo:build"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "Khuthadzo:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "Khuthadzo:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
-            ],
-            "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Khuthadzo:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "Khuthadzo:serve:production"
-            }
-          }
-        }
-      }
-    }
-  },
-  "defaultProject": "Khuthadzo",
-  "cli": {
-    "analytics": false
-  }
+	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+	"version": 1,
+	"newProjectRoot": "projects",
+	"projects": {
+		"Khuthadzo": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
+			"root": "",
+			"sourceRoot": "src",
+			"prefix": "app",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:browser",
+					"options": {
+						"outputPath": "dist/Khuthadzo",
+						"index": "src/index.html",
+						"main": "src/main.ts",
+						"polyfills": "src/polyfills.ts",
+						"tsConfig": "tsconfig.app.json",
+						"aot": true,
+						"assets": [
+							"src/favicon.ico",
+							"src/assets"
+						],
+						"styles": [
+							"node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css",
+							"node_modules/@fortawesome/fontawesome-free/css/solid.min.css",
+							"node_modules/@fortawesome/fontawesome-free/css/regular.min.css",
+							"node_modules/@fortawesome/fontawesome-free/css/brands.min.css",
+							"node_modules/angular-bootstrap-md/assets/scss/bootstrap/bootstrap.scss",
+							"node_modules/angular-bootstrap-md/assets/scss/mdb.scss",
+							"node_modules/animate.css/animate.min.css",
+							"node_modules/bootstrap/dist/css/bootstrap.min.css",
+							"node_modules/primeng/resources/themes/arya-blue/theme.css",
+							"node_modules/primeng/resources/primeng.min.css",
+							"node_modules/primeicons/primeicons.css",
+							"node_modules/font-awesome/css/font-awesome.min.css",
+							"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+							"node_modules/lightgallery/css/lightgallery.css",
+							"node_modules/lightgallery/css/lg-thumbnail.css",
+							"node_modules/lightgallery/css/lg-zoom.css",
+							"node_modules/justifiedGallery/dist/css/justifiedGallery.css",
+							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
+							"src/styles.scss",
+							"node_modules/prismjs/themes/prism.css",
+							"node_modules/prismjs/themes/prism-okaidia.css",
+							"node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
+							"node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css",
+							"node_modules/katex/dist/katex.min.css",
+							"node_modules/prismjs/plugins/treeview/prism-treeview.css",
+							"node_modules/prismjs/plugins/autolinker/prism-autolinker.css",
+							"node_modules/prismjs/plugins/diff-highlight/prism-diff-highlight.css",
+							"node_modules/prismjs/plugins/inline-color/prism-inline-color.css",
+							"node_modules/prismjs/plugins/match-braces/prism-match-braces.css",
+							"node_modules/prismjs/plugins/previewers/prism-previewers.css",
+							"node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.css",
+							"node_modules/prismjs/plugins/toolbar/prism-toolbar.css",
+							"node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css",
+							"node_modules/prismjs/plugins/wpd/prism-wpd.css"
+						],
+						"scripts": [
+							"node_modules/jquery/dist/jquery.min.js",
+							"node_modules/popper.js/dist/umd/popper.min.js",
+							"node_modules/bootstrap/dist/js/bootstrap.min.js",
+							"node_modules/chart.js/dist/Chart.js",
+							"node_modules/hammerjs/hammer.min.js",
+							"node_modules/marked/lib/marked.js",
+							"node_modules/emoji-toolkit/lib/js/joypixels.min.js",
+							"node_modules/lightgallery/lightgallery.umd.js",
+							"node_modules/justifiedGallery/dist/js/jquery.justifiedGallery.js",
+							"node_modules/lightgallery/lightgallery.umd.js",
+							"node_modules/prismjs/prism.js",
+							"node_modules/prismjs/components/prism-csharp.min.js",
+							"node_modules/prismjs/components/prism-css.min.js",
+							"node_modules/prismjs/components/prism-typescript.min.js",
+							"node_modules/prismjs/components/prism-bash.min.js",
+							"node_modules/prismjs/components/prism-shell-session.min.js",
+							"node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+							"node_modules/prismjs/plugins/line-highlight/prism-line-highlight.min.js",
+							"node_modules/emoji-toolkit/lib/js/joypixels.min.js",
+							"node_modules/katex/dist/katex.min.js",
+							"node_modules/prismjs/plugins/treeview/prism-treeview.min.js",
+							"node_modules/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js",
+							"node_modules/prismjs/components/prism-java.min.js",
+							"node_modules/prismjs/components/prism-json.min.js",
+							"node_modules/prismjs/components/prism-basic.min.js",
+							"node_modules/prismjs/components.js",
+							"node_modules/prismjs/plugins/autolinker/prism-autolinker.min.js",
+							"node_modules/prismjs/plugins/autoloader/prism-autoloader.min.js",
+							"node_modules/prismjs/plugins/command-line/prism-command-line.min.js",
+							"node_modules/prismjs/plugins/custom-class/prism-custom-class.min.js",
+							"node_modules/prismjs/plugins/data-uri-highlight/prism-data-uri-highlight.min.js",
+							"node_modules/prismjs/plugins/diff-highlight/prism-diff-highlight.min.js",
+							"node_modules/prismjs/plugins/download-button/prism-download-button.min.js",
+							"node_modules/prismjs/plugins/file-highlight/prism-file-highlight.min.js",
+							"node_modules/prismjs/plugins/filter-highlight-all/prism-filter-highlight-all.min.js",
+							"node_modules/prismjs/plugins/highlight-keywords/prism-highlight-keywords.min.js",
+							"node_modules/prismjs/plugins/inline-color/prism-inline-color.min.js",
+							"node_modules/prismjs/plugins/jsonp-highlight/prism-jsonp-highlight.min.js",
+							"node_modules/prismjs/plugins/keep-markup/prism-keep-markup.min.js",
+							"node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js",
+							"node_modules/prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.min.js",
+							"node_modules/prismjs/plugins/remove-initial-line-feed/prism-remove-initial-line-feed.min.js",
+							"node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.min.js",
+							"node_modules/prismjs/plugins/show-language/prism-show-language.min.js",
+							"node_modules/prismjs/plugins/toolbar/prism-toolbar.min.js",
+							"node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.min.js",
+							"node_modules/prismjs/plugins/wpd/prism-wpd.min.js",
+							"node_modules/mermaid/dist/mermaid.min.js"
+						]
+					},
+					"configurations": {
+						"production": {
+							"fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.prod.ts"
+								}
+							],
+							"optimization": true,
+							"outputHashing": "all",
+							"sourceMap": false,
+							"extractCss": true,
+							"namedChunks": false,
+							"extractLicenses": true,
+							"vendorChunk": false,
+							"buildOptimizer": true,
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "2mb",
+									"maximumError": "5mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "6kb",
+									"maximumError": "10kb"
+								}
+							]
+						}
+					}
+				},
+				"serve": {
+					"builder": "@angular-devkit/build-angular:dev-server",
+					"options": {
+						"browserTarget": "Khuthadzo:build"
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "Khuthadzo:build:production"
+						}
+					}
+				},
+				"extract-i18n": {
+					"builder": "@angular-devkit/build-angular:extract-i18n",
+					"options": {
+						"browserTarget": "Khuthadzo:build"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"main": "src/test.ts",
+						"polyfills": "src/polyfills.ts",
+						"tsConfig": "tsconfig.spec.json",
+						"karmaConfig": "karma.conf.js",
+						"assets": [
+							"src/favicon.ico",
+							"src/assets"
+						],
+						"styles": [
+							"./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+							"node_modules/bootstrap/dist/css/bootstrap.min.css",
+							"src/styles.scss"
+						],
+						"scripts": []
+					}
+				},
+				"lint": {
+					"builder": "@angular-devkit/build-angular:tslint",
+					"options": {
+						"tsConfig": [
+							"tsconfig.app.json",
+							"tsconfig.spec.json",
+							"e2e/tsconfig.json"
+						],
+						"exclude": [
+							"**/node_modules/**"
+						]
+					}
+				},
+				"e2e": {
+					"builder": "@angular-devkit/build-angular:protractor",
+					"options": {
+						"protractorConfig": "e2e/protractor.conf.js",
+						"devServerTarget": "Khuthadzo:serve"
+					},
+					"configurations": {
+						"production": {
+							"devServerTarget": "Khuthadzo:serve:production"
+						}
+					}
+				}
+			}
+		}
+	},
+	"defaultProject": "Khuthadzo",
+	"cli": {
+		"analytics": false
+	}
 }

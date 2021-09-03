@@ -17,7 +17,7 @@ import mermaid from 'mermaid';
 @Component({
   selector: 'app-post-new',
   templateUrl: './post-new.component.html',
-  styleUrls: ['./post-new.component.css']
+  styleUrls: ['./post-new.component.scss']
 })
 export class PostNewComponent implements OnInit, OnDestroy {
 

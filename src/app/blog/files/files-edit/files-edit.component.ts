@@ -11,7 +11,7 @@ import { ContetFile } from 'src/app/model/content-file.model';
 @Component({
   selector: 'app-files-edit',
   templateUrl: './files-edit.component.html',
-  styleUrls: ['./files-edit.component.css']
+  styleUrls: ['./files-edit.component.scss']
 })
 export class FilesEditComponent implements OnInit, OnDestroy {
 

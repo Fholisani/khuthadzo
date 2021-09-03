@@ -20,7 +20,7 @@ declare var $: any;
 @Component({
   selector: 'app-hand-drawing',
   templateUrl: './hand-drawing.component.html',
-  styleUrls: ['./hand-drawing.component.css']
+  styleUrls: ['./hand-drawing.component.scss']
 })
 export class HandDrawingComponent implements OnInit, OnDestroy {
 

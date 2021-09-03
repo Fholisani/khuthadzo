@@ -6,7 +6,7 @@ import { LandingData } from 'src/app/model/landing-data.model';
 @Component({
   selector: 'app-carousel-config',
   templateUrl: './carousel-config.component.html',
-  styleUrls: ['./carousel-config.component.css'],
+  styleUrls: ['./carousel-config.component.scss'],
   providers: [NgbCarouselConfig]  // add NgbCarouselConfig to the component providers
   
 })

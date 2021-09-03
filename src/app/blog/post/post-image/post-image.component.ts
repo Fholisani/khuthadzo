@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-post-image',
   templateUrl: './post-image.component.html',
-  styleUrls: ['./post-image.component.css']
+  styleUrls: ['./post-image.component.scss']
 })
 export class PostImageComponent implements OnInit {
   recipeForm: FormGroup;

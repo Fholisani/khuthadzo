@@ -10,7 +10,7 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 @Component({
   selector: 'app-image-upload-impl',
   templateUrl: './image-upload-impl.component.html',
-  styleUrls: ['./image-upload-impl.component.css']
+  styleUrls: ['./image-upload-impl.component.scss']
 })
 export class ImageUploadImplComponent implements OnInit, OnDestroy {
   subscriptionImg: Subscription;

@@ -11,7 +11,7 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 @Component({
   selector: 'app-upload-data',
   templateUrl: './upload-data.component.html',
-  styleUrls: ['./upload-data.component.css']
+  styleUrls: ['./upload-data.component.scss']
 })
 export class UploadDataComponent implements OnInit {
 

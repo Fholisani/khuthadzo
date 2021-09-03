@@ -24,7 +24,7 @@ declare var $: any;
 @Component({
   selector: 'app-architecture',
   templateUrl: './architecture.component.html',
-  styleUrls: ['./architecture.component.css'],
+  styleUrls: ['./architecture.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class ArchitectureComponent implements OnInit, OnDestroy {

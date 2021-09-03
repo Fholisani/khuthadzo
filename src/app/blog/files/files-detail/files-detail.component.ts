@@ -8,7 +8,7 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 @Component({
   selector: 'app-files-detail',
   templateUrl: './files-detail.component.html',
-  styleUrls: ['./files-detail.component.css']
+  styleUrls: ['./files-detail.component.scss']
 })
 export class FilesDetailComponent implements OnInit {
   id: number;

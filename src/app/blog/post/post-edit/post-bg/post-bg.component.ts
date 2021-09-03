@@ -4,7 +4,7 @@ import { ContetFile } from 'src/app/model/content-file.model';
 @Component({
   selector: 'app-post-bg',
   templateUrl: './post-bg.component.html',
-  styleUrls: ['./post-bg.component.css']
+  styleUrls: ['./post-bg.component.scss']
 })
 export class PostBgComponent implements OnInit, OnDestroy {
 

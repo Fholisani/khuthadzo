@@ -8,7 +8,7 @@ import { UploadService } from 'src/app/service/upload.service';
 @Component({
   selector: 'app-files',
   templateUrl: './files.component.html',
-  styleUrls: ['./files.component.css']
+  styleUrls: ['./files.component.scss']
 })
 export class FilesComponent implements OnInit , OnDestroy {
   @Input() componentUploading: string=null;
