@@ -17,6 +17,7 @@ import { RemoveImg } from 'src/app/model/remove-img.model';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AfterViewInit } from '@angular/core';
 declare var $: any;
 declare var gtag: Function;
 @Component({
@@ -24,7 +25,7 @@ declare var gtag: Function;
   templateUrl: './hand-drawing.component.html',
   styleUrls: ['./hand-drawing.component.scss']
 })
-export class HandDrawingComponent implements OnInit, OnDestroy {
+export class HandDrawingComponent implements OnInit,AfterViewInit, OnDestroy {
 
   private needRefresh = false;
   items: GalleryItem[];

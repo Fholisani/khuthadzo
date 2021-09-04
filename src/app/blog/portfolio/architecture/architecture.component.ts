@@ -18,6 +18,7 @@ import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { filter } from 'rxjs/operators';
+import { AfterViewInit } from '@angular/core';
 declare var $: any;
 declare var gtag: Function;
 
@@ -29,7 +30,7 @@ declare var gtag: Function;
   styleUrls: ['./architecture.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class ArchitectureComponent implements OnInit, OnDestroy {
+export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
 
   private needRefresh = false;
   items: GalleryItem[];
