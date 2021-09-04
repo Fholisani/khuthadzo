@@ -1,20 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgRecaptcha3Service } from 'ng-recaptcha3';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-
+import { environment } from 'src/environments/environment';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+declare var gtag: Function;
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit,AfterViewInit, OnDestroy {
 
   searchForm: FormGroup;
-  private siteKey = "6LdBzXsbAAAAAIlawAHSrx_E0dHcHVeMs6_wBt6P";
+  private routerSubscription: Subscription;
   formData: any;
   closeResult: string;
   error: string = null;
@@ -26,6 +29,9 @@ export class SearchComponent implements OnInit {
     private recaptcha3: NgRecaptcha3Service,
     private modalService: NgbModal
   ) { }
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -38,6 +44,11 @@ export class SearchComponent implements OnInit {
     //this.recipeService.newPost(this.recipeForm.value);
     console.log('Search ' + this.searchForm.value.search);
     if (this.searchForm.status === 'VALID') {
+      gtag('event', 'click', {
+        'event_category': 'search',
+        'event_label': this.searchForm.value.search,
+        'value': this.searchForm.value.search
+      });
       this.recaptcha3.getToken({ action: 'search' }).then(
         token => {
           this.formData = this.searchForm.value;
@@ -47,7 +58,7 @@ export class SearchComponent implements OnInit {
 
           this.dataStorageService.searchPosts(pageNo,pageSize, this.formData).subscribe(postCards => {
 
-            this.blogService.setPostCards(postCards);
+            this.blogService.setPostCards(postCards.data);
             this.blogService.setLoadingIndicator(false);
             this.onSearchResults();
           }, errorMessage => {
@@ -109,7 +120,16 @@ export class SearchComponent implements OnInit {
       search: new FormControl(searchText, Validators.required),
 
     });
-    this.recaptcha3.init(this.siteKey);
+    this.recaptcha3.init(environment.siteKey);
+  }
+  ngAfterViewInit(): void {
+    // subscribe to router events and send page views to Google Analytics
+    console.log("Page visited !!!");
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+      });
   }
 
 }

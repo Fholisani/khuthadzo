@@ -15,6 +15,7 @@ import { PostCardResponse } from '../model/post-card-response.model';
 import { PostDetailResponse } from '../model/post-response.model';
 import { ContetFile } from '../model/content-file.model';
 import { SearchRequest } from '../model/search-request.model';
+import { ResponsePostData } from '../model/response-post-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -104,8 +105,8 @@ export class DataStorageService {
   searchPosts(pageNo : number, pageSize: number, searchRequest: SearchRequest) {
     this.blogService.setLoadingIndicator(true);
     return this.http
-      .get<PostCardResponse[]>(
-        `${this.imageUrl}/blogger/post/search?pageNo=${pageNo}&pageSize=${pageSize}&search=${searchRequest.search}&sortBy=date`
+      .get<ResponsePostData>(
+        `${this.imageUrl}/blogger/post/search?pageNo=${pageNo}&pageSize=${pageSize}&search=${searchRequest.search}&sortBy=date&recaptchaToken=${searchRequest.recaptchaToken}`
       )
       .pipe(
         map(response => response
@@ -120,7 +121,8 @@ export class DataStorageService {
         ),
         tap(posts => {
           console.log("Fetching post...");
-          this.blogService.setPostCards(posts);
+          this.blogService.setPostCards(posts.data);
+          
           this.blogService.setLoadingIndicator(false);
 
         }),

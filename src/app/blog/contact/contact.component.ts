@@ -1,18 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavigationEnd, Router } from '@angular/router';
 import { NgRecaptcha3Service } from 'ng-recaptcha3';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { BlogService } from 'src/app/service/blog-service.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
-
-
+import { environment } from 'src/environments/environment';
+declare var gtag: Function;
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']
 })
-export class ContactComponent implements OnInit, OnDestroy {
+export class ContactComponent implements OnInit,AfterViewInit, OnDestroy {
 
   isLoading = false;
   errorMessage: string = null;
@@ -20,12 +22,13 @@ export class ContactComponent implements OnInit, OnDestroy {
   contactUsForm: FormGroup;
   submitted = false;
   subscription: Subscription;
-  
-  private siteKey = "6LdBzXsbAAAAAIlawAHSrx_E0dHcHVeMs6_wBt6P";
+  private routerSubscription: Subscription;
+
   formData: any;
   constructor(private recaptcha3: NgRecaptcha3Service,
     private dataStorageService: DataStorageService,
-    private blogService: BlogService) { }
+    private blogService: BlogService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -50,6 +53,11 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.blogService.setSuccessMessage(null);
     if (this.contactUsForm.status === 'VALID') {
       this.isLoading = true;
+      gtag('event', 'click', {
+        'event_category': 'contactus',
+        'event_label': 'send_valid'
+      });
+
       this.recaptcha3.getToken({action: 'ContactUs'}).then(
         token => {
           this.formData = this.contactUsForm.value;
@@ -117,7 +125,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       message: new FormControl(contactMessage, Validators.required),
       
     });
-    this.recaptcha3.init(this.siteKey);
+    this.recaptcha3.init(environment.siteKey);
 
   }
 
@@ -137,9 +145,19 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.contactUsForm.reset();
 
   }
+  ngAfterViewInit(): void {
+    // subscribe to router events and send page views to Google Analytics
+    console.log("Page visited !!!");
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+      });
+  }
   ngOnDestroy(): void {
     this.recaptcha3.destroy();
     this.subscription.unsubscribe();
+    this.routerSubscription.unsubscribe();
   }
 
 }

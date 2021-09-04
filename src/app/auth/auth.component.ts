@@ -1,12 +1,14 @@
 import { OnDestroy, OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { NgRecaptcha3Service } from 'ng-recaptcha3';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 import { AuthService, AuthResponseData } from './auth.service';
-
+declare var gtag: Function;
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -19,14 +21,14 @@ export class AuthComponent implements OnInit, OnDestroy {
   error: string = null;
   authObs: Observable<AuthResponseData>;
 
-  private siteKey = "6LdBzXsbAAAAAIlawAHSrx_E0dHcHVeMs6_wBt6P";
+
   formData: any;
 
   constructor(private authService: AuthService, private router: Router,
     private recaptcha3: NgRecaptcha3Service) {}
  
   ngOnInit(): void {
-    this.recaptcha3.init(this.siteKey);
+    this.recaptcha3.init(environment.siteKey);
   }
 
   onSwitchMode() {
@@ -100,5 +102,19 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.recaptcha3.destroy();
+    this.routerSubscription.unsubscribe();
   }
+
+  private routerSubscription: Subscription;
+  ngAfterViewInit(): void {
+    // subscribe to router events and send page views to Google Analytics
+   
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+      });
+  }
+
+
 }

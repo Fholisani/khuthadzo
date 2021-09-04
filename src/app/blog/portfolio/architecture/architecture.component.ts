@@ -15,9 +15,11 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { GalleryImages } from 'src/app/model/post.model';
 import { RemoveImg } from 'src/app/model/remove-img.model';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
+import { filter } from 'rxjs/operators';
 declare var $: any;
+declare var gtag: Function;
 
 
 
@@ -65,7 +67,8 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
 
 
   constructor(private uploadService: UploadService, private authService: AuthService,
-    private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef) {
+    private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef,
+    private router: Router) {
     this.config = {
       currentPage: 1,
       itemsPerPage: 200,
@@ -391,6 +394,18 @@ export class ArchitectureComponent implements OnInit, OnDestroy {
     this.subscriptionImagesChanged.unsubscribe();
     this.subscriptionImagesMasterMemoryChanged.remove;
     this.subscriptionImagesMasterMemoryChanged.unsubscribe();
+    this.routerSubscription.unsubscribe();
+  }
+
+  private routerSubscription: Subscription;
+  ngAfterViewInit(): void {
+    // subscribe to router events and send page views to Google Analytics
+   
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+      });
   }
 
 }

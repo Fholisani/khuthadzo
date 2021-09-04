@@ -15,8 +15,10 @@ import { OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { RemoveImg } from 'src/app/model/remove-img.model';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 declare var $: any;
-
+declare var gtag: Function;
 @Component({
   selector: 'app-hand-drawing',
   templateUrl: './hand-drawing.component.html',
@@ -60,7 +62,8 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
 
 
   constructor(private uploadService: UploadService, private authService: AuthService,
-    private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef) {
+    private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef,
+    private router: Router) {
     this.config = {
       currentPage: 1,
       itemsPerPage: 200,
@@ -396,5 +399,19 @@ export class HandDrawingComponent implements OnInit, OnDestroy {
     this.subscriptionDelete.unsubscribe();
     this.subscriptionHandImagesMasterMemoryChanged.remove;
     this.subscriptionHandImagesMasterMemoryChanged.unsubscribe();
+    this.routerSubscription.unsubscribe();
   }
+
+  private routerSubscription: Subscription;
+  ngAfterViewInit(): void {
+    // subscribe to router events and send page views to Google Analytics
+   
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+      });
+  }
+
+
 }
