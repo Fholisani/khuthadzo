@@ -1,4 +1,5 @@
 import { OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
@@ -14,7 +15,7 @@ declare var gtag: Function;
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnInit,AfterViewInit, OnDestroy {
 
   isLoginMode = true;
   isLoading = false;

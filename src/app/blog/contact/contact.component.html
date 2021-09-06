@@ -63,7 +63,7 @@
                                     <label for="phone">Phone number</label>
                                     <div *ngIf="submitted && f.phoneNumber.errors" class="invalid-feedback">
                                         <div *ngIf="f.phoneNumber.errors.required">Phone number is required</div>
-                                        <div *ngIf="f.phoneNumber.errors.pattern || f.phoneNumber.errors.maxlength || f.phoneNumber.errors.minlength">Phone number must be at least 10 numbers</div>
+                                        <div *ngIf="f.phoneNumber.errors.pattern || f.phoneNumber.errors.maxlength || f.phoneNumber.errors.minlength">Phone number must be at least 10 numbers(e.g 0821234567)</div>
                                     </div>
                                 </div>
                                 <!-- Message input-->

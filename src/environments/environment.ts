@@ -5,6 +5,8 @@
 export const environment = {
   production: false,
   host: "http://localhost:4200/",
+  api_host: "https://fholisani.co.za:8432",
+  firebaseUrl:"https://ng-course-recipe-book-b8129-default-rtdb.firebaseio.com",
   siteKey : "6LdBzXsbAAAAAIlawAHSrx_E0dHcHVeMs6_wBt6P",
 
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional

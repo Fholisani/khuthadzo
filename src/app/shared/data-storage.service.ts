@@ -16,6 +16,8 @@ import { PostDetailResponse } from '../model/post-response.model';
 import { ContetFile } from '../model/content-file.model';
 import { SearchRequest } from '../model/search-request.model';
 import { ResponsePostData } from '../model/response-post-data.model';
+import { ResponseContactUsData } from '../model/response-contactus-data.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +25,8 @@ import { ResponsePostData } from '../model/response-post-data.model';
 export class DataStorageService {
 
 
-  url = 'https://ng-course-recipe-book-b8129-default-rtdb.firebaseio.com';
-  imageUrl = 'http://127.0.0.1:8432';
+  url =environment.firebaseUrl;
+  imageUrl = environment.api_host; 
   private basePath = '/uploads';
   private basePathLocal = '/blogger/image/v1';
   serviceTwo: any;
@@ -429,12 +431,12 @@ export class DataStorageService {
 
 
 
-  contactUs(formData: any): Observable<undefined | Error> {
+  contactUs(formData: any): Observable<ResponseContactUsData | Error> {
     this.blogService.setLoadingIndicator(true);
 
     return this.http
-      .put<undefined>(
-        `${this.url}/contact.json`,
+      .post<ResponseContactUsData>(
+        `${this.imageUrl}/blogger/contactus`,
         formData
       ).pipe(
         tap(response => {

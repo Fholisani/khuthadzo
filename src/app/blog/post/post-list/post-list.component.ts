@@ -22,7 +22,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage: string=null;
   successMessage: string=null;
-  host: string;
+  host: string= environment.host;
   config: any;
 
 
