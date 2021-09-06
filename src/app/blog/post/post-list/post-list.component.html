@@ -73,11 +73,11 @@
                                     [show]="7"
                                     [showIcon]="true"
                                     [showText]="false"
-                                    [title]="postCard.heading"
-                                    [description]="postCard.subHeading"
-                                    [image]="postCard.backgroundImage"
-                                    [url]="host +'post/'+ postCard.postId+ '/'"
-                                    [autoSetMeta]="false"
+                                    [title]="this.postCard.heading"
+                                    [description]="this.postCard.subHeading"
+                                    [image]="this.postCard.backgroundImage"
+                                    [url]="this.host +'post/'+ this.postCard.postId+ '/'"
+                                    [autoSetMeta]="true"
                                    ></share-buttons>
                                 </mdb-card-body>
                             </mdb-card>
