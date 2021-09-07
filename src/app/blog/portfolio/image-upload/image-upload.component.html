@@ -100,14 +100,14 @@
       
                             <div *ngIf="isMultipleUpload">
                               <input type="file" id="fileInput" #takeInput class="form-control" (change)="onSelect($event)"
-                              multiple accept="image/png,image/jpeg, image/jpg" formArrayName="images" 
+                              multiple accept="image/png,image/jpeg,image/jpg" formArrayName="images" 
                               [ngClass]="{ 'is-invalid': submitted &&  (f.images.errors || f.images.invalid) }"
                            required/>
                             </div>
                             
                             <div *ngIf="!isMultipleUpload">
                               <input type="file" id="fileInput" #takeInput class="form-control" (change)="onSelect($event)"
-                               accept="image/png,image/jpeg, image/jpg" formArrayName="images" 
+                               accept="image/png,image/jpeg,image/jpg" formArrayName="images" 
                               [ngClass]="{ 'is-invalid': submitted &&  (f.images.errors || f.images.invalid) }"
                            required/>
       
