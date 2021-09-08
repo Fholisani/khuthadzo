@@ -37,7 +37,9 @@
                             <mdb-card class="h-100">
                                 <!--Card image-->
                                 <div class="view overlay waves-light" mdbWavesEffect>
-                                    <mdb-card-img src={{postCard.backgroundImage}} alt="Card image cap"></mdb-card-img>
+                                    <mdb-card-img src={{postCard.backgroundImage}} alt="Card image cap" [ngClass]="{'imgBgSize':true}">
+
+                                    </mdb-card-img>
                                     <a routerLink="/post/{{postCard.postId}}" r>
                                         <div class="mask rgba-white-slight"></div>
                                     </a>
@@ -89,7 +91,7 @@
                 </div>
 
                 <p></p>
-                <br/>
+              
                
 
                 <!--/.Card-->
