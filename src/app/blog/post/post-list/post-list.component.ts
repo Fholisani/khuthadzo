@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { PostCardResponse } from 'src/app/model/post-card-response.model';
 import { Post } from 'src/app/model/post.model';
 import { BlogService } from 'src/app/service/blog-service.service';
+import { ShareService } from 'src/app/service/share.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
 import { environment } from 'src/environments/environment';
 
@@ -27,7 +28,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
 
   constructor(private blogService: BlogService,
-    private dataStorageService: DataStorageService,) { 
+    private dataStorageService: DataStorageService, private shareService:ShareService) { 
     this.host = environment.host;
     this.config = {
       currentPage: 1,
@@ -38,6 +39,11 @@ export class PostListComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.shareService.setFacebookTags(
+      "https://khuthadzo-kg.co.za/",
+      "Khuthadzo - Freelance interior designer",
+      "Post detail Description",
+      "https://khuthadzo-kg.co.za/");
     // this.postCards = [new PostCard("Card title",
     // "Some quick example text to build on the card title and make up the bulk of the card's content.",
     // "https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg", 1),

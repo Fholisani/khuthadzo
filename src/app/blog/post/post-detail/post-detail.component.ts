@@ -16,6 +16,7 @@ import { ElementRef } from '@angular/core';
 import { GalleryItem } from 'src/app/model/gallery-dynamic.model';
 import mermaid from 'mermaid';
 import { filter } from 'rxjs/operators';
+import { ShareService } from 'src/app/service/share.service';
 declare var gtag: Function;
 
 @Component({
@@ -49,12 +50,17 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
   constructor(private blogService: BlogService, private route: ActivatedRoute,
     private router: Router, private authService: AuthService,
     private dataStorageService: DataStorageService, private elementRef: ElementRef,
-    private changeDetection: ChangeDetectorRef) { }
+    private changeDetection: ChangeDetectorRef, private shareService:ShareService) { }
 
 
 
 
   ngOnInit(): void {
+    this.shareService.setFacebookTags(
+      "https://khuthadzo-kg.co.za/",
+      "Khuthadzo - Freelance interior designer",
+      "Post detail Description",
+      "https://khuthadzo-kg.co.za/");
     mermaid.initialize({
       securityLevel: 'loose'
     });

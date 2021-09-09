@@ -1,4 +1,4 @@
-import { BrowserModule, HammerModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule, Meta } from '@angular/platform-browser';
 import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -196,6 +196,7 @@ import { faStackOverflow, faGithub, faMedium, faFacebook, faTwitter, faInstagram
       useClass: AuthInterceptorService,
       multi: true
     },
+    Meta
    ],
   bootstrap: [AppComponent]
 })
