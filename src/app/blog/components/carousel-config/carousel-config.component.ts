@@ -25,9 +25,9 @@ export class CarouselConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.landingData = [new LandingData('Modern Bedroom','This is a modern bedroom design of a 1 bedroom apartment. ', "https://fholisani.co.za:8432/blogger/image/959949069/BEDROOM%20VIEW%203.jpg?size=original"),
-    new LandingData('Modern Bedroom','A bedview shot from seating area of the bedroom', "https://fholisani.co.za:8432/blogger/image/959948320/BEDROOM%20VIEW%201.jpg?size=original"),
-    new LandingData('Modern Bedroom','Living room view from the Tv unit', "https://fholisani.co.za:8432/blogger/image/959805389/LIVING%20ROOM%204.jpg?size=original")]
+    this.landingData = [new LandingData('Modern Bedroom','This is a modern bedroom design of a 1 bedroom apartment. ', "https://khuthadzo-kg.co.za:8432/blogger/image/959949069/BEDROOM%20VIEW%203.jpg?size=original"),
+    new LandingData('Modern Bedroom','A bedview shot from seating area of the bedroom', "https://khuthadzo-kg.co.za:8432/blogger/image/959948320/BEDROOM%20VIEW%201.jpg?size=original"),
+    new LandingData('Modern Bedroom','Living room view from the Tv unit', "https://khuthadzo-kg.co.za:8432/blogger/image/959805389/LIVING%20ROOM%204.jpg?size=original")]
   }
 
 }
