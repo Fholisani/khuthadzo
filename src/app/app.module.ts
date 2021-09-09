@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import { IconsModule } from './icons/icons.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { LayoutComponent } from './layout/layout.component';
@@ -79,7 +78,10 @@ import "prismjs";
 import "prismjs/components/prism-typescript.min.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-highlight/prism-line-highlight.js";
-
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faSquare, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
+import { faSquare as farSquare, faCheckSquare as farCheckSquare } from '@fortawesome/free-regular-svg-icons';
+import { faStackOverflow, faGithub, faMedium, faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 
 @NgModule({
@@ -138,7 +140,7 @@ import "prismjs/plugins/line-highlight/prism-line-highlight.js";
     BrowserAnimationsModule,
     NgbModule,
     AppRoutingModule,
-    IconsModule,
+   
     FormsModule,
     ReactiveFormsModule,
     NgxGalleryModule,
@@ -169,6 +171,7 @@ import "prismjs/plugins/line-highlight/prism-line-highlight.js";
     ShareModule,
     MatSliderModule,
     MatButtonModule,
+    FontAwesomeModule
   
 
  
@@ -197,6 +200,10 @@ import "prismjs/plugins/line-highlight/prism-line-highlight.js";
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(private library: FaIconLibrary) {
+    library.addIcons(faSquare, faCheckSquare, farSquare, farCheckSquare, faStackOverflow, faGithub, faMedium,
+      faFacebook, faTwitter, faInstagram);
+  }
   
  }
 // function that returns `MarkedOptions` with renderer override
