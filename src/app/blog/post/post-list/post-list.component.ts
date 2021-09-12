@@ -59,7 +59,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     // new PostCard("Card title",
     // "Some quick example text to build on the card title and make up the bulk of the card's content.",
     // "https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg",5)];
-
+    this.postCards = this.blogService.getPostCards();
 
     this.subscription = this.blogService.postCardsChanged
       .subscribe(

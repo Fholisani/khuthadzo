@@ -6,11 +6,13 @@ import { PostCardResponse } from '../model/post-card-response.model';
 import { PostDetailResponse } from '../model/post-response.model';
 import { PostUpdate } from '../model/post-update.model';
 import { Post } from '../model/post.model';
+import { SearchRequest } from '../model/search-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
+
 
 
 
@@ -35,7 +37,8 @@ export class BlogService {
   successMessageChanged=new Subject<string>();
   postDeleteChanged = new Subject<number>();
   
-  
+  searchRequest:SearchRequest =null;
+  searchRequestChanged = new Subject<SearchRequest>();
 
   setErrorMessage(errorMessage: string) {
     this.errorMessage = errorMessage;
@@ -92,7 +95,7 @@ export class BlogService {
     payload.id =Math.floor(Math.random() * 100) + 1;
   
     payload.date =  new Date("2019-01-16");
-    payload.author = "*Khuthi*";
+    payload.author = "**Khuthi**";
     payload.readTime = 5;
     payload.slug = "Slug";
     // payload.bgImage = "https://lukasz-galka.github.io/ngx-gallery-demo/assets/img/1-medium.jpeg";
@@ -110,6 +113,10 @@ export class BlogService {
 
   deletePost(postId: number) {
     this.postDeleteChanged.next(postId);
+  }
+  setSearchData(searchRequest: SearchRequest) {
+    this.searchRequest=searchRequest;
+   this.searchRequestChanged.next(this.searchRequest);
   }
 
   constructor() { }

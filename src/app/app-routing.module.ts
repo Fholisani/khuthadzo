@@ -41,7 +41,7 @@ const routes: Routes = [
         {path:':id/:id2/edit', component: FilesEditComponent}
     ] /*canActivate: [AuthGuard],resolve:[PostResolverService]*/},
   ] },
-  { path: 'search', component: SearchResultsComponent },
+  { path: 'search', component: SearchResultsComponent,  },
   { path: 'architecture', component: ArchitectureComponent, resolve:[PortfolioResolverService] },
   { path: 'hand-drawings', component: HandDrawingComponent, resolve:[HanddrawingResolverService]  },
   { path: 'upload', component: ImageUploadImplComponent,  canActivate: [AuthGuard] },

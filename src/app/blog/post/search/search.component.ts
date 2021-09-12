@@ -27,8 +27,12 @@ export class SearchComponent implements OnInit,AfterViewInit, OnDestroy {
     private dataStorageService: DataStorageService,
     private blogService: BlogService,
     private recaptcha3: NgRecaptcha3Service,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+  
+  ) { 
+
+    console.log(this.router.url); //  /routename
+  }
   ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
   }
@@ -56,11 +60,16 @@ export class SearchComponent implements OnInit,AfterViewInit, OnDestroy {
           console.log(this.formData);
           // Handle saving form data
 
+        this.blogService.setSearchData(this.formData);
           this.dataStorageService.searchPosts(pageNo,pageSize, this.formData).subscribe(postCards => {
 
+            console.log("Current route : " + this.router.url);
             this.blogService.setPostCards(postCards.data);
             this.blogService.setLoadingIndicator(false);
-            this.onSearchResults();
+            if(this.router.url !=='/home'){
+              this.onSearchResults();
+            }
+            
           }, errorMessage => {
 
             console.log('HTTP Error', errorMessage)
