@@ -82,6 +82,7 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { faSquare, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { faSquare as farSquare, faCheckSquare as farCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { faStackOverflow, faGithub, faMedium, faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { DataStorageService } from './shared/data-storage.service';
 
 
 @NgModule({
@@ -191,6 +192,12 @@ import { faStackOverflow, faGithub, faMedium, faFacebook, faTwitter, faInstagram
       multi: true
     },
     UploadService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    },
+    DataStorageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

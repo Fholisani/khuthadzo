@@ -47,7 +47,7 @@ export class DataStorageService {
     const posts = this.blogService.getPostsAdded();
     return this.http
       .post<undefined>(
-        `${this.imageUrl}/blogger/post`,
+        `${this.imageUrl}/blogger/secure/post`,
         posts
       ).pipe(
         tap(response => {
@@ -64,7 +64,7 @@ export class DataStorageService {
     const post = this.blogService.getUpdatedPost();
     return this.http
       .put<undefined>(
-       `${this.imageUrl}/blogger/post/${post.index}`,
+       `${this.imageUrl}/blogger/secure/post/${post.index}`,
        // `${this.url}/postupdate.json`,
         post.post
       ).pipe(
@@ -154,7 +154,7 @@ export class DataStorageService {
       this.blogService.setLoadingIndicator(true);
     return this.http
       .delete<undefined>(
-        `${this.imageUrl}/blogger/post/${postId}/delete`
+        `${this.imageUrl}/blogger/secure/post/${postId}/delete`
       )
       .pipe(
         map(response => response
@@ -213,7 +213,7 @@ export class DataStorageService {
     console.log("Image deatail data : " + JSON.stringify(imageObj));
     return this.http
       .put<ContetFile>(
-        `${this.imageUrl}/blogger/content/${imageObj.contentId}`,
+        `${this.imageUrl}/blogger/secure/content/${imageObj.contentId}`,
         imageObj
       ).pipe(
         tap(response => {
@@ -356,7 +356,7 @@ export class DataStorageService {
     formData.append('postId',postId );
     
 
-    const req = new HttpRequest('POST', `${this.imageUrl}/blogger/image/v1`, formData, {
+    const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/image/v1`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -452,7 +452,7 @@ export class DataStorageService {
     this.uploadService.setLoadingIndicator(true);
     return this.http
       .delete<unknown>(
-        `${this.imageUrl}/blogger/image/v1/${contentFile.reference}`,
+        `${this.imageUrl}/blogger/secure/image/v1/${contentFile.reference}`,
        
       ).pipe(
         tap(response => {
@@ -466,7 +466,7 @@ export class DataStorageService {
     this.uploadService.setLoadingIndicator(true);
     return this.http
       .delete<unknown>(
-        `${this.imageUrl}/blogger/image/v1/${galleryImage.reference}`,
+        `${this.imageUrl}/blogger/secure/image/v1/${galleryImage.reference}`,
        
       ).pipe(
         tap(response => {
