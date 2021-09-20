@@ -14,6 +14,7 @@ import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing
 import { HanddrawingResolverService } from './blog/portfolio/handdrawing-resolver.service';
 import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
 import { PortfolioResolverService } from './blog/portfolio/portfolio-resolver.service';
+import { VideoComponent } from './blog/portfolio/video/video.component';
 import { PostDetailComponent } from './blog/post/post-detail/post-detail.component';
 import { PostEditComponent } from './blog/post/post-edit/post-edit.component';
 import { PostNewComponent } from './blog/post/post-new/post-new.component';
@@ -44,6 +45,7 @@ const routes: Routes = [
   { path: 'search', component: SearchResultsComponent,  },
   { path: 'architecture', component: ArchitectureComponent, resolve:[PortfolioResolverService] },
   { path: 'hand-drawings', component: HandDrawingComponent, resolve:[HanddrawingResolverService]  },
+  { path: 'video', component: VideoComponent,  },
   { path: 'upload', component: ImageUploadImplComponent,  canActivate: [AuthGuard] },
   { path: 'auth', component: AuthComponent },
   {path:'files', component: FilesComponent, children:[

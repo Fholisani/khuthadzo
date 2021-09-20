@@ -3,7 +3,7 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"Khuthadzo": {
+		"Fholisani": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
@@ -17,7 +17,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/Khuthadzo",
+						"outputPath": "dist/Fholisani",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"polyfills": "src/polyfills.ts",
@@ -43,10 +43,20 @@
 							"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
 							"node_modules/lightgallery/css/lightgallery.css",
 							"node_modules/lightgallery/css/lg-thumbnail.css",
+							"node_modules/lightgallery/css/lg-fullscreen.css",
+							"node_modules/lightgallery/css/lg-rotate.css",
 							"node_modules/lightgallery/css/lg-zoom.css",
+							"node_modules/lightgallery/css/lg-pager.css",
+							"node_modules/lightgallery/css/lg-video.css",
+							"node_modules/lightgallery/css/lg-autoplay.css",
+							"node_modules/lightgallery/css/lg-share.css",
 							"node_modules/justifiedGallery/dist/css/justifiedGallery.css",
 							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
-							"src/styles.scss",
+							"node_modules/ti-icons/css/themify-icons.css",
+							"node_modules/simple-line-icons/css/simple-line-icons.css",
+							"node_modules/aos/dist/aos.css",
+							
+							
 							"node_modules/prismjs/themes/prism.css",
 							"node_modules/prismjs/themes/prism-okaidia.css",
 							"node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
@@ -61,7 +71,8 @@
 							"node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles.css",
 							"node_modules/prismjs/plugins/toolbar/prism-toolbar.css",
 							"node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.css",
-							"node_modules/prismjs/plugins/wpd/prism-wpd.css"
+							"node_modules/prismjs/plugins/wpd/prism-wpd.css",
+							"src/styles.scss"
 						],
 						"scripts": [
 							"node_modules/jquery/dist/jquery.min.js",
@@ -111,7 +122,16 @@
 							"node_modules/prismjs/plugins/toolbar/prism-toolbar.min.js",
 							"node_modules/prismjs/plugins/unescaped-markup/prism-unescaped-markup.min.js",
 							"node_modules/prismjs/plugins/wpd/prism-wpd.min.js",
-							"node_modules/mermaid/dist/mermaid.min.js"
+							"node_modules/mermaid/dist/mermaid.min.js",
+							"node_modules/aos/dist/aos.js",
+							
+							
+							"node_modules/@vimeo/player/dist/player.min.js",
+							"node_modules/lightgallery/lib/lightgallery.js",
+							"node_modules/lightgallery/lib/plugins/video/lg-video.js"
+							
+							
+							
 						]
 					},
 					"configurations": {
@@ -148,18 +168,18 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "Khuthadzo:build"
+						"browserTarget": "Fholisani:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "Khuthadzo:build:production"
+							"browserTarget": "Fholisani:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "Khuthadzo:build"
+						"browserTarget": "Fholisani:build"
 					}
 				},
 				"test": {
@@ -198,18 +218,18 @@
 					"builder": "@angular-devkit/build-angular:protractor",
 					"options": {
 						"protractorConfig": "e2e/protractor.conf.js",
-						"devServerTarget": "Khuthadzo:serve"
+						"devServerTarget": "Fholisani:serve"
 					},
 					"configurations": {
 						"production": {
-							"devServerTarget": "Khuthadzo:serve:production"
+							"devServerTarget": "Fholisani:serve:production"
 						}
 					}
 				}
 			}
 		}
 	},
-	"defaultProject": "Khuthadzo",
+	"defaultProject": "Fholisani",
 	"cli": {
 		"analytics": false
 	}

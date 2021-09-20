@@ -1,0 +1,46 @@
+
+<app-layout>
+  <ng-container>
+    <div class="container"
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollUpDistance]="scrollUpDistance"
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown($event)">
+      <div class="row">
+        <br>
+    
+
+        <div class="col-md-12" >
+
+          <lightgallery [settings]="settings" [onInit]="Init" [onAfterClose]="AfterClose" [onBeforeOpen]="BeforeOpen">
+            <a *ngFor="let item of items | paginate
+            :config; let i = index" [attr.data-lg-size]="item.size" class="gallery-item"
+            
+              [attr.data-poster]="item.thumb"
+              [attr.data-sub-html]="item.subHtml"
+              [attr.data-video]="[item.video | json]">
+              <img  width="300" height="100" class="img-responsive" alt="{{item.id + '-'+ i}}" src="{{ item.thumb }}" />
+                    
+              
+            </a>
+        
+      
+        
+            <br>
+          </lightgallery>
+        
+        </div>
+
+        <!-- <pagination-controls
+        class="pagi"
+        (pageChange)="pageChange($event)"
+      ></pagination-controls> -->
+      </div>
+    </div>
+  </ng-container>
+</app-layout>
+
+
+
+

@@ -83,6 +83,8 @@ import { faSquare, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { faSquare as farSquare, faCheckSquare as farCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { faStackOverflow, faGithub, faMedium, faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { DataStorageService } from './shared/data-storage.service';
+import { VideoComponent } from './blog/portfolio/video/video.component';
+
 
 
 @NgModule({
@@ -130,6 +132,8 @@ import { DataStorageService } from './shared/data-storage.service';
     InfiniteScrollComponent,
     MarkdwonPipe,
     ExternalLinkDirective,
+    VideoComponent,
+
    
   
 

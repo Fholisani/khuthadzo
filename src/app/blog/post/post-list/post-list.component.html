@@ -1,5 +1,3 @@
-<div class="accordion" id="accordionExample">
-    <br>
 
     <app-upload-data [numberOfPosts]="numberOfPosts" [isPostAvailable]="isPostAvailable" [isCreatePost]="isCreatePost">
     </app-upload-data>
@@ -18,93 +16,70 @@
         <app-loading-spinner></app-loading-spinner>
     </div>
     <div class="accordion-item">
-        <h2 style="text-align: center;" class="accordion-header" id="headingOne">
-
-            Blog Post
-
-        </h2>
+    
 
         <br>
         <div class="row" *ngIf="!isLoading">
 
+
+
+            <!-- Row  -->
+<div class="container spacer">
+    <div class="row justify-content-center">
+      <!-- Column -->
+      <div class="col-md-8 no-trans text-center">
+        <h2 class="title">Recent Posts</h2>
+    
+      </div>
+      <!-- Column -->
+    </div>
+    <div class="row m-t-40 justify-content-center">
+      <!-- Column -->
+      <div
+        class="col-md-8 no-trans border-bottom mb-4"
+        *ngFor="let postCard of postCards  | paginate :config;let i = index"
+      >
+        <div class="card" data-aos="flip-left" data-aos-duration="1200">
+          <div class="row">
+            <div class="col-md-2 no-trans">
+              <span class="text-dark font-medium">{{ postCard.timeElapsed }}</span>
+              <h6 class="card-subtitle font-12 mt-1">By Fholisani</h6>
+            </div>
+            <div class="col-md-7 no-trans">
+              <h5 class="font-medium cursor-pointer" (click)="viewDetail(postCard.id)">
+                {{ postCard.heading.substring(0, 50) }}..
+              </h5>
+              <p class="m-t-20">
+                {{ postCard.subHeading }}
+              </p>
+            </div>
+            <div class="col-md-3 no-trans">
+              <a routerLink="/post/{{postCard.postId}}"
+                class="linking font-medium text-themecolor m-t-10 cursor-pointer"
+              >
+                <span >Show Detail</span>
+                <i class="ti-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 mx-auto ">
+        <pagination-controls class="pagi" (pageChange)="pageChange($event)"></pagination-controls>
+      </div>
+      
+    </div>
+  </div>
+
           
-            <md-list-item  *ngFor="let postCard of postCards  | paginate :config;let i = index" [ngClass]="{'line-break col-xs-4 col-sm-4 col-md-4 col-lg-4 ': 3}">
-                <!--Card-->
-                <div class="container h-100">
-                    <div class="row h-100">
-                        <div class="col-md-12">
-
-                            <mdb-card class="h-100">
-                                <!--Card image-->
-                                <div class="view overlay waves-light" mdbWavesEffect>
-                                    <mdb-card-img src={{postCard.backgroundImage}} alt="Card image cap" [ngClass]="{'imgBgSize':true}">
-
-                                    </mdb-card-img>
-                                    <a routerLink="/post/{{postCard.postId}}" r>
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                </div>
-
-                                <!--Card content-->
-                                <mdb-card-body>
+       
 
 
 
-                                    <!--Title-->
-                                    <mdb-card-title>
-                                        <h4>{{i + 1}} - {{postCard.heading}} <a class="activator px-3 mr-2">
-                                                <!-- <mdb-icon fas icon="share-alt" class="black-text"></mdb-icon> -->
-                                    
-                                            </a></h4>
-                                    </mdb-card-title>
-                                    <hr class="hr-light">
-                                    <!--Text-->
-                                    <mdb-card-text>
-                                        {{postCard.subHeading}}
-                                    </mdb-card-text>
-
-                                    <a routerLink="/post/{{postCard.postId}}" mdbBtn color="primary" mdbWavesEffect>Read
-                                        more</a>
-                                    <!-- Card footer -->
-                                    <div class="card-footer text-muted text-center mt-4">
-                                       Posted {{postCard.timeElapsed}}
-                                    </div>
-                                   
-                                    <share-buttons [theme]="'modern-light'"
-                                    [include]="['facebook','twitter','linkedin','whatsapp', 'email','copy']"
-                                    [show]="7"
-                                    [showIcon]="true"
-                                    [showText]="false"
-                                    [title]="this.postCard.heading"
-                                    [description]="this.postCard.subHeading"
-                                    [image]="this.postCard.backgroundImage"
-                                    [url]="this.host +'post/'+ this.postCard.postId+ '/'"
-                                    [autoSetMeta]="false"
-                                   ></share-buttons>
-                                </mdb-card-body>
-                            </mdb-card>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <p></p>
-              
-               
-
-                <!--/.Card-->
-
-
-            </md-list-item>
 
         </div>
 
-        <br>
-        <br>
-        <br>
-        <pagination-controls class="pagi" (pageChange)="pageChange($event)"></pagination-controls>
+     
+        
     </div>
 
-</div>

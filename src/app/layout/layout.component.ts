@@ -12,7 +12,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  title = 'Khuthadzo';
+  title = 'Fholisani';
   loadedFeature = 'recipe';
 
   onNavigate(feature: string) {

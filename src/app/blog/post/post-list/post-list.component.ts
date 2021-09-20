@@ -40,10 +40,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.shareService.setFacebookTags(
-      "https://khuthadzo-kg.co.za/",
-      "Khuthadzo - Freelance interior designer",
+      "https://fholisani.co.za/",
+      "Fholisani - Freelance interior designer",
       "Post detail Description",
-      "https://khuthadzo-kg.co.za/");
+      "https://fholisani.co.za/");
     // this.postCards = [new PostCard("Card title",
     // "Some quick example text to build on the card title and make up the bulk of the card's content.",
     // "https://mdbootstrap.com/img/Photos/Horizontal/Work/4-col/img%20%2821%29.jpg", 1),
@@ -156,6 +156,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
+  viewDetail(id: number) {
+    
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
