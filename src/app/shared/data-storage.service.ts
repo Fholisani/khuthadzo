@@ -286,6 +286,59 @@ export class DataStorageService {
 
   }
 
+  saveVideo(componentUploadingImg : string): Observable<unknown | Error> {
+
+    let imageObj= null;
+    console.log("======Get images for component  : ===== " + componentUploadingImg);
+  
+    if(componentUploadingImg==='uploadvideo'){
+
+      imageObj = this.uploadService.getVideosAdded();
+      
+    }
+   
+    if(imageObj === null){
+      console.log("======Should not push empty Imagess : =====");
+      return;
+    }
+    const finalImages = [];
+    const calls = [];
+    this.uploadService.setLoadingIndicator(true);
+    // images.forEach(element => {
+
+      calls.push(this.pushVideoFileImageToStorageLocal(imageObj)
+        .pipe(
+          tap(response => {
+            console.log(response);
+
+          }),
+          
+          //Use switchMap to call another API(s)
+          // switchMap((responses: ImageUrl[]) => {
+          //   //Lets map so to an observable of API call
+          //   imageObj.imageUrls = responses;
+          //   finalImages.push(imageObj);
+          //   console.log("Element data : " + JSON.stringify(imageObj));
+          //   //  const allObs$ = this.storeImage(element);///element.map(so => this.storeImage(element));
+
+          //   const allObs$ = this.storeImage(finalImages);
+          //   //forkJoin will wait for the response to come for all of the observables
+          //   return allObs$;
+          // }),
+          map((responses: ImageUrl[]) => {
+            console.log('PushED images Map : ' + responses);
+            imageObj.imageUrls = responses;
+            finalImages.push(imageObj);
+  
+
+            return finalImages;//;new ImageUrl(imageElement.image.name, message)
+          }),
+          catchError(this.handleError)
+        ));
+    // });
+    return forkJoin(calls);
+
+  }
   storeImage(image: Image[]): Observable<undefined | Error> {
     this.uploadService.setLoadingIndicator(true);
     console.log("Image data : " + JSON.stringify(image));
@@ -363,6 +416,30 @@ export class DataStorageService {
 
     return this.http.request(req);
   }
+
+  uploadVideo(file: File, fileUploadDetails: Image): Observable<HttpEvent<any>> {
+    console.log('Push images Local instances');
+    const formData: FormData = new FormData();
+    let postId = 0 +'';
+    if(fileUploadDetails.postId){
+      postId = fileUploadDetails.postId +'';
+    }
+
+
+    formData.append('video', file);
+    formData.append('description', fileUploadDetails.description);
+    formData.append('portfolioType', fileUploadDetails.portfolioType);
+    formData.append('title', fileUploadDetails.tittle);
+    formData.append('postId',postId );
+    
+
+    const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/video/v1`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
+  }
   pushFileImageToStorageLocal(fileUpload: Image) {
 
     console.log('Push images Local');
@@ -401,16 +478,53 @@ export class DataStorageService {
         catchError(this.handleError)
 
       ));
-
-
-
-
-
     });
     return forkJoin(calls);
 
   }
 
+  pushVideoFileImageToStorageLocal(fileUpload: Image) {
+
+    console.log('Push images Local');
+    //TODO will this code return the object with updated image URL ?
+
+    const calls = [];
+    let progress = 0;
+
+    fileUpload.images.forEach(imageElement => {
+
+      calls.push(this.uploadVideo(imageElement.image,
+        fileUpload).pipe(
+
+        tap(response => {
+          console.log('PushED images Tap');
+          console.log(response);
+
+        }),
+        filter(response => response.type === HttpEventType.Response),
+        map(response => {
+          console.log('PushED images Map type ' + response.type);
+          let reference = '';
+          let url = '';
+          let contentId = '';
+          if (response.type === HttpEventType.Response) {
+            reference = response.body.reference;
+            url = response.body.url;
+            contentId = response.body.contentId;
+            console.log('contentId : ' +contentId +  ' - Locate image URL : ' + url);
+          
+          }
+
+          return new ImageUrl(imageElement.image.name,url,reference , contentId)
+          
+        }),
+        catchError(this.handleError)
+
+      ));
+    });
+    return forkJoin(calls);
+
+  }
   fetchImages(portfolioType : String, pageNo : number, pageSize: number) {
     this.uploadService.setLoadingIndicator(true);
     console.log("Pulling images of portfolio type : " + portfolioType);

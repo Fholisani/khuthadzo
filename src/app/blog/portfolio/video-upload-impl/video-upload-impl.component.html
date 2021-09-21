@@ -1,0 +1,33 @@
+<app-layout>
+    <ng-container>
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+          <br>
+        <app-alert-message [isLoading]="isLoading" [errorMessage]="errorMessage" 
+        [successMessage]="successMessage"></app-alert-message>
+
+        <div *ngIf="successMessage && imageLink">
+          <!-- <button class="btn btn-info" >Copy</button> -->
+          <p>
+            <markdown ngPreserveWhitespaces>URL Below can be copied and used for blog content creation! - 
+            {{'```' + imageLink + '```'}}</markdown></p>
+          
+        </div>
+       
+        
+        <app-video-upload [componentUploading]="'uploadvideo'" 
+        [uploadedImageUrl]="uploadedImageUrl"
+        [portfolioTypes]="portfolioTypes"
+        [isMultipleUpload]="isMultipleUpload"
+        (submitedImages)="acceptData($event)"
+        (componentCalling)="componentUploading($event)"
+        (portfolioUploading)="portfolioUploading($event)"></app-video-upload>
+      </div>
+    </div>
+</div>
+</ng-container>
+</app-layout>
+   
+
+

@@ -27,6 +27,7 @@ export const mimeType = (control: AbstractControl): Promise<{ [key: string]: any
                     case 'ffd8ffe3':
                     case 'ffd8ffe8':
                     case 'ffd8ffdb':
+                    case '00018':
                         isValid = true;
                         break;
                     default:

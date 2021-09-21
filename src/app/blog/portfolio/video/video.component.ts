@@ -8,13 +8,21 @@ import { AfterCloseDetail, BeforeOpenDetail } from 'lightgallery/lg-events';
 import { LightGallery } from 'lightgallery/lightgallery';
 import lgVideo from 'lightgallery/plugins/video';
 import lgShare from 'lightgallery/plugins/share';
-import { GalleryItem } from 'lightgallery/lg-utils';
+
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
+import { GalleryImages } from 'src/app/model/post.model';
+import { RemoveImg } from 'src/app/model/remove-img.model';
+import { filter } from 'rxjs/operators';
+import { GalleryItem } from 'lightgallery/lg-utils';
+import { Attributes, Source, VideoFile, Video } from 'src/app/model/video-file.model';
 
+
+declare var $: any;
+declare var gtag: Function;
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
@@ -33,6 +41,14 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
   isAuthenticated = false;
   private userSub: Subscription;
   private lightGallery!: LightGallery;
+  private subscriptionContetFileDelete: Subscription;
+  private subscriptionDelete: Subscription;
+  private subscriptionVideoMasterMemoryChanged :Subscription;
+  private videos: GalleryImages[] = [];
+  isLoading = false;
+  errorMessage: string = null;
+  successMessage: string = null;
+  subscription: Subscription;
 
   constructor(private uploadService: UploadService, private authService: AuthService,
     private dataStorageService: DataStorageService, private changeDetection: ChangeDetectorRef,
@@ -43,12 +59,27 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
       totalItems: 0
     };
   }
-  ngOnDestroy(): void {
+ 
+  ngOnDestroy() {
     this.userSub.unsubscribe();
+    this.subscription.unsubscribe();
+    this.subscriptionContetFileDelete.unsubscribe();
+    this.subscriptionDelete.unsubscribe();
+    this.subscriptionVideoMasterMemoryChanged.remove;
+    this.subscriptionVideoMasterMemoryChanged.unsubscribe();
+    this.routerSubscription.unsubscribe();
   }
+  private routerSubscription: Subscription;
   ngAfterViewInit(): void {
+    // subscribe to router events and send page views to Google Analytics
    
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+      });
   }
+
   ngAfterViewChecked(): void {
     if (this.needRefresh) {
       this.lightGallery.refresh();
@@ -59,27 +90,7 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
 
   ngOnInit(): void {
  
-    let vd = ([
-      
-      {
-        video: {
-          source: [
-            {
-              src: 'https://www.lightgalleryjs.com//videos/video1.mp4',
-              type: 'video/mp4'
-            }
-          ],
-          attributes: { preload: false, controls: true, width: 640,
-          height: 480 }
-        },
-        thumb:
-          'https://www.lightgalleryjs.com//images/demo/html5-video-poster.jpg',
-        subHtml: `<div class="lightGallery-captions">
-                  <h4>Photo by <a href="https://unsplash.com/@brookecagle">Brooke Cagle</a></h4>
-                  <p>Description of the slide 2</p>
-              </div>`
-      }
-    ] as unknown) as GalleryItem[];
+ 
 
     this.settings = {
       download: true,
@@ -102,17 +113,162 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
       },
     }
 
-    this.items = vd;
-    this.needRefresh = true;
-
+ 
 
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
       // console.log(!user);
       // console.log(!!user);
     });
+
+
+    this.subscriptionVideoMasterMemoryChanged = this.uploadService.videosMasterMemoryChanged
+    .subscribe(
+      (imagesMaster: GalleryImages[]) => {
+        console.log("Video Master memory has been updated to : " + imagesMaster.length);
+
+
+      }
+    );
+
+
+this.subscriptionDelete = this.uploadService.videosChanged
+  .subscribe(
+    (videos: GalleryImages[]) => {
+      
+
+      if (videos.length > 0) {
+        //this.config.totalItems = this.images[0].totalItems;
+        this.videos = videos;
+        this.newImagesAvailable();
+      }
+
+      
+ 
+      if (this.videos.length > 0) {
+        this.config.totalItems = this.videos[0].totalItems;
+      }
+
+     
+    }
+  );
+this.subscriptionDelete = this.uploadService.imagesDeleteChanged
+  .subscribe(
+    (videos: GalleryImages[]) => {
+      
+      this.videos = videos;
+      if (this.videos.length > 0) {
+        this.config.totalItems = this.videos[0].totalItems;
+      }
+
+
+
+    }
+  );
+
+
+this.subscription = this.uploadService.isLoadingChanged
+  .subscribe(
+    (isLoading: boolean) => {
+      this.isLoading = isLoading;
+    }
+  );
+
+this.subscription = this.uploadService.errorMessageChanged
+  .subscribe(
+    (errorMessage: string) => {
+      this.errorMessage = errorMessage;
+    }
+  );
+this.subscription = this.uploadService.successMessageChanged
+  .subscribe(
+    (successMessage: string) => {
+      this.successMessage = successMessage;
+
+    }
+  );
+
+
+this.subscriptionContetFileDelete = this.uploadService.fileImageDeleteLocalIndex.subscribe(
+  (removeImg: RemoveImg) => {
+    console.log("****Deleted the image file at local Index***** : " + removeImg.index);
+
+    // this.uploadedContentImageBg = imageFileContent;
+    this.onDeleteImg(removeImg, 'upload');
+
+
+
+  }
+);
+this.videos = this.uploadService.getImages();
+// this.newImagesAvailable();
+this.dataEmit()
  
   }
+
+
+  newImagesAvailable() {
+
+
+
+    var localItems = [];
+    // this.items =[];
+    const videos = this.uploadService.getVideos();
+
+    videos.forEach(element => {
+      var localSource = [];
+      let source = new Source(element.url,'video/mp4')  ;
+      let attributes=  new Attributes(false, true);
+      localSource.push(source);
+      let videoObj = new Video(localSource, attributes);
+
+
+      const item = new VideoFile(videoObj, 'https://www.lightgalleryjs.com//images/demo/html5-video-poster.jpg',
+        element.subHtml,
+        element.reference,
+        element.description,
+       ) as VideoFile;
+
+      localItems.push(item);
+
+    });
+
+
+    let videoFiles = (localItems) as GalleryImages[];
+
+    // add another  items from the API
+  
+    if(this.items === undefined ||this.items.length === 0){
+      this.items = videoFiles;
+    }else{
+      console.log("Add more items trigered by the scroll !!");
+      videoFiles.forEach(element => {
+        this.items = [
+          ...this.items,
+          element,
+        ];
+  
+      });
+    }
+
+    // this.items = vd;
+    // this.needRefresh = true;
+
+    
+   // this.items = localItems;
+    this.needRefresh = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+  }
+
+  dataEmit() {
+    const imageObj = this.uploadService.getImagesAdded();
+
+
+  }
+
+
+
   AfterClose = (detail: AfterCloseDetail): void => {
     // alert("Closing !!");
   };
@@ -176,6 +332,47 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
 
     // this.direction = "down";
     // alert("Scrolling!!!");
+  }
+
+
+  onDeleteImg(removeImg: RemoveImg, componentUploadingImg) {
+    this.subscription = this.dataStorageService.deleteUploadImage(removeImg.galleryImage)
+      .subscribe(
+        response => {
+
+          if (componentUploadingImg === 'upload') {
+            this.videos.splice(removeImg.index, 1);
+            this.items.splice(removeImg.index, 1);
+            this.changeDetection.detectChanges();
+            console.log("Remove Images and item index : " + removeImg.index);
+          }
+
+          this.uploadService.setLoadingIndicator(false);
+          this.uploadService.setSuccessMessage("Successfully deleted the picture!!");
+          this.uploadService.setErrorMessage(null);
+
+          this.needRefresh = true;
+
+
+
+        },
+        errorMessage => {
+          console.log('HTTP Error', errorMessage)
+          let errMsg = `Unable to delete due to `;
+          if (errorMessage == undefined) {
+
+            errMsg += ' service unavailable! '
+          } else {
+            errMsg += `${errorMessage.message}`
+          }
+
+          this.uploadService.setErrorMessage(errMsg);
+          this.uploadService.setSuccessMessage(null);
+          this.uploadService.setLoadingIndicator(false);
+
+
+
+        });
   }
 
 }

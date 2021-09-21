@@ -84,6 +84,8 @@ import { faSquare as farSquare, faCheckSquare as farCheckSquare } from '@fortawe
 import { faStackOverflow, faGithub, faMedium, faFacebook, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { DataStorageService } from './shared/data-storage.service';
 import { VideoComponent } from './blog/portfolio/video/video.component';
+import { VideoUploadComponent } from './blog/portfolio/video-upload/video-upload.component';
+import { VideoUploadImplComponent } from './blog/portfolio/video-upload-impl/video-upload-impl.component';
 
 
 
@@ -133,6 +135,8 @@ import { VideoComponent } from './blog/portfolio/video/video.component';
     MarkdwonPipe,
     ExternalLinkDirective,
     VideoComponent,
+    VideoUploadComponent,
+    VideoUploadImplComponent,
 
    
   

@@ -7,11 +7,11 @@ import { Image, ImageUrl } from 'src/app/model/image.model';
 import { mimeType } from '../image/mime-type.validator';
 
 @Component({
-  selector: 'app-image-upload',
-  templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.scss']
+  selector: 'app-video-upload',
+  templateUrl: './video-upload.component.html',
+  styleUrls: ['./video-upload.component.scss']
 })
-export class ImageUploadComponent implements OnInit, OnDestroy {
+export class VideoUploadComponent implements OnInit, OnDestroy {
 
   title = 'Upload File';
   public formData = new FormData();
@@ -51,6 +51,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   constructor(private uploadService: UploadService) { }
 
+
   ngOnInit(): void {
     console.log("isMultipleUpload : " + this.isMultipleUpload)
     this.uploadService.uploadedDataSource.next([]);
@@ -88,7 +89,6 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   // );
     this.initForm();
   }
-
   dataEmit() {
     //const imageObj = this.uploadService.getImagesAdded();
     this.numberOfPosts = 0;
@@ -127,7 +127,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         return;
       }
     }
-    this.uploadService.createImage(this.form.value,this.componentUploading);
+    this.uploadService.createVideo(this.form.value,this.componentUploading);
     this.dataEmit()
     this.reset();
     this.submitedImages.emit(true);
@@ -251,7 +251,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       this.toggleShow();
     }
   ngOnDestroy() {
-    console.log("=========== unsubscribe image upload 1 =================");
+   
     this.subscription.remove;
     this.subscription.unsubscribe();
     // this.uploadedImageSub.unsubscribe();

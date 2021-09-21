@@ -12,11 +12,13 @@ export class UploadService {
   imagesChanged = new Subject<GalleryImages[]>();
   imagesMasterMemoryChanged= new Subject<GalleryImages[]>();
   imagesHandMasterMemoryChanged= new Subject<GalleryImages[]>();
+  videosMasterMemoryChanged= new Subject<GalleryImages[]>();
   imagesDeleteChanged = new Subject<GalleryImages[]>();
   imagesHandDrawingChanged = new Subject<GalleryImages[]>();
+  videosChanged = new Subject<GalleryImages[]>();
   imagesAdded = new BehaviorSubject<Image>(null);
   imagesBgAdded = new BehaviorSubject<Image>(null);
-
+  videoAdded = new BehaviorSubject<Image>(null);
   contentImagesAdded = new Subject<ContetFile>();
   contentImagesBgAdded = new Subject<ContetFile>();
   contentImagesPostAdded = new Subject<ContetFile>();
@@ -26,11 +28,15 @@ export class UploadService {
   private images: GalleryImages[] = [];
   private imagesMasterMemory: GalleryImages[] = [];
   private imagesHandMasterMemory: GalleryImages[] = [];
+  private videosMasterMemory: GalleryImages[] = [];
   private itemTemp: GalleryImages[] = [];
   private imagesHandDrawing: GalleryImages[] = [];
+  private videos: GalleryImages[] = [];
   private imagesBgAdd: Image;
   private imagesPostAdd: Image;
   private imagesAdd: Image;
+  private videoAdd : Image;
+
   private  imageToDelete : GalleryImages; 
 
   private contentImagesBgAdd: ContetFile;
@@ -141,8 +147,29 @@ export class UploadService {
     this.imagesHandMasterMemoryChanged.next(this.imagesHandMasterMemory.slice());
     this.imagesHandDrawingChanged.next(this.imagesHandDrawing.slice());
   }
+
+  setVideos(videos: GalleryImages[]) {
+    this.videos = videos;
+    if (this.videosMasterMemory === undefined || this.videosMasterMemory.length === 0) {
+      this.videosMasterMemory = videos;
+    } else {
+      console.log("Add more iterms trigered by the scroll into Master Memory");
+      videos.forEach(element => {
+        this.videosMasterMemory = [
+          ...this.videosMasterMemory,
+          element,
+        ];
+
+      });
+    }
+    this.videosMasterMemoryChanged.next(this.videosMasterMemory.slice());
+    this.videosChanged.next(this.videos.slice());
+  }
   getHandDrawingImages() {
     return this.imagesHandDrawing.slice();
+  }
+  getVideos() {
+    return this.videos.slice();
   }
 
   getImage(index: number) {
@@ -157,6 +184,10 @@ export class UploadService {
   }
   cleanImages() {
     this.imagesAdd = null;
+    //  this.imagesAdded.next(this.imagesAdd);
+  }
+  cleanVideos() {
+    this.videoAdd = null;
     //  this.imagesAdded.next(this.imagesAdd);
   }
   cleanBgImages() {
@@ -189,6 +220,23 @@ export class UploadService {
     if (componentUploading === 'upload') {
       this.imagesAdd = payload;
       this.imagesAdded.next(this.imagesAdd);
+      // this.cleanBgImages();
+      // this.cleanPostImages();
+
+
+    }
+
+  }
+
+  createVideo(payload: Image, componentUploading: string) {
+    // payload.id =Math.floor(Math.random() * 100) + 1;
+    payload.imageUrls = [];
+
+    console.log("*** Notify subscriber for component : " + componentUploading);
+ 
+    if (componentUploading === 'uploadvideo') {
+      this.videoAdd = payload;
+      this.videoAdded.next(this.videoAdd);
       // this.cleanBgImages();
       // this.cleanPostImages();
 
@@ -266,6 +314,9 @@ export class UploadService {
   }
   getImagesAdded() {
     return this.imagesAdd;
+  }
+  getVideosAdded() {
+    return this.videoAdd;
   }
 
   getBgFileUploaded(index: number) {
@@ -345,6 +396,10 @@ export class UploadService {
   }
 
 
+  cleanVideosMasterMemory() {
+    this.videosMasterMemory = [];
+    this.videosMasterMemoryChanged.next(this.videosMasterMemory);
+  }
   // updateFileImageBg(index: number, contentFile: ContetFile){
   //   this.fileImageBgUrls[index] = newRecipe;
   //   this.fileImageChanged.next(this.fileImageBgUrls.slice())

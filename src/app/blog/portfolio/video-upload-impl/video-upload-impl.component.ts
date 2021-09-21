@@ -2,17 +2,18 @@ import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import { Subscription } from 'rxjs';
-import { Image, ImageUrl } from 'src/app/model/image.model';
+import { Image,ImageUrl } from 'src/app/model/image.model';
 import { UploadService } from 'src/app/service/upload.service';
 import { DataStorageService } from 'src/app/shared/data-storage.service';
- 
+
 
 @Component({
-  selector: 'app-image-upload-impl',
-  templateUrl: './image-upload-impl.component.html',
-  styleUrls: ['./image-upload-impl.component.scss']
+  selector: 'app-video-upload-impl',
+  templateUrl: './video-upload-impl.component.html',
+  styleUrls: ['./video-upload-impl.component.scss']
 })
-export class ImageUploadImplComponent implements OnInit, OnDestroy {
+export class VideoUploadImplComponent implements  OnInit, OnDestroy {
+
   subscriptionImg: Subscription;
   private subscriptionUploadImg: Subscription;
   isLoading = false;
@@ -24,8 +25,8 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
   portfolioUploadingImg: string =null;
   uploadedImageUrl: ImageUrl[] =[];
   imageObj: Image;
-  isMultipleUpload: boolean=true;
-  portfolioTypes: any = ['HandDrawing', 'Architecture', 'Blog','Carousel', ]
+  isMultipleUpload: boolean=false;
+  portfolioTypes: any = ['Video',  ]
   constructor(private uploadService: UploadService,
     private dataStorageService: DataStorageService, private clipboardApi: ClipboardService) { }
 
@@ -50,15 +51,15 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
          this.successMessage = successMessage;
       }
     );
-    this.subscriptionUploadImg = this.uploadService.imagesAdded
+    this.subscriptionUploadImg = this.uploadService.videoAdded
     .subscribe(
       (image: Image) => {
         if(image !== null){
           console.log("Upload image only if its the correct" + this.componentUploadingImg);
-        if(this.componentUploadingImg==='upload'){
+        if(this.componentUploadingImg==='uploadvideo'){
 
           this.imageObj = image;
-          this.onSaveDataImg();
+          this.onSaveDataVideo();
           }
         }else{
           console.log("Should not upload -Images just cleaned up - " + this.componentUploadingImg);
@@ -68,7 +69,6 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
     );
     
   }
-
   acceptData(data) {
     console.log(
       "this is the child data displaying in parent component: hasSubmitedImages : ",
@@ -90,19 +90,20 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
     );
     this.portfolioUploadingImg = data;
   }
-  onSaveDataImg() {
+
+  onSaveDataVideo() {
     console.log(" ======Calling from IMAGE-UPLOAD component======= : "+ this.componentUploadingImg);
     
 
    
-    this.subscriptionImg=  this.dataStorageService.saveImages(this.componentUploadingImg) 
+    this.subscriptionImg=  this.dataStorageService.saveVideo(this.componentUploadingImg) 
     .subscribe(
       response => {
         console.log(response[0][0] + " : Testing 1 0 1");
        
         let ms =  response[0][0];
 
-        if(this.componentUploadingImg === 'upload'){
+        if(this.componentUploadingImg === 'uploadvideo'){
           ms.imageUrls.forEach(element => {
             console.log(element + " : Testing 1 0 1 element");
             element.description = ms.description;
@@ -120,7 +121,7 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
         
       
   
-        this.uploadService.cleanImages();
+        this.uploadService.cleanVideos();
         this.uploadService.cleanPostImages();
         this.uploadService.cleanBgImages();
         this.uploadService.setLoadingIndicator(false);
