@@ -359,6 +359,14 @@ export class UploadService {
     this.fileImageDeleteLocalIndex.next(new RemoveImg(index, null, this.imageToDelete));
   }
 
+  deleteVideoFileUploaded(index: number) {
+    this.imageToDelete = this.videosMasterMemory[index];
+    console.log("Video this.videosMasterMemory Before : "+ this.videosMasterMemory.length);
+    this.videosMasterMemory.splice(index, 1);
+    this.videosMasterMemoryChanged.next(this.videosMasterMemory.slice());
+    this.fileImageDeleteLocalIndex.next(new RemoveImg(index, null, this.imageToDelete));
+  }
+
   deletePostFileUploaded(index: number) {
     this.fileImagePostDeleteLocalIndex.next(new RemoveImg(index, this.fileImagePostUrls[index], null));
     this.fileImagePostObjDelete.next(this.fileImagePostUrls[index]);

@@ -191,10 +191,10 @@ this.subscription = this.uploadService.successMessageChanged
 
 this.subscriptionContetFileDelete = this.uploadService.fileImageDeleteLocalIndex.subscribe(
   (removeImg: RemoveImg) => {
-    console.log("****Deleted the image file at local Index***** : " + removeImg.index);
+    console.log("****Deleted the video file at local Index***** : " + removeImg.index);
 
     // this.uploadedContentImageBg = imageFileContent;
-    this.onDeleteImg(removeImg, 'upload');
+    this.onDeleteImg(removeImg, 'uploadvideo');
 
 
 
@@ -223,10 +223,11 @@ this.dataEmit()
       let videoObj = new Video(localSource, attributes);
 
 
-      const item = new VideoFile(videoObj, 'https://www.lightgalleryjs.com//images/demo/html5-video-poster.jpg',
+      const item = new VideoFile(videoObj, element.poster,
         element.subHtml,
         element.reference,
         element.description,
+    
        ) as VideoFile;
 
       localItems.push(item);
@@ -277,7 +278,15 @@ this.dataEmit()
    
 
   };
+  removeVideo(index) {
 
+    this.deleteFileUploaded(index);
+
+  }
+  deleteFileUploaded(index: number) {
+    this.uploadService.deleteVideoFileUploaded(index);
+
+  }
   Init = (detail): void => {
     //   this.items =[];
     this.lightGallery = detail.instance;
@@ -298,7 +307,7 @@ this.dataEmit()
         );
 
         const index = this.lightGallery.index;
-        //this.removeImage(index);
+        this.removeVideo(index);
         console.log(galleryItems[index]);
         const itemDelete = galleryItems[index];
 
@@ -336,11 +345,11 @@ this.dataEmit()
 
 
   onDeleteImg(removeImg: RemoveImg, componentUploadingImg) {
-    this.subscription = this.dataStorageService.deleteUploadImage(removeImg.galleryImage)
+    this.subscription = this.dataStorageService.deleteUploadVideo(removeImg.galleryImage)
       .subscribe(
         response => {
 
-          if (componentUploadingImg === 'upload') {
+          if (componentUploadingImg === 'uploadvideo') {
             this.videos.splice(removeImg.index, 1);
             this.items.splice(removeImg.index, 1);
             this.changeDetection.detectChanges();
@@ -348,7 +357,7 @@ this.dataEmit()
           }
 
           this.uploadService.setLoadingIndicator(false);
-          this.uploadService.setSuccessMessage("Successfully deleted the picture!!");
+          this.uploadService.setSuccessMessage("Successfully deleted the Vodeo!!");
           this.uploadService.setErrorMessage(null);
 
           this.needRefresh = true;

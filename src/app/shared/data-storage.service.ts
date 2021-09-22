@@ -590,6 +590,19 @@ export class DataStorageService {
         map(response => response));
   }
 
+  deleteUploadVideo(galleryImage: GalleryImages): Observable<unknown | Error> {
+    this.uploadService.setLoadingIndicator(true);
+    return this.http
+      .delete<unknown>(
+        `${this.imageUrl}/blogger/secure/video/v1/${galleryImage.reference}`,
+       
+      ).pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        map(response => response));
+  }
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = "An unkonwn error occured";
     console.log("Error - " + errorRes);

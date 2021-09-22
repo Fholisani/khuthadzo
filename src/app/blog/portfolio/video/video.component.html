@@ -9,7 +9,25 @@
     (scrolled)="onScrollDown($event)">
       <div class="row">
         <br>
-    
+        <div class="col-md-12">
+          <!-- <app-upload-data [numberOfPosts]="numberOfPosts" [isPostAvailable]="isPostAvailable"
+            [isCreatePost]="isCreatePost" [isImageUpload]="isImageUpload" [isImgAvailable]="isImgAvailable"
+            [isCreateImg]="isCreateImg"
+            [portfolioType]="portfolioType">
+          </app-upload-data> -->
+          <br>
+          <br>
+          <div class="alert alert-success" *ngIf="successMessage">
+            <p>{{successMessage}}</p>
+          </div>
+          <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+          </div>
+          <div *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+
+        </div>
 
         <div class="col-md-12" >
 
