@@ -18,6 +18,7 @@ import { SearchRequest } from '../model/search-request.model';
 import { ResponsePostData } from '../model/response-post-data.model';
 import { ResponseContactUsData } from '../model/response-contactus-data.model';
 import { environment } from 'src/environments/environment';
+import { ContetImageUpdate } from '../model/content-image-update.model';
 
 @Injectable({
   providedIn: 'root'
@@ -224,6 +225,56 @@ export class DataStorageService {
 
   }
 
+  updateContentFileImages(fileUploadDetails: ContetImageUpdate): Observable<ContetFile | Error> {
+    let imageObj= null;
+   
+    imageObj = this.uploadService.getUpdateContentImgFile();
+    if(imageObj === null){
+      console.log("======Should not push empty Imagess : =====");
+      return;
+    }
+
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Image deatail data : " + JSON.stringify(imageObj));
+    return this.uploadUpdate(fileUploadDetails.images.length > 0 ? fileUploadDetails.images[0].image : null, 
+      fileUploadDetails)
+      .pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        filter(response => response.type === HttpEventType.Response),
+        map(response => {
+          console.log('PushED images Map type ' + response.type);
+          let reference = '';
+          let url = '';
+          let contentId = '';
+          let description = '';
+          let portfolioType = '';
+          let tittle = '';
+          let poster = '';
+          let imageSize = '';
+          let postId='';
+          if (response.type === HttpEventType.Response) {
+            reference = response.body.reference;
+            url = response.body.url;
+            contentId = response.body.contentId;
+            description =response.body.description;
+            poster =response.body.poster;
+            portfolioType =response.body.portfolioType;
+            tittle =response.body.tittle;
+            imageSize =response.body.imageSize;
+            postId =response.body.postId;
+            console.log('contentId : ' +contentId +  ' - Locate image URL : ' + url);
+          
+          }
+
+          return  new ContetFile(+contentId, +postId,
+            reference, url, description,portfolioType, tittle,poster,imageSize);
+          
+        }));
+
+  }
   saveImages(componentUploadingImg : string): Observable<unknown | Error> {
 
     let imageObj= null;
@@ -405,11 +456,39 @@ export class DataStorageService {
     formData.append('image', file);
     formData.append('description', fileUploadDetails.description);
     formData.append('portfolioType', fileUploadDetails.portfolioType);
-    formData.append('title', fileUploadDetails.tittle);
+    formData.append('tittle', fileUploadDetails.tittle);
     formData.append('postId',postId );
     
 
     const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/image/v1`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
+  }
+  uploadUpdate(file: File, fileUploadDetails: ContetImageUpdate): Observable<HttpEvent<any>> {
+    console.log('Push images Local instances');
+    const formData: FormData = new FormData();
+    let postId = 0 +'';
+    if(fileUploadDetails.postId){
+      postId = fileUploadDetails.postId +'';
+    }
+
+    
+
+    formData.append('image', file);
+    formData.append('description', fileUploadDetails.description);
+    formData.append('portfolioType', fileUploadDetails.portfolioType);
+    formData.append('tittle', fileUploadDetails.tittle);
+    formData.append('postId',postId );
+    formData.append('url', fileUploadDetails.url);
+    formData.append('reference',fileUploadDetails.reference );
+    formData.append('imageSize', fileUploadDetails.imageSize);
+    formData.append('poster',fileUploadDetails.poster);
+    
+
+    const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/content/${fileUploadDetails.reference}/file`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -429,7 +508,7 @@ export class DataStorageService {
     formData.append('video', file);
     formData.append('description', fileUploadDetails.description);
     formData.append('portfolioType', fileUploadDetails.portfolioType);
-    formData.append('title', fileUploadDetails.tittle);
+    formData.append('tittle', fileUploadDetails.tittle);
     formData.append('postId',postId );
     
 

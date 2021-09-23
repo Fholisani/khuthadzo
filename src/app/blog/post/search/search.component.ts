@@ -34,7 +34,9 @@ export class SearchComponent implements OnInit,AfterViewInit, OnDestroy {
     console.log(this.router.url); //  /routename
   }
   ngOnDestroy(): void {
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {

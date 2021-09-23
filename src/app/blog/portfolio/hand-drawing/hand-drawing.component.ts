@@ -400,7 +400,9 @@ export class HandDrawingComponent implements OnInit,AfterViewInit, OnDestroy {
     this.subscriptionDelete.unsubscribe();
     this.subscriptionHandImagesMasterMemoryChanged.remove;
     this.subscriptionHandImagesMasterMemoryChanged.unsubscribe();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   private routerSubscription: Subscription;

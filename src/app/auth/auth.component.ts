@@ -103,7 +103,9 @@ export class AuthComponent implements OnInit,AfterViewInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.recaptcha3.destroy();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   private routerSubscription: Subscription;

@@ -46,6 +46,7 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
   private needRefresh = false;
   private dg: any;
   host: string= environment.host;
+  private routerSubscription: Subscription;
 
 
   constructor(private blogService: BlogService, private route: ActivatedRoute,
@@ -267,9 +268,11 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
     this.subscriptionPostDetail.unsubscribe();
     this.subscriptionPostDelete.unsubscribe();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
- private routerSubscription: Subscription;
+ 
  ngAfterViewInit(): void {
    // subscribe to router events and send page views to Google Analytics
   console.log("About page visited")

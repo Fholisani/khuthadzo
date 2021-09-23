@@ -67,7 +67,10 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
     this.subscriptionDelete.unsubscribe();
     this.subscriptionVideoMasterMemoryChanged.remove;
     this.subscriptionVideoMasterMemoryChanged.unsubscribe();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
+    
   }
   private routerSubscription: Subscription;
   ngAfterViewInit(): void {

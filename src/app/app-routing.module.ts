@@ -61,7 +61,7 @@ const routes: Routes = [
     {path:':id/:id2', component: FilesDetailComponent},
     {path:':id/:id2/edit', component: FilesEditComponent}
 ]},
-{path:'videos', component: VideoFilesComponent, children:[
+{path:'videos', component: VideoFilesComponent,  canActivate: [AuthGuard],children:[
   {path:'', component: VideoStartComponent},
   {path:'new', component: VideoEditComponent},
   {path:':id', component: VideoDetailComponent},

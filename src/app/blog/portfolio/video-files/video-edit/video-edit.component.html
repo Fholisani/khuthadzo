@@ -1,1 +1,212 @@
-<p>video-edit works!</p>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+
+            <br>
+            <br>
+            <div class="alert alert-success" *ngIf="successMessage">
+              <p>{{successMessage}}</p>
+            </div>
+            <div class="alert alert-danger" *ngIf="errorMessage">
+              <p>{{errorMessage}}</p>
+            </div>
+            <div *ngIf="isLoading">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+    
+          </div>
+            
+          <div class="col-md-12">
+       
+
+            <div class="alert alert-primary d-flex align-items-center" role="alert" *ngIf="componentUploadingImg==='upload'">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+              <div>
+                <h2 *ngIf="editMode">Edit Video Poster</h2>
+                <h2 *ngIf="!editMode">Add Background Image</h2>
+              </div>
+            </div>
+            <div class="alert alert-secondary d-flex align-items-center" role="alert" *ngIf="componentUploadingImg==='postImg'">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+              <div>
+                <h2 *ngIf="editMode">Edit Post Image</h2>
+                <h2 *ngIf="!editMode">Add Post Image</h2>
+              </div>
+            </div>
+
+          </div>
+  
+      
+          <div class="col-12">
+            <div >
+              <form [formGroup]="form" (ngSubmit)="onSavePost()">
+  
+  
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="tittle">Name</label>
+                      <input type="text" id="tittle" placeholder="tittle" formControlName="tittle" class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.tittle.errors }"
+                      required>
+                      <div *ngIf="submitted && f.tittle.errors" class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="description">Description</label>
+                      <textarea autosize type="text" id="description" class="form-control" placeholder="Description"
+                        formControlName="description" rows="6"
+                        [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+                      required></textarea>
+                        <div *ngIf="submitted && f.description.errors" class="invalid-feedback" data-sb-feedback="name:required">A description is required.</div>
+                        
+                    </div>
+                  </div>
+                </div>
+      
+                <!-- <div class="row" >
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="description">Portfolio Type</label>
+                      <select class="form-select" formControlName="portfolioType"
+                      [ngClass]="{ 'is-invalid': submitted && f.portfolioType.errors }"
+                      required>
+                        <option value="" selected>Choose your portfolio</option>
+                        <option *ngFor="let portfolio of portfolioTypes" [ngValue]="portfolio"
+                          (change)="changePortfolio($event)">{{portfolio}}
+                        </option>
+                      </select>
+                      <div *ngIf="submitted && f.portfolioType.errors" class="invalid-feedback" data-sb-feedback="name:required">A portfolio type is required.</div>
+                        
+                    </div>
+                  </div>
+                </div> -->
+                <div class="row" *ngIf="editMode">
+                  <div class="col-xs-12">
+                      <div class="form-group">
+  
+                          <label for="url">Image Url</label>
+                          <input type="text"
+                                 id="url"
+                                 formControlName="url"
+                                 class="form-control" disabled
+                                 #url>
+                      </div>
+                  </div>
+                  <div class="col-xs-12">
+                    <img [src]="url.value" class="image-responsive"  style="max-height: 220px;">
+                </div>
+              </div>
+         
+      
+                <div class="row" >
+                  <div class="col-xs-12">
+                    <div class="form-group">
+      
+      
+                      <div class="dropzone" dropzone (hovered)="toggleHover($event)" (dropped)="onDrop($event)"
+                        [class.hovering]="isHovering">
+      
+      
+      
+      
+      
+                        <h3>Drop Zone</h3>
+                        <p>Drag and Drop a File</p>
+                        <div class="file">
+                          <label class="file-label">
+      
+      
+                            <div *ngIf="isMultipleUpload">
+                              <input type="file" id="fileInput" #takeInput class="form-control" (change)="onSelect($event)"
+                              multiple accept="image/png,image/jpeg,image/jpg" formArrayName="images" 
+                              [ngClass]="{ 'is-invalid': submitted &&  (f.images.errors || f.images.invalid) }"
+                           required/>
+                            </div>
+                            
+                            <div *ngIf="!isMultipleUpload">
+                              <input type="file" id="fileInput" #takeInput class="form-control" (change)="onSelect($event)"
+                               accept="image/png,image/jpeg,image/jpg" formArrayName="images" 
+                              [ngClass]="{ 'is-invalid': submitted &&  (f.images.errors || f.images.invalid) }"
+                           required/>
+      
+                            </div>
+                          
+      
+                              <div *ngIf="submitted && (f.images.errors || f.images.invalid)" class="invalid-feedback" data-sb-feedback="name:required">Images required.</div>
+      
+      
+                            <span class="file-cta">
+                              <span class="file-icon">
+                                <i class="fa fa-upload"></i>
+                              </span>
+                              <span class="file-label">
+                                or choose a file…
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+      
+      
+      
+      
+      
+      
+                    </div>
+                  </div>
+                </div>
+      
+      
+      
+                <div class="row" *ngIf="!editMode">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+      
+      
+                      <div class="container">
+                        <div class="row imagetiles">
+                          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                            *ngFor='let imagePreview of imagePreviews; let i = index'>
+                            <img [src]="imagePreview" [alt]="form.value.tittle" class="img-responsive"
+                              style="max-height: 70px;"> <br />
+                            <a (click)="removeImage(i)" class="btn btn-xs btn-danger">Remove</a>
+                          </div>
+                        </div>
+                      </div>
+      
+                      <!-- <div class="preview-image" *ngIf="imagePreviews !== '' && imagePreviews && form.get('images').valid">
+                                      </div> -->
+                    </div>
+                  </div>
+                </div>
+      
+      
+      
+                <div class="row">
+                  <div class="col-xs-12">
+                    <button type="submit" class="btn btn-success"  >Submit</button>
+                     <button type="button" class="btn btn-danger" (click)="onCancel()">Reset</button>
+                  </div>
+                </div>
+              </form>
+          </div>
+          
+
+          </div>
+  
+        
+  
+  
+  
+  
+  
+  
+        </div>
+  
+      </div>

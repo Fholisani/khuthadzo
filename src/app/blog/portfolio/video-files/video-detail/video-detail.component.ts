@@ -34,7 +34,10 @@ export class VideoDetailComponent implements  OnInit, OnDestroy {
         this.id = +params['id'];
        
         let video = this.uploadService.getVideoPosterUploaded(this.id);
-        this.onFetchVideo(video.reference);
+        if(video){
+          this.onFetchVideo(video.reference);
+        }
+       
       }
     );
     this.subContentVideoChanged = this.uploadService.contentVideoChanged

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContetFile } from '../model/content-file.model';
+import { ContetImageUpdate } from '../model/content-image-update.model';
 import { Image, ImageUrl } from '../model/image.model';
 import { GalleryImages } from '../model/post.model';
 import { RemoveImg } from '../model/remove-img.model';
@@ -21,6 +22,7 @@ export class UploadService {
   imagesBgAdded = new BehaviorSubject<Image>(null);
   videoAdded = new BehaviorSubject<Image>(null);
   contentImagesAdded = new Subject<ContetFile>();
+  contentUpdateImagesAdded = new Subject<ContetImageUpdate>();
   contentImagesBgAdded = new Subject<ContetFile>();
   contentImagesPostAdded = new Subject<ContetFile>();
   contentVideoChanged = new Subject<ContetFile>();
@@ -46,6 +48,7 @@ export class UploadService {
   private contentImagesBgAdd: ContetFile;
   private contentImagesPostAdd: ContetFile;
   private contentImagesAdd: ContetFile;
+  private contentUpdateImagesAdd: ContetImageUpdate;
 
   private contentImageBgListAdd: ContetFile;
   private contentImagePostListAdd: ContetFile;
@@ -310,6 +313,17 @@ export class UploadService {
     }
 
   }
+
+  updateFileImage(payload: ContetImageUpdate, componentUploading: string) {
+
+    
+    this.contentUpdateImagesAdd = payload;
+    this.contentUpdateImagesAdded.next(this.contentUpdateImagesAdd);
+
+  }
+  getUpdateContentImgFile() {
+    return this.contentUpdateImagesAdd;
+  }
   getUpdateContentPostImg() {
     return this.contentImagesPostAdd;
   }
@@ -328,10 +342,14 @@ export class UploadService {
   getImagesAdded() {
     return this.imagesAdd;
   }
+
   getVideosAdded() {
     return this.videoAdd;
   }
 
+  getVideoPoster() {
+    return this.contentVideo;
+  }
   getBgFileUploaded(index: number) {
     return this.fileImageBgUrls[index];
 
