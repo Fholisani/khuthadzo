@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-md-12">
+
+        <br>
+        <br>
+        <div class="alert alert-success" *ngIf="successMessage">
+          <p>{{successMessage}}</p>
+        </div>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+          <p>{{errorMessage}}</p>
+        </div>
+        <div *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+
+      </div>
+    <div class="col-xs-12">
+        <a class="btn btn-outline-warning"  (click)="onNewFile()"> New</a>
+       
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-xs-12">
+
+
+        <app-video-item 
+        *ngFor="let video of uploadedVideos; let i =index"
+        [video]="video"
+       
+        [index]="i"></app-video-item>
+    </div>
+</div>
+

@@ -148,6 +148,8 @@ export class VideoUploadImplComponent implements  OnInit, OnDestroy {
  
    // this.router.navigate(['../'], { relativeTo: this.route });
   }
+
+
   ngOnDestroy() {
 
     this.subscriptionImg.remove;

@@ -1,0 +1,19 @@
+<a
+style="cursor: pointer;" 
+class="list-group-item clearfix" 
+routerLinkActive="active"
+[routerLink]="[index]"
+
+
+>
+
+   <div class="pull-left">
+       <h4 class="list-group-item-heading">{{video.description}}</h4>
+       <p class="list-group-item-text">{{video.reference}}</p>
+   </div>
+   <span class="pull-right">
+       <!-- src="{{recipe.imagePath}}"
+    [routerLink] ="[index,componentUploading,componentUploading]" -->
+       <img [src]="video.poster" alt="{{video.description}}" class="img-responsive" style="max-height: 100px;">
+   </span>
+</a>

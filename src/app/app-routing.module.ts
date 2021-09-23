@@ -14,6 +14,10 @@ import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing
 import { HanddrawingResolverService } from './blog/portfolio/handdrawing-resolver.service';
 import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
 import { PortfolioResolverService } from './blog/portfolio/portfolio-resolver.service';
+import { VideoDetailComponent } from './blog/portfolio/video-files/video-detail/video-detail.component';
+import { VideoEditComponent } from './blog/portfolio/video-files/video-edit/video-edit.component';
+import { VideoFilesComponent } from './blog/portfolio/video-files/video-files.component';
+import { VideoStartComponent } from './blog/portfolio/video-files/video-start/video-start.component';
 import { VideoResolverService } from './blog/portfolio/video-resolver.service';
 import { VideoUploadImplComponent } from './blog/portfolio/video-upload-impl/video-upload-impl.component';
 import { VideoComponent } from './blog/portfolio/video/video.component';
@@ -56,6 +60,12 @@ const routes: Routes = [
     {path:'new/:component', component: FilesEditComponent},
     {path:':id/:id2', component: FilesDetailComponent},
     {path:':id/:id2/edit', component: FilesEditComponent}
+]},
+{path:'videos', component: VideoFilesComponent, children:[
+  {path:'', component: VideoStartComponent},
+  {path:'new', component: VideoEditComponent},
+  {path:':id', component: VideoDetailComponent},
+  {path:':id/edit', component: VideoEditComponent}
 ]},
  
 ];

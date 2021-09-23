@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-md-12">
+
+        <br>
+        <br>
+        <div class="alert alert-success" *ngIf="successMessage">
+          <p>{{successMessage}}</p>
+        </div>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+          <p>{{errorMessage}}</p>
+        </div>
+        <div *ngIf="isLoading">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+
+      </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <img [src]="videoContent.poster" alt="{{videoContent.tittle}}" class="img-responsive" 
+        style="max-height:180px;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>{{videoContent.tittle}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="btn-group"
+        appDropdown>
+            <button type="button" class="btn btn-primary dropdown-toggle">
+                Manage Image<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" style="cursor: pointer;" (click)="onEditFileUploaded()">Edit Recipe</a></li>
+                <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteFileUploaded()">Delete Recipe</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{videoContent.reference}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{videoContent.description}}
+    </div>
+</div>

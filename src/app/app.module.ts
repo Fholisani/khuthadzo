@@ -86,6 +86,12 @@ import { DataStorageService } from './shared/data-storage.service';
 import { VideoComponent } from './blog/portfolio/video/video.component';
 import { VideoUploadComponent } from './blog/portfolio/video-upload/video-upload.component';
 import { VideoUploadImplComponent } from './blog/portfolio/video-upload-impl/video-upload-impl.component';
+import { VideoFilesComponent } from './blog/portfolio/video-files/video-files.component';
+import { VideoStartComponent } from './blog/portfolio/video-files/video-start/video-start.component';
+import { VideoDetailComponent } from './blog/portfolio/video-files/video-detail/video-detail.component';
+import { VideoEditComponent } from './blog/portfolio/video-files/video-edit/video-edit.component';
+import { VideoListComponent } from './blog/portfolio/video-files/video-list/video-list.component';
+import { VideoItemComponent } from './blog/portfolio/video-files/video-list/video-item/video-item.component';
 
 
 
@@ -137,6 +143,12 @@ import { VideoUploadImplComponent } from './blog/portfolio/video-upload-impl/vid
     VideoComponent,
     VideoUploadComponent,
     VideoUploadImplComponent,
+    VideoFilesComponent,
+    VideoStartComponent,
+    VideoDetailComponent,
+    VideoEditComponent,
+    VideoListComponent,
+    VideoItemComponent,
 
    
   

@@ -543,6 +543,41 @@ export class DataStorageService {
       )
   }
 
+  fetchVideos(portfolioType : String, pageNo : number, pageSize: number) {
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Pulling images of portfolio type : " + portfolioType);
+    return this.http
+      .get<ContetFile[]>(
+        `${this.imageUrl}/blogger/image/v1/${portfolioType.toUpperCase()}/content?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=releaseDate`
+      )
+      .pipe(
+       
+        tap(images => {
+          //console.log("Fetching images..." + images);
+
+        }),
+        map(images =>images),
+        catchError(this.handleError)
+      )
+  }
+  fetchVideo(portfolioType : String, reference: number) {
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Pulling images of portfolio type : " + portfolioType);
+    return this.http
+      .get<ContetFile>(
+        `${this.imageUrl}/blogger/image/v1/${reference}/${portfolioType.toUpperCase()}`
+      )
+      .pipe(
+       
+        tap(image => {
+          //console.log("Fetching images..." + images);
+
+        }),
+        map(image =>image),
+        catchError(this.handleError)
+      )
+  }
+
 
 
   contactUs(formData: any): Observable<ResponseContactUsData | Error> {

@@ -16,12 +16,14 @@ export class UploadService {
   imagesDeleteChanged = new Subject<GalleryImages[]>();
   imagesHandDrawingChanged = new Subject<GalleryImages[]>();
   videosChanged = new Subject<GalleryImages[]>();
+  contentVideosChanged = new Subject<ContetFile[]>();
   imagesAdded = new BehaviorSubject<Image>(null);
   imagesBgAdded = new BehaviorSubject<Image>(null);
   videoAdded = new BehaviorSubject<Image>(null);
   contentImagesAdded = new Subject<ContetFile>();
   contentImagesBgAdded = new Subject<ContetFile>();
   contentImagesPostAdded = new Subject<ContetFile>();
+  contentVideoChanged = new Subject<ContetFile>();
   // imagesPostAdded = new Subject<Image>();
   // imagesPostAdded= new  BehaviorSubject<Image>(null);
   imagesPostAdded: Subject<any> = new Subject<any>();
@@ -32,6 +34,8 @@ export class UploadService {
   private itemTemp: GalleryImages[] = [];
   private imagesHandDrawing: GalleryImages[] = [];
   private videos: GalleryImages[] = [];
+  private contentVideos: ContetFile[] = [];
+  private contentVideo: ContetFile ;
   private imagesBgAdd: Image;
   private imagesPostAdd: Image;
   private imagesAdd: Image;
@@ -165,6 +169,15 @@ export class UploadService {
     this.videosMasterMemoryChanged.next(this.videosMasterMemory.slice());
     this.videosChanged.next(this.videos.slice());
   }
+
+  setContentVideos(videos: ContetFile[]) {
+    this.contentVideos = videos;
+    this.contentVideosChanged.next(this.contentVideos.slice());
+  }
+  setContentVideo(video: ContetFile) {
+    this.contentVideo = video;
+    this.contentVideoChanged.next(this.contentVideo);
+  }
   getHandDrawingImages() {
     return this.imagesHandDrawing.slice();
   }
@@ -251,7 +264,7 @@ export class UploadService {
     console.log("*** Notify subscriber for component : " + componentUploading);
 
     this.contentFileObj = new ContetFile(+imageResponse.reference, +imageResponse.reference,
-      imageResponse.reference, imageResponse.url, payload.description, payload.portfolioType, payload.tittle);
+      imageResponse.reference, imageResponse.url, payload.description, payload.portfolioType, payload.tittle,"","");
 
     if (componentUploading === 'postImg') {
 
@@ -326,6 +339,10 @@ export class UploadService {
 
   getPostFileUploaded(index: number) {
     return this.fileImagePostUrls[index];
+
+  }
+  getVideoPosterUploaded(index: number) {
+    return this.contentVideos[index];
 
   }
   getBgFilesUploaded() {
