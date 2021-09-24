@@ -4,6 +4,8 @@ import { Meta } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+
 declare var gtag: Function;
 
 @Component({
@@ -15,12 +17,15 @@ export class HomeComponent   implements OnInit,AfterViewInit, OnDestroy {
 
   private routerSubscription: Subscription;
 
-  constructor(private meta: Meta, private router: Router) { }
+
+  constructor(private meta: Meta, private router: Router,
+   
+   
+    public http: HttpClient) { }
 
   
   ngOnInit(): void {
-
-   
+  
    
   }
   ngAfterViewInit(): void {
@@ -35,7 +40,9 @@ export class HomeComponent   implements OnInit,AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
  
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
 
 

@@ -19,4 +19,27 @@
 
 }
 
+.text-dark {
+  color:  #8d97ad;
+}
 
+/*******************
+ Card title
+*******************/
+
+.card-title {
+  font-size: 18px;
+}
+
+.card-subtitle {
+  color: #8d97ad;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.no-trans {
+  transition: unset;
+  &:hover {
+    transform: unset;
+  }
+}

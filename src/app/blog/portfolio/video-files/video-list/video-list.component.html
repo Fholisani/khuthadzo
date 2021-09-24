@@ -1,0 +1,20 @@
+<div class="row">
+
+    <div class="col-xs-12">
+       <p>List of Videos</p>
+       
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-xs-12">
+
+
+        <app-video-item 
+        *ngFor="let video of uploadedVideos; let i =index"
+        [video]="video"
+       
+        [index]="i"></app-video-item>
+    </div>
+</div>
+

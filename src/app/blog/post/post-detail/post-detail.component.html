@@ -30,7 +30,20 @@
             <li><a class="dropdown-item" style="cursor: pointer;" (click)="onDeleteRecipe()">Delete Post</a></li>
           </ul>
         </div>
-        <p></p>
+       
+
+        <share-buttons [theme]="'modern-light'"
+        [include]="['facebook','twitter','linkedin','whatsapp', 'email','copy']"
+        [show]="7"
+        [showIcon]="true"
+        [showText]="false"
+        [title]="this.postDetailResponse.heading"
+        [description]="this.postDetailResponse.subHeading"
+        [image]="this.postDetailResponse.backgroundImage"
+        [url]="this.host +'post/'+ this.postDetailResponse.postId+ '/'"
+        [autoSetMeta]="false"
+       ></share-buttons>
+       <p></p>
         </h1>
 
 
@@ -64,7 +77,7 @@
         </p>
   
          <p></p>
-     
+
      
 
         </div>

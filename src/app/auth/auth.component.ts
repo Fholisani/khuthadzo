@@ -51,14 +51,14 @@ export class AuthComponent implements OnInit,AfterViewInit, OnDestroy {
       this.recaptcha3.getToken({action: 'login'}).then(
         token => {
          
-          console.log("email : " + email + " - password : " + password +  " - token : "+ token );
+        //  console.log("email : " + email + " - password : " + password +  " - token : "+ token );
           // Handle saving form data
           // this.myHttpService.login(this.formData).subscribe(response => {
           //
           // });
           this.authService.login(email, password, token).subscribe(
             resData => {
-              console.log(resData);
+             // console.log(resData);
               this.isLoading = false;
               this.router.navigate(['/home']);
             },
@@ -103,7 +103,9 @@ export class AuthComponent implements OnInit,AfterViewInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.recaptcha3.destroy();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   private routerSubscription: Subscription;

@@ -17,6 +17,7 @@ import { GalleryItem } from 'src/app/model/gallery-dynamic.model';
 import mermaid from 'mermaid';
 import { filter } from 'rxjs/operators';
 import { ShareService } from 'src/app/service/share.service';
+import { environment } from 'src/environments/environment';
 declare var gtag: Function;
 
 @Component({
@@ -44,7 +45,8 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
   isReady: boolean = false;
   private needRefresh = false;
   private dg: any;
-
+  host: string= environment.host;
+  private routerSubscription: Subscription;
 
 
   constructor(private blogService: BlogService, private route: ActivatedRoute,
@@ -56,11 +58,8 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.shareService.setFacebookTags(
-      "https://khuthadzo-kg.co.za/",
-      "Khuthadzo - Freelance interior designer",
-      "Post detail Description",
-      "https://khuthadzo-kg.co.za/");
+
+
     mermaid.initialize({
       securityLevel: 'loose'
     });
@@ -171,11 +170,17 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
   onFetchData(postId: number) {
     this.blogService.setLoadingIndicator(true);
     return this.dataStorageService.fetchDetailPosts(postId).subscribe(postDetail => {
-
+      this.shareService.setFacebookTags(
+        environment.host,
+       postDetail.heading,
+        postDetail.subHeading,
+       postDetail.backgroundImage
+       );
       this.blogService.setPostDetailResponse(postDetail);
 
       this.blogService.setLoadingIndicator(false);
 
+    
 
       var localItems = [];
     
@@ -263,9 +268,11 @@ export class PostDetailComponent implements OnInit,AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
     this.subscriptionPostDetail.unsubscribe();
     this.subscriptionPostDelete.unsubscribe();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
- private routerSubscription: Subscription;
+ 
  ngAfterViewInit(): void {
    // subscribe to router events and send page views to Google Analytics
   console.log("About page visited")

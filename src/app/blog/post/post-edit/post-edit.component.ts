@@ -574,7 +574,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
 
               
               this.uploadedContentImagePost.push(new ContetFile(+element.contentId,this.id,
-                element.reference,element.url,element.description,ms.portfolioType,ms.tittle));
+                element.reference,element.url,element.description,ms.portfolioType,ms.tittle,"",""));
               
             });
 
@@ -595,7 +595,7 @@ export class PostEditComponent implements OnInit, OnDestroy {
               this.uploadedBgImageUrl.push(element);
               
               this.uploadedContentImageBg.push(new ContetFile(+element.contentId,this.id,
-                element.reference,element.url,element.description,ms.portfolioType,ms.tittle));
+                element.reference,element.url,element.description,ms.portfolioType,ms.tittle,"",""));
             });
             this.takeContentImage = this.uploadService.getImagesBgAdded();
             //this.uploadService.updateFileList(this.takeContentImage, this.componentUploadingImg, this.uploadedBgImageUrl[0]);

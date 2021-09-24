@@ -13,7 +13,7 @@ import { mimeType } from '../image/mime-type.validator';
 })
 export class ImageUploadComponent implements OnInit, OnDestroy {
 
-  title = 'Angular 10 Upload File';
+  title = 'Upload File';
   public formData = new FormData();
   public selectedFile: File = null;
   public imageSrc: string;

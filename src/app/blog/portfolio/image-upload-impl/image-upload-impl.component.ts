@@ -148,7 +148,7 @@ export class ImageUploadImplComponent implements OnInit, OnDestroy {
    // this.router.navigate(['../'], { relativeTo: this.route });
   }
   ngOnDestroy() {
-    console.log("=========== unsubscribe image upload impl 1  =================");
+
     this.subscriptionImg.remove;
     this.subscriptionImg.unsubscribe();
     this.subscriptionUploadImg.remove;

@@ -3,6 +3,8 @@ import { Title } from '@angular/platform-browser';
 import { ChildActivationEnd, Router } from '@angular/router'; 
 import { filter } from 'rxjs/operators';
 import { AuthService } from './auth/auth.service';
+import * as AOS from 'aos';
+
 
 @Component({
   selector: 'app-root',
@@ -12,9 +14,10 @@ import { AuthService } from './auth/auth.service';
 export class AppComponent implements OnInit {
 
   ngOnInit() {
+    AOS.init();
     this.authService.autoLogin();
   }
-  title = 'Khuthadzo';
+  title = 'Fholisani';
   loadedFeature = 'recipe';
 
 
@@ -26,7 +29,7 @@ export class AppComponent implements OnInit {
         while (snapshot.firstChild !== null) {
           snapshot = snapshot.firstChild;
         }
-        this.titleService.setTitle(snapshot.data.title || 'Khuthadzo');
+        this.titleService.setTitle(snapshot.data.title || 'Fholisani');
       });
   }
 

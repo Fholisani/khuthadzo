@@ -157,7 +157,9 @@ export class ContactComponent implements OnInit,AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.recaptcha3.destroy();
     this.subscription.unsubscribe();
-    this.routerSubscription.unsubscribe();
+    if(this.routerSubscription){
+      this.routerSubscription.unsubscribe();
+    }
   }
 
 }

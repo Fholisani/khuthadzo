@@ -14,6 +14,13 @@ import { HandDrawingComponent } from './blog/portfolio/hand-drawing/hand-drawing
 import { HanddrawingResolverService } from './blog/portfolio/handdrawing-resolver.service';
 import { ImageUploadImplComponent } from './blog/portfolio/image-upload-impl/image-upload-impl.component';
 import { PortfolioResolverService } from './blog/portfolio/portfolio-resolver.service';
+import { VideoDetailComponent } from './blog/portfolio/video-files/video-detail/video-detail.component';
+import { VideoEditComponent } from './blog/portfolio/video-files/video-edit/video-edit.component';
+import { VideoFilesComponent } from './blog/portfolio/video-files/video-files.component';
+import { VideoStartComponent } from './blog/portfolio/video-files/video-start/video-start.component';
+import { VideoResolverService } from './blog/portfolio/video-resolver.service';
+import { VideoUploadImplComponent } from './blog/portfolio/video-upload-impl/video-upload-impl.component';
+import { VideoComponent } from './blog/portfolio/video/video.component';
 import { PostDetailComponent } from './blog/post/post-detail/post-detail.component';
 import { PostEditComponent } from './blog/post/post-edit/post-edit.component';
 import { PostNewComponent } from './blog/post/post-new/post-new.component';
@@ -44,13 +51,21 @@ const routes: Routes = [
   { path: 'search', component: SearchResultsComponent,  },
   { path: 'architecture', component: ArchitectureComponent, resolve:[PortfolioResolverService] },
   { path: 'hand-drawings', component: HandDrawingComponent, resolve:[HanddrawingResolverService]  },
+  { path: 'video', component: VideoComponent, resolve:[VideoResolverService] },
   { path: 'upload', component: ImageUploadImplComponent,  canActivate: [AuthGuard] },
+  { path: 'uploadvideo', component: VideoUploadImplComponent,  canActivate: [AuthGuard] },
   { path: 'auth', component: AuthComponent },
   {path:'files', component: FilesComponent, children:[
     {path:'', component: FilesStartComponent},
     {path:'new/:component', component: FilesEditComponent},
     {path:':id/:id2', component: FilesDetailComponent},
     {path:':id/:id2/edit', component: FilesEditComponent}
+]},
+{path:'videos', component: VideoFilesComponent,  canActivate: [AuthGuard],children:[
+  {path:'', component: VideoStartComponent},
+  {path:'new', component: VideoEditComponent},
+  {path:':id', component: VideoDetailComponent},
+  {path:':id/edit', component: VideoEditComponent}
 ]},
  
 ];

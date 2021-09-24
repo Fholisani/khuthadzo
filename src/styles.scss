@@ -2,9 +2,80 @@
 @import '~ngx-sharebuttons/themes/material/material-dark-theme';
 @import '~ngx-sharebuttons/themes/modern/modern-light-theme';
 @import '~ngx-sharebuttons/themes/circles/circles-dark-theme';
+
+// Custom SCSS for feature component with Bootstrap icon
+.feature {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  width: 4rem;
+  font-size: 2rem;
+}
 .carousel-item{
     padding: 1px;
 }
+
+.video-js .vjs-tech {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-js .vjs-control-bar {
+ 
+  position: fixed;
+ 
+}
+.vjs-fade-out {
+  /*visibility: hidden!important;
+  opacity: 0!important;*/
+  -webkit-transition: visibility 0s linear 1.5s,opacity 1.5s linear;
+  -moz-transition: visibility 0s linear 1.5s,opacity 1.5s linear;
+  -ms-transition: visibility 0s linear 1.5s,opacity 1.5s linear;
+  -o-transition: visibility 0s linear 1.5s,opacity 1.5s linear;
+  transition: visibility 0s linear 1.5s,opacity 1.5s linear
+}
+
+.vjs-default-skin .vjs-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  height: 2.6em;
+  color: #fff;
+  border-top: 1px solid #404040;
+  background: #242424;
+  background: -moz-linear-gradient(top,#242424 50%,#1f1f1f 50%,#171717 100%);
+  background: -webkit-gradient(linear,0% 0,0% 100%,color-stop(50%,#242424),color-stop(50%,#1f1f1f),color-stop(100%,#171717));
+  background: -webkit-linear-gradient(top,#242424 50%,#1f1f1f 50%,#171717 100%);
+  background: -o-linear-gradient(top,#242424 50%,#1f1f1f 50%,#171717 100%);
+  background: -ms-linear-gradient(top,#242424 50%,#1f1f1f 50%,#171717 100%);
+  background: linear-gradient(top,#242424 50%,#1f1f1f 50%,#171717 100%);
+  /*visibility: hidden;
+  opacity: 0*/
+}
+/******************* 
+card
+*******************/
+
+.card {
+  border: 0px;
+  margin-bottom: 30px;
+  &.card-shadow {
+      box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);;
+  }
+}
+
+.card-group .card {
+  border: 1px solid rgba(120, 130, 140, 0.13);;
+  margin-bottom: 30px;
+}
+
 
 
 footer a.text-light:hover { color: #fed136!important; text-decoration: none; }
@@ -4335,7 +4406,7 @@ textarea.form-control-lg {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+
   border-radius: 0.25rem;
 }
 .card > hr {

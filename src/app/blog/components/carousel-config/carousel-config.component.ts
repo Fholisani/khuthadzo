@@ -16,7 +16,7 @@ export class CarouselConfigComponent implements OnInit {
 
   title = 'ng-carousel-demo';
   landingData : LandingData[];
-   
+
   constructor(config: NgbCarouselConfig) {
     // customize default values of carousels used by this component tree
     config.interval = 50000;

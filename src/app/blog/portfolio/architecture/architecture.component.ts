@@ -159,8 +159,8 @@ export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
 
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
-      console.log(!user);
-      console.log(!!user);
+      // console.log(!user);
+      // console.log(!!user);
     });
 
     this.subscriptionContetFileDelete = this.uploadService.fileImageDeleteLocalIndex.subscribe(
@@ -396,6 +396,7 @@ export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
     this.subscriptionImagesMasterMemoryChanged.remove;
     this.subscriptionImagesMasterMemoryChanged.unsubscribe();
     this.routerSubscription.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
   private routerSubscription: Subscription;

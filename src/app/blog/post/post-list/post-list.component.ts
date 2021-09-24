@@ -28,7 +28,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
 
   constructor(private blogService: BlogService,
-    private dataStorageService: DataStorageService, private shareService:ShareService) { 
+    private dataStorageService: DataStorageService, private shareService:ShareService) {
     this.host = environment.host;
     this.config = {
       currentPage: 1,
@@ -67,7 +67,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           console.log("Update post");
           this.postCards = postCards;
           this.newPostsAvailable();
-         
+
         }
       );
 
@@ -92,7 +92,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.errorMessage = errorMessage;
         }
       );
-  
+
       this.subscription = this.blogService.successMessageChanged
       .subscribe(
         (successMessage: string) => {
@@ -148,7 +148,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.blogService.setPostCards(postCards);
       this.blogService.setLoadingIndicator(false);
     },errorMessage =>{
-   
+
       console.log('HTTP Error', errorMessage)
       let errMsg = `Unable to retrieve due to  ${errorMessage}()`;
       this.blogService.setErrorMessage(errMsg);
@@ -156,6 +156,9 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
   }
 
+  viewDetail(id: number) {
+
+  }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

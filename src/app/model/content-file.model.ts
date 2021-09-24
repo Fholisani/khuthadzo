@@ -6,8 +6,10 @@ export class ContetFile {
     public description: string;
     public portfolioType: string;
     public tittle: string;
+    public imageSize: string;
+    public poster: string;
     constructor(contentId: number,postId: number,  reference: string, url: string,description: string,
-        portfolioType: string, tittle: string){
+        portfolioType: string, tittle: string, imageSize: string,poster: string){
         this.contentId = contentId;
         this.postId = postId;
         this.reference= reference;
@@ -15,5 +17,7 @@ export class ContetFile {
         this.description= description;
         this.portfolioType = portfolioType;
         this.tittle = tittle;
+        this.imageSize= imageSize;
+        this.poster= poster;
     }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ContetFile } from '../model/content-file.model';
+import { ContetImageUpdate } from '../model/content-image-update.model';
 import { Image, ImageUrl } from '../model/image.model';
 import { GalleryImages } from '../model/post.model';
 import { RemoveImg } from '../model/remove-img.model';
@@ -12,30 +13,42 @@ export class UploadService {
   imagesChanged = new Subject<GalleryImages[]>();
   imagesMasterMemoryChanged= new Subject<GalleryImages[]>();
   imagesHandMasterMemoryChanged= new Subject<GalleryImages[]>();
+  videosMasterMemoryChanged= new Subject<GalleryImages[]>();
   imagesDeleteChanged = new Subject<GalleryImages[]>();
   imagesHandDrawingChanged = new Subject<GalleryImages[]>();
+  videosChanged = new Subject<GalleryImages[]>();
+  contentVideosChanged = new Subject<ContetFile[]>();
   imagesAdded = new BehaviorSubject<Image>(null);
   imagesBgAdded = new BehaviorSubject<Image>(null);
-
+  videoAdded = new BehaviorSubject<Image>(null);
   contentImagesAdded = new Subject<ContetFile>();
+  contentUpdateImagesAdded = new Subject<ContetImageUpdate>();
   contentImagesBgAdded = new Subject<ContetFile>();
   contentImagesPostAdded = new Subject<ContetFile>();
+  contentVideoChanged = new Subject<ContetFile>();
   // imagesPostAdded = new Subject<Image>();
   // imagesPostAdded= new  BehaviorSubject<Image>(null);
   imagesPostAdded: Subject<any> = new Subject<any>();
   private images: GalleryImages[] = [];
   private imagesMasterMemory: GalleryImages[] = [];
   private imagesHandMasterMemory: GalleryImages[] = [];
+  private videosMasterMemory: GalleryImages[] = [];
   private itemTemp: GalleryImages[] = [];
   private imagesHandDrawing: GalleryImages[] = [];
+  private videos: GalleryImages[] = [];
+  private contentVideos: ContetFile[] = [];
+  private contentVideo: ContetFile ;
   private imagesBgAdd: Image;
   private imagesPostAdd: Image;
   private imagesAdd: Image;
+  private videoAdd : Image;
+
   private  imageToDelete : GalleryImages; 
 
   private contentImagesBgAdd: ContetFile;
   private contentImagesPostAdd: ContetFile;
   private contentImagesAdd: ContetFile;
+  private contentUpdateImagesAdd: ContetImageUpdate;
 
   private contentImageBgListAdd: ContetFile;
   private contentImagePostListAdd: ContetFile;
@@ -141,8 +154,38 @@ export class UploadService {
     this.imagesHandMasterMemoryChanged.next(this.imagesHandMasterMemory.slice());
     this.imagesHandDrawingChanged.next(this.imagesHandDrawing.slice());
   }
+
+  setVideos(videos: GalleryImages[]) {
+    this.videos = videos;
+    if (this.videosMasterMemory === undefined || this.videosMasterMemory.length === 0) {
+      this.videosMasterMemory = videos;
+    } else {
+      console.log("Add more iterms trigered by the scroll into Master Memory");
+      videos.forEach(element => {
+        this.videosMasterMemory = [
+          ...this.videosMasterMemory,
+          element,
+        ];
+
+      });
+    }
+    this.videosMasterMemoryChanged.next(this.videosMasterMemory.slice());
+    this.videosChanged.next(this.videos.slice());
+  }
+
+  setContentVideos(videos: ContetFile[]) {
+    this.contentVideos = videos;
+    this.contentVideosChanged.next(this.contentVideos.slice());
+  }
+  setContentVideo(video: ContetFile) {
+    this.contentVideo = video;
+    this.contentVideoChanged.next(this.contentVideo);
+  }
   getHandDrawingImages() {
     return this.imagesHandDrawing.slice();
+  }
+  getVideos() {
+    return this.videos.slice();
   }
 
   getImage(index: number) {
@@ -157,6 +200,10 @@ export class UploadService {
   }
   cleanImages() {
     this.imagesAdd = null;
+    //  this.imagesAdded.next(this.imagesAdd);
+  }
+  cleanVideos() {
+    this.videoAdd = null;
     //  this.imagesAdded.next(this.imagesAdd);
   }
   cleanBgImages() {
@@ -197,13 +244,30 @@ export class UploadService {
 
   }
 
+  createVideo(payload: Image, componentUploading: string) {
+    // payload.id =Math.floor(Math.random() * 100) + 1;
+    payload.imageUrls = [];
+
+    console.log("*** Notify subscriber for component : " + componentUploading);
+ 
+    if (componentUploading === 'uploadvideo') {
+      this.videoAdd = payload;
+      this.videoAdded.next(this.videoAdd);
+      // this.cleanBgImages();
+      // this.cleanPostImages();
+
+
+    }
+
+  }
+
   updateFileList(payload: Image, componentUploading: string, imageResponse: ImageUrl) {
 
 
     console.log("*** Notify subscriber for component : " + componentUploading);
 
     this.contentFileObj = new ContetFile(+imageResponse.reference, +imageResponse.reference,
-      imageResponse.reference, imageResponse.url, payload.description, payload.portfolioType, payload.tittle);
+      imageResponse.reference, imageResponse.url, payload.description, payload.portfolioType, payload.tittle,"","");
 
     if (componentUploading === 'postImg') {
 
@@ -249,6 +313,17 @@ export class UploadService {
     }
 
   }
+
+  updateFileImage(payload: ContetImageUpdate, componentUploading: string) {
+
+    
+    this.contentUpdateImagesAdd = payload;
+    this.contentUpdateImagesAdded.next(this.contentUpdateImagesAdd);
+
+  }
+  getUpdateContentImgFile() {
+    return this.contentUpdateImagesAdd;
+  }
   getUpdateContentPostImg() {
     return this.contentImagesPostAdd;
   }
@@ -268,6 +343,13 @@ export class UploadService {
     return this.imagesAdd;
   }
 
+  getVideosAdded() {
+    return this.videoAdd;
+  }
+
+  getVideoPoster() {
+    return this.contentVideo;
+  }
   getBgFileUploaded(index: number) {
     return this.fileImageBgUrls[index];
 
@@ -275,6 +357,10 @@ export class UploadService {
 
   getPostFileUploaded(index: number) {
     return this.fileImagePostUrls[index];
+
+  }
+  getVideoPosterUploaded(index: number) {
+    return this.contentVideos[index];
 
   }
   getBgFilesUploaded() {
@@ -305,6 +391,14 @@ export class UploadService {
     console.log("Hand drawing this.imagesHandMasterMemory Before : "+ this.imagesHandMasterMemory.length);
     this.imagesHandMasterMemory.splice(index, 1);
     this.imagesHandMasterMemoryChanged.next(this.imagesHandMasterMemory.slice());
+    this.fileImageDeleteLocalIndex.next(new RemoveImg(index, null, this.imageToDelete));
+  }
+
+  deleteVideoFileUploaded(index: number) {
+    this.imageToDelete = this.videosMasterMemory[index];
+    console.log("Video this.videosMasterMemory Before : "+ this.videosMasterMemory.length);
+    this.videosMasterMemory.splice(index, 1);
+    this.videosMasterMemoryChanged.next(this.videosMasterMemory.slice());
     this.fileImageDeleteLocalIndex.next(new RemoveImg(index, null, this.imageToDelete));
   }
 
@@ -345,6 +439,10 @@ export class UploadService {
   }
 
 
+  cleanVideosMasterMemory() {
+    this.videosMasterMemory = [];
+    this.videosMasterMemoryChanged.next(this.videosMasterMemory);
+  }
   // updateFileImageBg(index: number, contentFile: ContetFile){
   //   this.fileImageBgUrls[index] = newRecipe;
   //   this.fileImageChanged.next(this.fileImageBgUrls.slice())

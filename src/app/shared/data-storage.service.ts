@@ -18,6 +18,7 @@ import { SearchRequest } from '../model/search-request.model';
 import { ResponsePostData } from '../model/response-post-data.model';
 import { ResponseContactUsData } from '../model/response-contactus-data.model';
 import { environment } from 'src/environments/environment';
+import { ContetImageUpdate } from '../model/content-image-update.model';
 
 @Injectable({
   providedIn: 'root'
@@ -224,6 +225,56 @@ export class DataStorageService {
 
   }
 
+  updateContentFileImages(fileUploadDetails: ContetImageUpdate): Observable<ContetFile | Error> {
+    let imageObj= null;
+   
+    imageObj = this.uploadService.getUpdateContentImgFile();
+    if(imageObj === null){
+      console.log("======Should not push empty Imagess : =====");
+      return;
+    }
+
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Image deatail data : " + JSON.stringify(imageObj));
+    return this.uploadUpdate(fileUploadDetails.images.length > 0 ? fileUploadDetails.images[0].image : null, 
+      fileUploadDetails)
+      .pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        filter(response => response.type === HttpEventType.Response),
+        map(response => {
+          console.log('PushED images Map type ' + response.type);
+          let reference = '';
+          let url = '';
+          let contentId = '';
+          let description = '';
+          let portfolioType = '';
+          let tittle = '';
+          let poster = '';
+          let imageSize = '';
+          let postId='';
+          if (response.type === HttpEventType.Response) {
+            reference = response.body.reference;
+            url = response.body.url;
+            contentId = response.body.contentId;
+            description =response.body.description;
+            poster =response.body.poster;
+            portfolioType =response.body.portfolioType;
+            tittle =response.body.tittle;
+            imageSize =response.body.imageSize;
+            postId =response.body.postId;
+            console.log('contentId : ' +contentId +  ' - Locate image URL : ' + url);
+          
+          }
+
+          return  new ContetFile(+contentId, +postId,
+            reference, url, description,portfolioType, tittle,poster,imageSize);
+          
+        }));
+
+  }
   saveImages(componentUploadingImg : string): Observable<unknown | Error> {
 
     let imageObj= null;
@@ -286,6 +337,59 @@ export class DataStorageService {
 
   }
 
+  saveVideo(componentUploadingImg : string): Observable<unknown | Error> {
+
+    let imageObj= null;
+    console.log("======Get images for component  : ===== " + componentUploadingImg);
+  
+    if(componentUploadingImg==='uploadvideo'){
+
+      imageObj = this.uploadService.getVideosAdded();
+      
+    }
+   
+    if(imageObj === null){
+      console.log("======Should not push empty Imagess : =====");
+      return;
+    }
+    const finalImages = [];
+    const calls = [];
+    this.uploadService.setLoadingIndicator(true);
+    // images.forEach(element => {
+
+      calls.push(this.pushVideoFileImageToStorageLocal(imageObj)
+        .pipe(
+          tap(response => {
+            console.log(response);
+
+          }),
+          
+          //Use switchMap to call another API(s)
+          // switchMap((responses: ImageUrl[]) => {
+          //   //Lets map so to an observable of API call
+          //   imageObj.imageUrls = responses;
+          //   finalImages.push(imageObj);
+          //   console.log("Element data : " + JSON.stringify(imageObj));
+          //   //  const allObs$ = this.storeImage(element);///element.map(so => this.storeImage(element));
+
+          //   const allObs$ = this.storeImage(finalImages);
+          //   //forkJoin will wait for the response to come for all of the observables
+          //   return allObs$;
+          // }),
+          map((responses: ImageUrl[]) => {
+            console.log('PushED images Map : ' + responses);
+            imageObj.imageUrls = responses;
+            finalImages.push(imageObj);
+  
+
+            return finalImages;//;new ImageUrl(imageElement.image.name, message)
+          }),
+          catchError(this.handleError)
+        ));
+    // });
+    return forkJoin(calls);
+
+  }
   storeImage(image: Image[]): Observable<undefined | Error> {
     this.uploadService.setLoadingIndicator(true);
     console.log("Image data : " + JSON.stringify(image));
@@ -352,11 +456,63 @@ export class DataStorageService {
     formData.append('image', file);
     formData.append('description', fileUploadDetails.description);
     formData.append('portfolioType', fileUploadDetails.portfolioType);
-    formData.append('title', fileUploadDetails.tittle);
+    formData.append('tittle', fileUploadDetails.tittle);
     formData.append('postId',postId );
     
 
     const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/image/v1`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
+  }
+  uploadUpdate(file: File, fileUploadDetails: ContetImageUpdate): Observable<HttpEvent<any>> {
+    console.log('Push images Local instances');
+    const formData: FormData = new FormData();
+    let postId = 0 +'';
+    if(fileUploadDetails.postId){
+      postId = fileUploadDetails.postId +'';
+    }
+
+    
+
+    formData.append('image', file);
+    formData.append('description', fileUploadDetails.description);
+    formData.append('portfolioType', fileUploadDetails.portfolioType);
+    formData.append('tittle', fileUploadDetails.tittle);
+    formData.append('postId',postId );
+    formData.append('url', fileUploadDetails.url);
+    formData.append('reference',fileUploadDetails.reference );
+    formData.append('imageSize', fileUploadDetails.imageSize);
+    formData.append('poster',fileUploadDetails.poster);
+    
+
+    const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/content/${fileUploadDetails.reference}/file`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
+  }
+
+  uploadVideo(file: File, fileUploadDetails: Image): Observable<HttpEvent<any>> {
+    console.log('Push images Local instances');
+    const formData: FormData = new FormData();
+    let postId = 0 +'';
+    if(fileUploadDetails.postId){
+      postId = fileUploadDetails.postId +'';
+    }
+
+
+    formData.append('video', file);
+    formData.append('description', fileUploadDetails.description);
+    formData.append('portfolioType', fileUploadDetails.portfolioType);
+    formData.append('tittle', fileUploadDetails.tittle);
+    formData.append('postId',postId );
+    
+
+    const req = new HttpRequest('POST', `${this.imageUrl}/blogger/secure/video/v1`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -401,16 +557,53 @@ export class DataStorageService {
         catchError(this.handleError)
 
       ));
-
-
-
-
-
     });
     return forkJoin(calls);
 
   }
 
+  pushVideoFileImageToStorageLocal(fileUpload: Image) {
+
+    console.log('Push images Local');
+    //TODO will this code return the object with updated image URL ?
+
+    const calls = [];
+    let progress = 0;
+
+    fileUpload.images.forEach(imageElement => {
+
+      calls.push(this.uploadVideo(imageElement.image,
+        fileUpload).pipe(
+
+        tap(response => {
+          console.log('PushED images Tap');
+          console.log(response);
+
+        }),
+        filter(response => response.type === HttpEventType.Response),
+        map(response => {
+          console.log('PushED images Map type ' + response.type);
+          let reference = '';
+          let url = '';
+          let contentId = '';
+          if (response.type === HttpEventType.Response) {
+            reference = response.body.reference;
+            url = response.body.url;
+            contentId = response.body.contentId;
+            console.log('contentId : ' +contentId +  ' - Locate image URL : ' + url);
+          
+          }
+
+          return new ImageUrl(imageElement.image.name,url,reference , contentId)
+          
+        }),
+        catchError(this.handleError)
+
+      ));
+    });
+    return forkJoin(calls);
+
+  }
   fetchImages(portfolioType : String, pageNo : number, pageSize: number) {
     this.uploadService.setLoadingIndicator(true);
     console.log("Pulling images of portfolio type : " + portfolioType);
@@ -425,6 +618,41 @@ export class DataStorageService {
 
         }),
         map(images =>images),
+        catchError(this.handleError)
+      )
+  }
+
+  fetchVideos(portfolioType : String, pageNo : number, pageSize: number) {
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Pulling images of portfolio type : " + portfolioType);
+    return this.http
+      .get<ContetFile[]>(
+        `${this.imageUrl}/blogger/image/v1/${portfolioType.toUpperCase()}/content?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=releaseDate`
+      )
+      .pipe(
+       
+        tap(images => {
+          //console.log("Fetching images..." + images);
+
+        }),
+        map(images =>images),
+        catchError(this.handleError)
+      )
+  }
+  fetchVideo(portfolioType : String, reference: number) {
+    this.uploadService.setLoadingIndicator(true);
+    console.log("Pulling images of portfolio type : " + portfolioType);
+    return this.http
+      .get<ContetFile>(
+        `${this.imageUrl}/blogger/image/v1/${reference}/${portfolioType.toUpperCase()}`
+      )
+      .pipe(
+       
+        tap(image => {
+          //console.log("Fetching images..." + images);
+
+        }),
+        map(image =>image),
         catchError(this.handleError)
       )
   }
@@ -476,6 +704,19 @@ export class DataStorageService {
         map(response => response));
   }
 
+  deleteUploadVideo(galleryImage: GalleryImages): Observable<unknown | Error> {
+    this.uploadService.setLoadingIndicator(true);
+    return this.http
+      .delete<unknown>(
+        `${this.imageUrl}/blogger/secure/video/v1/${galleryImage.reference}`,
+       
+      ).pipe(
+        tap(response => {
+          console.log(response);
+
+        }),
+        map(response => response));
+  }
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = "An unkonwn error occured";
     console.log("Error - " + errorRes);

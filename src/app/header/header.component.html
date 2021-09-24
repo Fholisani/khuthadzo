@@ -20,10 +20,13 @@
             Portfolio
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a routerLink="/architecture"  class="dropdown-item">Architecture</a></li>
+             <li><a routerLink="/architecture"  class="dropdown-item">Architecture</a></li>
             <li><a routerLink="/hand-drawings" class="dropdown-item">Hand Drawings</a></li>
+            <li><a routerLink="/video" class="dropdown-item">Videos</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li *ngIf="isAuthenticated"><a routerLink="/upload" class="dropdown-item" >Upload</a></li>
+            <li *ngIf="isAuthenticated"><a routerLink="/upload" class="dropdown-item" >Upload-Image</a></li>
+            <li *ngIf="isAuthenticated"><a routerLink="/uploadvideo" class="dropdown-item" >Upload-Video</a></li>
+            <li *ngIf="isAuthenticated"><a routerLink="/videos" class="dropdown-item" >Manage-Videos</a></li>
           </ul>
         </li>
         <!-- <li class="nav-item">
@@ -40,7 +43,7 @@
         </li>
       </ul>
       <app-search></app-search>
-   
+
     </div>
   </div>
 </nav>

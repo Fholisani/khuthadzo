@@ -1,5 +1,3 @@
-<div class="accordion" id="accordionExample">
-    <br>
 
     <app-upload-data [numberOfPosts]="numberOfPosts" [isPostAvailable]="isPostAvailable" [isCreatePost]="isCreatePost">
     </app-upload-data>
@@ -27,7 +25,7 @@
         <br>
         <div class="row" *ngIf="!isLoading">
 
-          
+
             <md-list-item  *ngFor="let postCard of postCards  | paginate :config;let i = index" [ngClass]="{'line-break col-xs-4 col-sm-4 col-md-4 col-lg-4 ': 3}">
                 <!--Card-->
                 <div class="container h-100">
@@ -54,7 +52,7 @@
                                     <mdb-card-title>
                                         <h4>{{i + 1}} - {{postCard.heading}} <a class="activator px-3 mr-2">
                                                 <!-- <mdb-icon fas icon="share-alt" class="black-text"></mdb-icon> -->
-                                    
+
                                             </a></h4>
                                     </mdb-card-title>
                                     <hr class="hr-light">
@@ -69,7 +67,7 @@
                                     <div class="card-footer text-muted text-center mt-4">
                                        Posted {{postCard.timeElapsed}}
                                     </div>
-                                   
+
                                     <share-buttons [theme]="'modern-light'"
                                     [include]="['facebook','twitter','linkedin','whatsapp', 'email','copy']"
                                     [show]="7"
@@ -91,8 +89,8 @@
                 </div>
 
                 <p></p>
-              
-               
+
+
 
                 <!--/.Card-->
 
