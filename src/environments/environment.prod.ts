@@ -1,9 +1,9 @@
 export const environment = {
   production: true,
-  host: "https://khuthadzo-kg.co.za/",
-  api_host: "https://khuthadzo-kg.co.za:8432",
+  host: "https://fholisani.co.za/",
+  api_host: "https://fholisani.co.za:8431",
   firebaseUrl:"https://ng-course-recipe-book-b8129-default-rtdb.firebaseio.com",
-  siteKey : "6LdBzXsbAAAAAIlawAHSrx_E0dHcHVeMs6_wBt6P",
+  siteKey : "6LfiyIocAAAAAE1sTACLgBLmk1FyM0iuSrtZN-F-",
   firebaseConfig : {
     apiKey: "AIzaSyCaXfDGxOC_EyK-PI8bFh5_-UGQAOXTkoc",
     authDomain: "ng-course-recipe-book-b8129.firebaseapp.com",

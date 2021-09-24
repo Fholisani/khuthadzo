@@ -48,6 +48,7 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
   isLoading = false;
   errorMessage: string = null;
   successMessage: string = null;
+  videoPostMsg : string = null;
   subscription: Subscription;
 
   constructor(private uploadService: UploadService, private authService: AuthService,
@@ -129,7 +130,9 @@ export class VideoComponent implements  OnInit, AfterViewInit,OnDestroy {
     .subscribe(
       (imagesMaster: GalleryImages[]) => {
         console.log("Video Master memory has been updated to : " + imagesMaster.length);
-
+        if(imagesMaster.length === 0){
+          this.videoPostMsg ='No video post available!';
+        }
 
       }
     );
@@ -360,7 +363,7 @@ this.dataEmit()
           }
 
           this.uploadService.setLoadingIndicator(false);
-          this.uploadService.setSuccessMessage("Successfully deleted the Vodeo!!");
+          this.uploadService.setSuccessMessage("Successfully deleted the Video!!");
           this.uploadService.setErrorMessage(null);
 
           this.needRefresh = true;

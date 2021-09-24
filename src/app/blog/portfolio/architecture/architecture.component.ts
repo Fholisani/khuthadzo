@@ -19,6 +19,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { filter } from 'rxjs/operators';
 import { AfterViewInit } from '@angular/core';
+import lgShare from 'lightgallery/plugins/share';
 declare var $: any;
 declare var gtag: Function;
 
@@ -89,7 +90,10 @@ export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
       pager: false,
       galleryId: "nature",
       thumbnail: true,
-      plugins: [lgZoom, lgThumbnail, lgFullScreen, lgAutoplay],
+      download: true,
+      share: true,
+      counter: true,
+      plugins: [lgZoom, lgThumbnail, lgFullScreen, lgAutoplay, lgShare],
       mobileSettings: {
         controls: true,
         showCloseIcon: true,
@@ -193,7 +197,7 @@ export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
       const item = new GalleryItem(element.reference + '', element.size,
         element.url,
         element.small,
-        element.subHtml);;
+        element.subHtml);
       localItems.push(item);
     });
 
@@ -239,7 +243,7 @@ export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
       const addBtn =
         '<button type="button" aria-label="Add slide" class="lg-icon" id="lg-add">Add</button>';
       const deleteBtn =
-        '<button type="button" aria-label="Remove slide" class="lg-icon" id="lg-delete">Delete</button>';
+        '<button type="button" aria-label="Remove slide" class="lg-icon" id="lg-delete">R</button>';
       this.lightGallery.outer.find('.lg-toolbar').append(deleteBtn);
       // this.lightGallery.outer.find('.lg-toolbar').append(addBtn);
 
