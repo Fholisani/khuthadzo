@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
     AOS.init();
     this.authService.autoLogin();
   }
-  title = 'Fholisani';
+  title = 'Khuthadzo';
   loadedFeature = 'recipe';
 
 
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
         while (snapshot.firstChild !== null) {
           snapshot = snapshot.firstChild;
         }
-        this.titleService.setTitle(snapshot.data.title || 'Fholisani');
+        this.titleService.setTitle(snapshot.data.title || 'Khuthadzo');
       });
   }
 

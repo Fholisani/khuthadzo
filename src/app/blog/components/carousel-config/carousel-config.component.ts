@@ -8,7 +8,7 @@ import { LandingData } from 'src/app/model/landing-data.model';
   templateUrl: './carousel-config.component.html',
   styleUrls: ['./carousel-config.component.scss'],
   providers: [NgbCarouselConfig]  // add NgbCarouselConfig to the component providers
-  
+
 })
 export class CarouselConfigComponent implements OnInit {
 
