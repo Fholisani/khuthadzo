@@ -410,7 +410,7 @@ export class ArchitectureComponent implements OnInit, AfterViewInit,OnDestroy {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        gtag('config', 'UA-178909230-1', {'page_path': event.urlAfterRedirects});
+        gtag('config', 'G-TE5MPGC93J', {'page_path': event.urlAfterRedirects});
       });
   }
 
