@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   host: "http://localhost:4200",
-  api_host: "https://127.0.0.1:8432",
+  api_host: "https://khuthadzo-kg.co.za:8432",
   firebaseUrl:"https://ng-course-recipe-book-b8129-default-rtdb.firebaseio.com",
   siteKey : "6LdBzXsbAAAAAIlawAHSrx_E0dHcHVeMs6_wBt6P",
 

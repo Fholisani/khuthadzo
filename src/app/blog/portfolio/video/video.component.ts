@@ -294,7 +294,7 @@ this.dataEmit()
     //   this.items =[];
     this.lightGallery = detail.instance;
 
-    if (/*this.isAuthenticated*/true) {
+    if (this.isAuthenticated) {
       const addBtn =
         '<button type="button" aria-label="Add slide" class="lg-icon" id="lg-add">Add</button>';
       const deleteBtn =
