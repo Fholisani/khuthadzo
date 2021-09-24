@@ -23,6 +23,9 @@
           <div class="alert alert-danger" *ngIf="errorMessage">
             <p>{{errorMessage}}</p>
           </div>
+          <div class="alert alert-info" *ngIf="videoPostMsg">
+            <p>{{videoPostMsg}}</p>
+          </div>
           <div *ngIf="isLoading">
             <app-loading-spinner></app-loading-spinner>
           </div>
